@@ -19,37 +19,33 @@
                $smt = $bdd->query($query);
                $row = $smt->fetch(PDO::FETCH_ASSOC);
                if (!empty($smt)) {
-
-                       if(!isset($_SESSION['vers']))
-                       {
-                           if ($who=='responsable')
-                           {
-                               if (password_verify($pass, $row['MOTDEPASSE_RES'])) {
-                                   $_SESSION['auth']=$user;
-                                   header("Location:./../pages/homeRespo.php");
-                               }else {
-                                   $_SESSION['error'] = 'login ou mot de passe incorrect';
-                                   header("Location:../pages/login.php");
-
-                               }
-                           }
-                           else
-                           {
-                               if ($pass==$row['MOTDEPASSE_ETU']) {//password_verify(
-                                   $_SESSION['auth']=$row['CNE_ETU'];
-                                   header("Location:./../pages/etudiant-dashboard.php");
-                               }else {
-                                   $_SESSION['error'] = 'login ou mot de passe incorrect';
-                                   header("Location:../pages/login.php");
-
-                               }
-
-                           }
+                   if ($who=='responsable')
+                   {
+                       if (password_verify($pass, $row['MOTDEPASSE_RES'])) {
+                           $_SESSION['auth']=$user;
+                           if(!isset($_SESSION['vers']))
+                                header("Location:./../pages/homeRespo.php");
+                           else header('Location:' .$_SESSION['vers']);
+                       }else {
+                           $_SESSION['error'] = 'login ou mot de passe incorrect';
+                           header("Location:../pages/login.php");
 
                        }
-                       else
-                           header('Location:' .$_SESSION['vers']);
+                   }
+                   else
+                   {
+                       if (password_verify($pass,$row['MOTDEPASSE_ETU'])) {//
+                           $_SESSION['auth']=$row['CNE_ETU'];
+                           if(!isset($_SESSION['vers']))
+                                header("Location:./../pages/etudiant-dashboard.php");
+                           else header('Location:' .$_SESSION['vers']);
+                       }else {
+                           $_SESSION['error'] = 'login ou mot de passe incorrect';
+                           header("Location:../pages/login.php");
 
+                       }
+
+                   }
                    } else {
                        $_SESSION['error'] = 'login ou mot de passe incorrect';
                        header("Location:../pages/login.php");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jun 06, 2022 at 12:34 PM
+-- Generation Time: Jun 06, 2022 at 03:13 PM
 -- Server version: 5.7.34
 -- PHP Version: 8.0.8
 
@@ -143,7 +143,7 @@ CREATE TABLE `ETUDIANT` (
 --
 
 INSERT INTO `ETUDIANT` (`CNE_ETU`, `PRENOM_ETU`, `NOM_ETU`, `DATENAISS_ETU`, `EMAIL_ENS_ETU`, `MOTDEPASSE_ETU`, `CV_ETU`, `IMG_ETU`, `TEL_ETU`, `VILLE_ETU`, `PAYS_ETU`, `ACTIVE_ETU`) VALUES
-('2019000004', 'Brahim Vall', 'Boumouzouna', '2000-11-26', 'bremssvall@gmail.com', '$2y$10$e7eEaVoF0lXFmKX8OvYdm.zRM.kvS.fg3X/Gxqjd/w1Poyxg85AMC', '../ressources/EtudiantCV/2019000004CV.pdf', '../ressources/EtudiantPhoto/2019000004profile.jpg', '0695480803', 'nktt', 'mauritanie', 0),
+('2019000004', 'Brahim Vall', 'Boumouzouna', '2000-11-26', 'bremssvall@gmail.com', '$2y$10$uWshkR0OkDZMZlqeldr9heTkPgGllLS9lcW0s.dgMopuiyS3dxXjK', '../ressources/EtudiantCV/2019000004CV.pdf', '../ressources/EtudiantPhoto/2019000004profile.jpg', '0695480803', 'nktt', 'mauritanie', 0),
 ('C13572055', 'Farid', 'Ayoub', '1999-07-03', 'ayoub@gmail.com', '123', '../ressources/EtudiantCV/C13572055CV.pdf', NULL, '0611020304', 'tata', 'maroc', 0),
 ('CD121232', 'walid', 'ahdouf', '2000-08-15', 'walid@gmail.com', 'hithere', NULL, NULL, '0601020489', 'midelt', 'maroc', 0),
 ('CD12345612', 'Soufiane', 'lemhoubi', '2000-05-29', 'Soufiane@gmail.com', '$2y$10$Ry1bp6Nwpw7GosPL9bBm3O.u4et1ao83oLpIf/DH6abk3quMkBGTe', NULL, NULL, '0795340721', 'Mohammedia', 'maroc', 0),
@@ -270,8 +270,8 @@ CREATE TABLE `OFFREDESTAGE` (
 
 INSERT INTO `OFFREDESTAGE` (`NUM_OFFR`, `NUM_NIV`, `NUM_ENT`, `POSTE_OFFR`, `EFFECTIF_OFFRE`, `DETAILS_OFFR`, `DATEDEB_OFFR`, `DATEFIN_OFFR`, `DURE_OFFR`, `LIEUX_OFFR`, `VILLE_OFFR`, `ETATPUB_OFFR`, `PAYS_OFFR`, `SUJET_OFFR`, `DELAI_JOFFR`) VALUES
 (1, 2, 2, 'front-end dev', 2, 'salam test test', '2022-05-01', '2023-06-10', NULL, 'rue djnf sn ', 'casa', 'complete', 'maroc', 'developper un app', 4),
-(2, 1, 2, 'dfh', 8, 'kdfhgj dgj drhg kdjrgf', '2022-05-11', '2022-05-17', NULL, 'boulvard MV', 'casablanca', 'complete', 'Maroc', '', 12),
-(11, 1, 2, 'dfbun', 13, 'lmmd fbnojn dioriugh doin fr', '2022-05-03', '2022-05-16', NULL, NULL, 'lmvdo', 'nouveau', 'maroc', NULL, 12);
+(2, 1, 1, 'Back-end dev', 8, '– Missions principales :\r\nEtude, conception et réalisation d’une application mobile\r\n– Mode travail : à distance 100%\r\n– Ville : Rabat', '2022-05-11', '2022-05-17', NULL, 'boulvard MV', 'casablanca', 'complete', 'Maroc', 'contribue au developpement de l’application web du gestion', 12),
+(11, 1, 2, 'Full-stack dev', 13, 'Details\r\n– Missions principales :\r\nEtude, conception et réalisation d’une application mobile pour 2M\r\n– Mode travail : à distance 100%\r\n– Ville : Rabat', '2022-05-03', '2022-05-16', NULL, '', 'Rabat', 'nouveau', 'maroc', 'Developper une application mobile', 12);
 
 -- --------------------------------------------------------
 
