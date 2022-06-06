@@ -1,3 +1,17 @@
+<?php
+require( __DIR__.'./../phpQueries/etudiant/dash.php');
+$req_offre_postuler= "
+                        SELECT * FROM POSTULER pos,OFFREDESTAGE offre,ENTREPRISE ent
+                        WHERE pos.NUM_OFFR = offre.NUM_OFFR
+                        AND offre.NUM_ENT = ent.NUM_ENT 
+                        AND pos.CNE_ETU='$etudiant_cne'  
+                        ORDER BY  pos.DATE_POST DESC
+                
+                ";
+$Smt_offre_postuler = $bdd->query($req_offre_postuler);
+$etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,19 +106,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
+                                <?php
+                                    foreach ($etudiant_offres_pos as $offre)
+                                    {
+                                        echo '
+                                <tr>
+                                        <th scope="row">'.$offre['NUM_OFFR'].'</th>
 
-                                        <td>Atos</td>
-                                        <td>Developpeur back-end</td>
-                                        <td>20-06-2022</td>
-                                        <td>6 mois</td>
+                                        <td>'.$offre['LIBELLE_ENT'].'</td>
+                                        <td>'.$offre['POSTE_OFFR'].'</td>
+                                        <td>'.$offre['DATE_POST'].'</td>
+                                        <td>'.$offre['DURE_OFFR'].' mois</td>
                                         <td>
                                             <a href="#" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
-                                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
+                                            <a target="_blank" href="offre-details.php?noffr='. $offre["NUM_OFFR"] .'&niv='. $offre["NUM_NIV"] .'" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
+                                '    ;
+                                    }
+
+
+                                ?>
+
+
 
 
                                 </tbody>
