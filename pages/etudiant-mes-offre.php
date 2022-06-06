@@ -5,11 +5,15 @@ $req_offre_postuler= "
                         WHERE pos.NUM_OFFR = offre.NUM_OFFR
                         AND offre.NUM_ENT = ent.NUM_ENT 
                         AND pos.CNE_ETU='$etudiant_cne'  
+                        
                         ORDER BY  pos.DATE_POST DESC
                 
                 ";
 $Smt_offre_postuler = $bdd->query($req_offre_postuler);
 $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -109,7 +113,9 @@ $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
                                 <?php
                                     foreach ($etudiant_offres_pos as $offre)
                                     {
-                                        echo '
+                                        if ($offre['ETATS_POST']=='POSTULE')
+                                        {
+                                            echo '
                                 <tr>
                                         <th scope="row">'.$offre['NUM_OFFR'].'</th>
 
@@ -123,6 +129,8 @@ $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
                                         </td>
                                     </tr>
                                 '    ;
+                                        }
+
                                     }
 
 
@@ -210,19 +218,22 @@ $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
 
-                                        <td>Atos</td>
-                                        <td>Developpeur back-end</td>
-                                        <td>20-06-2022</td>
-                                        <td>6 mois</td>
+                                <?php
+                                foreach ($etudiant_offres_pos as $offre)
+                                {
+                                    if ($offre['ETATS_POST']=='RETENU')
+                                    {
+                                        echo '
+                                <tr>
+                                        <th scope="row">'.$offre['NUM_OFFR'].'</th>
+
+                                        <td>'.$offre['LIBELLE_ENT'].'</td>
+                                        <td>'.$offre['POSTE_OFFR'].'</td>
+                                        <td>'.$offre['DATE_POST'].'</td>
+                                        <td>'.$offre['DURE_OFFR'].' mois</td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col-12">
-
-
-                                                    <form action="" method="get">
+                                        <form action="" method="post">
                                                         <div class="col-auto">
                                                             <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                                                                 <option value="1" selected>Oui</option>
@@ -236,13 +247,19 @@ $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
                                                         </div>
 
                                                     </form>
-                                                </div>
-                                            </div>
-                                        </td>
+                                         </td>
                                     </tr>
+                                '    ;
+                                    }
 
-                                    </tr>
-                                    <tr>
+                                }
+
+
+                                ?>
+
+
+
+
 
 
                                 </tbody>
