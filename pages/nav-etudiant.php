@@ -31,13 +31,16 @@
           </ul>
           
         </div>
-          <?php if (isset($_SESSION['auth']))
+          <?php
+
+
+          if (isset($_SESSION['auth']))
               echo '
               <div class="d-flex">
-              <a  href="../pages/respoProfil.php">
-                  <img src="../assets/img/comment-section/user.png" class="rounded d-block profile_icon" alt="...">
-              </a>            <a
-
+              <a  href="../pages/etudiant-profil.php">
+              <img class="profile_icon rounded-circle border" src="'. $etudiant_info['IMG_ETU'].'" alt=""> 
+              </a>            
+              <a
                       id="seDeconnecter"
                       class="btn btn-outline-primary  btn-selector pt-3"
                       href="../pages/login.php?logout"

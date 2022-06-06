@@ -66,7 +66,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
         <div class="row ps-4 my-4 ">
           <span class="modifier-info-headline">visualiser mes informations</span>
           <div class="mt-4 p-5 border border-1 rounded-3">
-            <img style="max-width: 100px;" src="./../assets/img/avatar.png" alt="">
+              <img style="width: 96px;height: 96px;" class="mx-auto mb-2 ms-4 rounded-circle" src="<?php echo $etudiant_info['IMG_ETU'];?>" alt="">
               <a class="mt-2 ms-2 btn btn-import-img" href="">Importer image <i class="bi bi-image-fill"></i></a>
 
             <div>
