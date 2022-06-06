@@ -2,8 +2,8 @@
 <!-- Navbar  -->  
 <nav class="navbar navbar-expand-lg navbar-light ">
       <div class="container-fluid ">
-        <a class="navbar-brand" href="#">
-          <img id="logo" src="../assets/icon/logo.png" alt="logo" />
+        <a class="navbar-brand" href="./etudiant-dashboard.php">
+          <img id="logo" src="./../assets/icon/logo.png" alt="logo" />
         </a>
 
         <button
@@ -29,13 +29,11 @@
             </li>
             
           </ul>
-          
-        </div>
-          <?php if (isset($_SESSION['auth']))
-              echo '
-              <div class="d-flex">
-              <a  href="../pages/respoProfil.php">
-                  <img src="../assets/img/comment-section/user.png" class="rounded d-block profile_icon" alt="...">
+            <?php if (isset($_SESSION['auth']))
+                echo '
+              <div class="d-flex align-items-center">
+              <a  href="./../pages/etudiant-profil.php">
+                  <img src="'.$etudiant_info['IMG_ETU'].'" class=" rounded-circle border profile_icon" alt="...">
               </a>            <a
 
                       id="seDeconnecter"
@@ -48,7 +46,10 @@
           </div>
               
               '
-              ?>
+            ?>
+          
+        </div>
+
 
       </div>
     </nav>

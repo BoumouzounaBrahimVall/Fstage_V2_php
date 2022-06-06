@@ -11,7 +11,6 @@ if(isset($_POST['filesUploaed']))
 {
 
     $file = $_FILES['cv'];
-    echo 'cv';
     uploadImagesOrCVEtudiant($etudiant_cne,$file,$bdd,2);
 }
 if($_SERVER['REQUEST_METHOD']=='POST') {
@@ -21,6 +20,7 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
     $date=date("Y-m-d");
     $query = "INSERT INTO POSTULER (NUM_OFFR,CNE_ETU,DATE_POST,ETATS_POST) VALUES ('$noffr','$cne','$date','POSTULE')";
     $row=$bdd->exec($query);
+    header('Location:etudiant-dashboard.php');
 
 }
 ?>
@@ -309,15 +309,11 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
                               <form action="etudiant-dashboard.php" name="cvupload" method="post" enctype="multipart/form-data" class=" g-3">
 
 
-                                  <div class="d-flex mt-4 align-items-center ">
-                                      <img class="me-2" src="./../assets/icon/step2.svg" alt="">
-                                      <span class="subheadline-form">Confirmer Candidature</span>
-                                  </div>
                                   <div class="row">
                                       <form action="" method="post">
-                                          <div class="col-10 ms-5   align-items-start ">
+                                          <div class="col-12 ms-2   align-items-start ">
 
-                                              <div class="mt-2 p-2 border border-1 rounded-3 ">
+                                              <div class="mt-2  border border-1 rounded-3 ">
                                                   <div>
                                                       <div class=" p-3 ">
 
@@ -326,8 +322,8 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
                                                               <input type="text" id="noffrePos" name="noffr"  hidden >
 
                                                               <div class="row mt-2 d-flex justify-content-around ">
-                                                                  <div style="width: fit-content" class="mt-2 ms-3 col-12 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
-                                                                      <button type="submit" name="submit"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Postuler <i class="bi bi-plus-circle-fill"></i></button>
+                                                                  <div  class="mt-2 ms-3 col-xl-6 px-5 py-4  d-flex flex-column justify-content-center ">
+                                                                      <button type="submit" name="submit"  value="uploadCvPostuler" class="btn btn-filtre btn-primary  mb-3">    Postuler <i class="bi bi-plus-circle-fill"></i></button>
 
 
 
