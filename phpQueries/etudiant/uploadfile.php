@@ -1,5 +1,5 @@
 <?php
-require( __DIR__.'./../phpQueries/respoRequiries.php');
+
 function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
     $fileName = $file['name'];
     $fileTmpName =$file['tmp_name'];
@@ -51,3 +51,4 @@ function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
         "You cannot upload files of this type!";
     }
 }
+?>

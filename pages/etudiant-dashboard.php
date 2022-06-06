@@ -4,8 +4,18 @@
 
 <?php
 require( __DIR__.'./../phpQueries/etudiant/dash.php');
+require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
+
+
+if(isset($_POST['filesUploaed']))
+{
+
+    $file = $_FILES['cv'];
+    echo 'cv';
+    uploadImagesOrCVEtudiant($etudiant_cne,$file,$bdd,2);
+}
 if($_SERVER['REQUEST_METHOD']=='POST') {
-    require(__DIR__ . '../../phpQueries/conxnBDD.php');
+    require(__DIR__ . './../phpQueries/conxnBDD.php');
     $noffr = $_POST['noffr'];
     $cne= $_POST['cne'];
     $date=date("Y-m-d");
@@ -30,7 +40,7 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
   <?php
   require_once "nav-etudiant.php";
   ?>
-  <div class="container ">
+  <div  class="container ">
     <div class="row">
       <div class="col-xl-3   col-sm-12">
         <?php
@@ -103,7 +113,7 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
 "id="cv">
           </div>
         <div class=" list-offre mt-3">
-          <div class="container-card d-flex flex-row flex-wrap">
+          <div  class="container-card d-flex flex-row flex-wrap">
               <?php foreach ($etudiant_offres as $offre_stage):
                   if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
 
@@ -213,19 +223,16 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
                       <div class="container-fluid">
                           <div class="row">
                               <span class="headline-form"> Completer ma condidature</span>
-                              <span>pour déposer a cette offre de stage veuillez importer votre CV</span>
+                              <span>pour déposer a aux offre de stage veuillez importer votre CV ,c'est obligatoire</span>
 
                           </div>
                           <div class="row">
-                              <form name="cvupload" method="post" enctype="multipart/form-data" class=" g-3">
-
-
                                   <div class="d-flex mt-4 align-items-center ">
                                       <img class="me-2" src="./../assets/icon/step2.svg" alt="">
                                       <span class="subheadline-form">Importer Mon CV</span>
                                   </div>
                                   <div class="row">
-                                      <form action="" method="post">
+                                      <form action="" method="post"  enctype="multipart/form-data">
                                           <div class="col-10 ms-5   align-items-start ">
 
                                               <div class="mt-2 p-2 border border-1 rounded-3 ">
@@ -237,12 +244,12 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
                                                               <input type="text" id="noffre" name="noffr"  hidden >
 
                                                               <div class="row mt-2 d-flex justify-content-around ">
-                                                                  <div style="width: fit-content" class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
+                                                                  <div style="width: fit-content" class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center ">
                                                                       <img style="margin: auto; max-width: 64px" src="./../assets/img/comment-section/cv.png" alt="" />
-                                                                      <label for="inputfile" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
+                                                                      <label for="inputfile" class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
                                                                           Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                                                       </label>
-                                                                      <input class="form-control d-none" accept="application/pdf" type="file" id="inputfile">
+                                                                      <input class="form-control d-none" name="cv" accept="application/pdf" type="file" id="inputfile">
 
 <!--                                                                      <a class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" href="">Importer  <i class="bi bi-file-arrow-up-fill"></i-->
 <!--                                                                          ></a>-->
@@ -267,7 +274,7 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
                                           </div>
                                           <div class="row ms-4">
                                               <div class="col-xl-6  mt-4">
-                                                  <button type="submit" name="submit"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Postuler <i class="bi bi-plus-circle-fill"></i></button>
+                                                  <button type="submit" name="filesUploaed"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
                                               </div>
                                           </div>
                                       </form>
@@ -364,8 +371,12 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
 
       </div>
     </div>
-      <script src="./../js/script2.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+      <script src="./../js/script2.js">
+
+          document.onload =verifyCvOnLoad();
+      </script>
 </body>
 
 </html>

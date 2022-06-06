@@ -1,3 +1,19 @@
+
+const verifyCvOnLoad = () =>
+{
+
+    let cvInput=document.getElementById('cv');
+    console.log( `cvInput : ${cvInput.value}`);
+    var myModal1 = new bootstrap.Modal(document.getElementById('myModal'), {
+        keyboard: false
+    });
+
+    if ( cvInput.value==2){
+        myModal1.show();
+    }
+
+
+}
 const verifyCvUploaded = (num) =>
 {
     console.log(num);
