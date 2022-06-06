@@ -6,23 +6,49 @@
        $pass = $_POST['password'];
        //   password_hash($_POST['password'],PASSWORD_DEFAULT);
        $who = $_POST['who'];
-       if ($who == 'responsable') {
-           if ($user != "" && $pass != "") {
+
+       if ($user != "" && $pass != "") {
                require(__DIR__ . '../../phpQueries/conxnBDD.php');
                $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                $bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-               $qry = "SELECT RESPONSABLE.MOTDEPASSE_RES FROM RESPONSABLE where RESPONSABLE.USERNAME_RES='$user';";
-               $smt = $bdd->query($qry);
+           if($who=='responsable')
+               $query = "SELECT RESPONSABLE.MOTDEPASSE_RES FROM RESPONSABLE where RESPONSABLE.USERNAME_RES='$user';";
+           else
+               $query = "SELECT * FROM ETUDIANT where `EMAIL_ENS_ETU`='$user';";
+
+               $smt = $bdd->query($query);
                $row = $smt->fetch(PDO::FETCH_ASSOC);
                if (!empty($smt)) {
-                   if (password_verify($pass, $row['MOTDEPASSE_RES'])) {
-                       $_SESSION['auth'] = $user;
-                       unset($_SESSION['error']);
-                       if (!isset($_SESSION['vers']))
-                           header("Location:../pages/homeRespo.php");
+
+                       if(!isset($_SESSION['vers']))
+                       {
+                           if ($who=='responsable')
+                           {
+                               if (password_verify($pass, $row['MOTDEPASSE_RES'])) {
+                                   $_SESSION['auth']=$user;
+                                   header("Location:./../pages/homeRespo.php");
+                               }else {
+                                   $_SESSION['error'] = 'login ou mot de passe incorrect';
+                                   header("Location:../pages/login.php");
+
+                               }
+                           }
+                           else
+                           {
+                               if ($pass==$row['MOTDEPASSE_ETU']) {//password_verify(
+                                   $_SESSION['auth']=$row['CNE_ETU'];
+                                   header("Location:./../pages/etudiant-dashboard.php");
+                               }else {
+                                   $_SESSION['error'] = 'login ou mot de passe incorrect';
+                                   header("Location:../pages/login.php");
+
+                               }
+
+                           }
+
+                       }
                        else
-                           header('Location:' . $_SESSION['vers']);
-                       // die("ggelakjrdniogbuf");
+                           header('Location:' .$_SESSION['vers']);
 
                    } else {
                        $_SESSION['error'] = 'login ou mot de passe incorrect';
@@ -32,15 +58,27 @@
                    $_SESSION['error'] = 'login ou mot de passe incorrect';
                    header("Location:../pages/login.php");
                }
-           }
 
-       }
+
+
    }
     //deconnexion
     if(isset($_GET['logout'])){
       require_once(__DIR__.'../../phpQueries/deconnecter.php');
       header("Location:../pages/login.php");
-    } 
+    }
+
+
+
+    /*
+
+                       $_SESSION['auth'] = $user;
+                       unset($_SESSION['error']);
+                       if (!isset($_SESSION['vers']))
+                           header("Location:../pages/homeRespo.php");
+                       else
+                           header('Location:' . $_SESSION['vers']);
+                       // die("ggelakjrdniogbuf");*/
     ?>
 <!DOCTYPE html>
 <html lang="fr">
