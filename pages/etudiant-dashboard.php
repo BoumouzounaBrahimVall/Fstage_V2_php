@@ -4,6 +4,15 @@
 
 <?php
 require( __DIR__.'./../phpQueries/etudiant/dash.php');
+if($_SERVER['REQUEST_METHOD']=='POST') {
+    require(__DIR__ . '../../phpQueries/conxnBDD.php');
+    $noffr = $_POST['noffr'];
+    $cne= $_POST['cne'];
+    $date=date("Y-m-d");
+    $query = "INSERT INTO POSTULER (NUM_OFFR,CNE_ETU,DATE_POST,ETATS_POST) VALUES ('$noffr','$cne','$date','POSTULE')";
+    $row=$bdd->exec($query);
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -261,6 +270,82 @@ require( __DIR__.'./../phpQueries/etudiant/dash.php');
                                                   <button type="submit" name="submit"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Postuler <i class="bi bi-plus-circle-fill"></i></button>
                                               </div>
                                           </div>
+                                      </form>
+                                  </div>
+
+
+                          </div>
+
+                      </div>
+
+                  </div>
+              </div>
+
+          </div>
+      </div>
+      <!-- Modal Confirmation postuler -->
+      <div class="modal fade" id="myModalPostuler" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" style="min-width: 500px;max-width: 700px">
+              <div class="modal-content d-flex justify-content-center " style="max-width: 800px;margin:auto;">
+                  <div class="modal-header border-0">
+
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="container-fluid">
+                          <div class="row">
+                              <span class="headline-form"> Confirmer ma condidature</span>
+                              <span>pour déposer a cette offre de stage veuillez confimer votre postulation</span>
+
+                          </div>
+                          <div class="row">
+                              <form action="etudiant-dashboard.php" name="cvupload" method="post" enctype="multipart/form-data" class=" g-3">
+
+
+                                  <div class="d-flex mt-4 align-items-center ">
+                                      <img class="me-2" src="./../assets/icon/step2.svg" alt="">
+                                      <span class="subheadline-form">Confirmer Candidature</span>
+                                  </div>
+                                  <div class="row">
+                                      <form action="" method="post">
+                                          <div class="col-10 ms-5   align-items-start ">
+
+                                              <div class="mt-2 p-2 border border-1 rounded-3 ">
+                                                  <div>
+                                                      <div class=" p-3 ">
+
+                                                          <div>
+                                                              <input type="text" name="cne" value="<?php echo $_SESSION['auth'] ?>" hidden id="">
+                                                              <input type="text" id="noffrePos" name="noffr"  hidden >
+
+                                                              <div class="row mt-2 d-flex justify-content-around ">
+                                                                  <div style="width: fit-content" class="mt-2 ms-3 col-12 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
+                                                                      <button type="submit" name="submit"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Postuler <i class="bi bi-plus-circle-fill"></i></button>
+
+
+
+                                                                      <!--                                                                      <a class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" href="">Importer  <i class="bi bi-file-arrow-up-fill"></i-->
+                                                                      <!--                                                                          ></a>-->
+                                                                  </div>
+
+
+                                                              </div>
+
+
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+
+
+                                              </div>
+
+                                              <div>
+
+                                              </div>
+
+                                          </div>
+
                                       </form>
                                   </div>
 

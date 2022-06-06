@@ -14,7 +14,7 @@
            if($who=='responsable')
                $query = "SELECT RESPONSABLE.MOTDEPASSE_RES FROM RESPONSABLE where RESPONSABLE.USERNAME_RES='$user';";
            else
-               $query = "SELECT * FROM ETUDIANT where `EMAIL_ENS_ETU`='$user';";
+               $query = "SELECT * FROM ETUDIANT where `CNE_ETU`='$user';";
 
                $smt = $bdd->query($query);
                $row = $smt->fetch(PDO::FETCH_ASSOC);
@@ -36,6 +36,7 @@
                    {
                        if (password_verify($pass,$row['MOTDEPASSE_ETU'])) {//
                            $_SESSION['auth']=$row['CNE_ETU'];
+                           echo $row['CNE_ETU'];
                            if(!isset($_SESSION['vers']))
                                 header("Location:./../pages/etudiant-dashboard.php");
                            else header('Location:' .$_SESSION['vers']);
