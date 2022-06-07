@@ -13,6 +13,41 @@ $Smt_offre_postuler = $bdd->query($req_offre_postuler);
 $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
 
 
+if (isset($_POST['btnSelection']))
+{
+
+    $cne=$_POST['cne'];
+    $noffr=$_POST['noffre'];
+    $date=date("Y-m-d");
+    if ($_POST['responseSelected']=='OUI')
+        $response='ACCEPTER';
+    else
+        $response='REFUSER';
+
+
+    $req_offre_response= "
+                        UPDATE POSTULER 
+                        SET ETATS_POST='$response',date_reponse='$date'
+                        WHERE NUM_OFFR = '$noffr'
+                        AND  CNE_ETU='$etudiant_cne' 
+                ";
+    $offre_response = $bdd->exec($req_offre_response);
+    if ($response=='ACCEPTER')
+    {
+        //etablir un stage
+        $req_stage= "
+                        INSERT INTO STAGE (NUM_OFFR,CNE_ETU,ACTIVE_STG)
+                        VALUES ('$noffr','$etudiant_cne' ,'OUI')
+                ";
+        $stage_response = $bdd->exec($req_stage);
+
+        //suprimer la candidature dans laquelle est retenu
+
+    }
+
+
+}
+
 
 ?>
 
@@ -235,14 +270,19 @@ $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
                                         <td>
                                         <form action="" method="post">
                                                         <div class="col-auto">
-                                                            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                                                <option value="1" selected>Oui</option>
-                                                                <option value="2">Non</option>
+                                                        <input type="text" name="cne" hidden value="'.$offre['CNE_ETU'].'" id="">
+                                                     <input type="text" name="noffre" hidden value="'.$offre['NUM_OFFR'].'" id="">
+                                                     
+                                                            <select name="responseSelected" class="form-select  form-select-sm" aria-label=".form-select-sm example">
+                                                                <option value="OUI" selected>Oui</option>
+                                                                <option value="NON">Non</option>
 
                                                             </select>
                                                         </div>
                                                         <div class="col-auto mt-2">
-                                                            <div class=" col-auto prop-value"><a class="btn" style="border-radius: 20px; background-color:#7B61FF ;color: white;" href=""> Validate </a></div>
+                                                            <div class=" col-auto prop-value">
+                                                            <button
+                                                             class="btn" name="btnSelection" style="border-radius: 20px; background-color:#7B61FF ;color: white;" href=""> Validate </button></div>
 
                                                         </div>
 
