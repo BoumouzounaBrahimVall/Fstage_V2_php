@@ -5,6 +5,7 @@ $req_offre_postuler= "
                         WHERE pos.NUM_OFFR = offre.NUM_OFFR
                         AND offre.NUM_ENT = ent.NUM_ENT 
                         AND pos.CNE_ETU='$etudiant_cne'  
+                        AND pos.ETATS_POST !='ANNULER'
                         
                         ORDER BY  pos.DATE_POST DESC
                 
@@ -47,7 +48,18 @@ if (isset($_POST['btnSelection']))
 
 
 }
-
+if (isset($_GET['noffr'])&&isset($_GET['cne'])){
+    $cne=$_GET['cne'];
+    $noffr=$_GET['noffr'];
+    $req_offre_response= "
+                        UPDATE POSTULER 
+                        SET ETATS_POST='ANNULER'
+                        WHERE NUM_OFFR = '$noffr'
+                        AND  CNE_ETU='$etudiant_cne' 
+                ";
+    $offre_response = $bdd->exec($req_offre_response);
+    header('Location:etudiant-mes-offre.php');
+}
 
 ?>
 
@@ -159,7 +171,7 @@ if (isset($_POST['btnSelection']))
                                         <td>'.$offre['DATE_POST'].'</td>
                                         <td>'.$offre['DURE_OFFR'].' mois</td>
                                         <td>
-                                            <a href="#" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
+                                            <a href="etudiant-mes-offre.php?noffr='. $offre["NUM_OFFR"] .'&cne='. $offre["CNE_ETU"] .'" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
                                             <a target="_blank" href="offre-details.php?noffr='. $offre["NUM_OFFR"] .'&niv='. $offre["NUM_NIV"] .'" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
                                         </td>
                                     </tr>
