@@ -1,3 +1,8 @@
+
+<?php
+require(__DIR__ . './../phpQueries/etudiant/stage.php');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -32,21 +37,21 @@
             <div style=""  class="row  border border-link rounded-3 p-4">
               
                     <div class="col-xl-2 col-sm-12 me-4 " >
-                        <img class="mx-auto mb-2" style="max-width: 150px;" src="./../ressources/company/images/atos.png" alt="">
+                        <img class="mx-auto mb-2" style="max-width: 150px;" src="<?php echo $stage_actulle['IMAGE_ENT'] ?>" alt="">
                     </div>
                     <div class="col-xl-9 col-sm-12 me-4" >
                         <div class="row mt-2">
                             <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                 <div class="col-auto prop-name me-3">Société :</div>
-                                <div class="col-auto prop-value">Atos</div>
+                                <div class="col-auto prop-value"><?php echo $stage_actulle['LIBELLE_ENT'] ?> </div>
                              
                             </div>
                            
                                 <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                     <div class="col-auto prop-name me-3">N° Stage :</div>
-                                    <div class="col-auto prop-value">1524</div>
+                                    <div class="col-auto prop-value"><?php echo $stage_actulle['NUM_STG'] ?></div>
                                  
                                
                             </div>
@@ -63,14 +68,14 @@
                             <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                 <div class="col-auto prop-name me-3">Date debut :</div>
-                                <div class="col-auto prop-value">12-03-2022</div>
+                                <div class="col-auto prop-value"><?php echo $stage_actulle['DATEDEB_STG'] ?></div>
                              
                             </div>
                            
                                 <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                     <div class="col-auto prop-name  me-3">Lieux :</div>
-                                    <div class="col-auto prop-value">Hay FAllah,Mohammedia , Maroc</div>
+                                    <div class="col-auto prop-value"><?php echo $stage_actulle['LIEUX_OFFR'] ?></div>
                                  
                                
                             </div>
@@ -81,7 +86,7 @@
                             <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                 <div class="col-auto prop-name me-3">Date fin :</div>
-                                <div class="col-auto prop-value">16-02-2023</div>
+                                <div class="col-auto prop-value"><?php echo $stage_actulle['DATEFIN_STG'] ?></div>
                              
                             </div>
                            
@@ -116,8 +121,17 @@
                           <div class="col-xl-12 col-sm-12 mt-sm-2 d-flex justify-content-start align-items-center">
 
                               <div class="col-auto prop-name  me-3">Liste Jury :</div>
-                              <div class="col-auto prop-value"><span class="me-2"> ahmed DAMI </span><span class="me-2"> ahmed DAMI </span><span class="me-2"> ahmed DAMI </span></div>
-                           
+                              <div class="col-auto prop-value">
+                                  <?php
+                                  foreach ($stage_jury as $jury)
+                                  {
+                                      echo '
+                                      <span class="me-2"> '. $jury['PRENOM_ENS'].' '. $jury['NOM_ENS'].'</span>
+                                      
+                                      ';
+                                  }
+                                  ?>
+
                               
                          
                           </div>
