@@ -16,7 +16,14 @@ $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
 
 if (isset($_POST['btnSelection']))
 {
+    // get last NUM_STG
 
+    $req_num_stg='SELECT NUM_STG FROM `stage` ORDER BY NUM_STG DESC';
+    $smt_num_stg=$bdd->query($req_num_stg);
+    $last_num_stg=$smt_num_stg->fetch(2);
+    $last_num=$last_num_stg['NUM_STG'];
+    $last_num++;
+    echo $last_num;
     $cne=$_POST['cne'];
     $noffr=$_POST['noffre'];
     $date=date("Y-m-d");
@@ -28,23 +35,52 @@ if (isset($_POST['btnSelection']))
 
     $req_offre_response= "
                         UPDATE POSTULER 
-                        SET ETATS_POST='$response',date_reponse='$date'
-                        WHERE NUM_OFFR = '$noffr'
+                        SET ETATS_POST='$response'
+                        WHERE NUM_OFFR = '$noffr' 
                         AND  CNE_ETU='$etudiant_cne' 
                 ";
     $offre_response = $bdd->exec($req_offre_response);
     if ($response=='ACCEPTER')
     {
+        //calculer date d'expiration
+
+
+
+        $req_etat_expirer= "
+                        SELECT offre.DELAI_JOFFR,pos.date_reponse FROM POSTULER pos,OFFREDESTAGE offre
+                        WHERE pos.NUM_OFFR = offre.NUM_OFFR
+                        AND offre.NUM_OFFR ='$noffr'
+                        AND pos.CNE_ETU='$etudiant_cne'  
+                ";
+        $Smt_etat_expirer = $bdd->query($req_etat_expirer);
+        $etat_expirer = $Smt_offre_postuler->fetch(PDO::FETCH_ASSOC);
+        echo "date  reponse :".$etat_expirer['date_reponse'];
+        echo "date JOFFR :".$etat_expirer['DELAI_JOFFR'];
+        echo "date expiration :".$etat_expirer['date_reponse']+$etat_expirer['DELAI_JOFFR'];
+
+
+
+
+
+
+
+
+
+
+/*
+
         //etablir un stage
         $req_stage= "
-                        INSERT INTO STAGE (NUM_OFFR,CNE_ETU,ACTIVE_STG)
-                        VALUES ('$noffr','$etudiant_cne' ,'OUI')
+                        INSERT INTO STAGE (NUM_STG,NUM_OFFR,CNE_ETU,ACTIVE_STG)
+                        VALUES ('$last_num','$noffr','$etudiant_cne' ,'OUI')
                 ";
         $stage_response = $bdd->exec($req_stage);
+        header('Location:etudiant-mes-offre.php');
 
         //suprimer la candidature dans laquelle est retenu
-
+*/
     }
+    //header('Location:etudiant-mes-offre.php');
 
 
 }
@@ -160,7 +196,7 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
                                 <?php
                                     foreach ($etudiant_offres_pos as $offre)
                                     {
-                                        if ($offre['ETATS_POST']=='POSTULE')
+                                        if ($offre['ETATS_POST']=='POSTULER')
                                         {
                                             echo '
                                 <tr>
