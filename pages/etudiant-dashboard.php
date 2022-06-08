@@ -12,13 +12,14 @@ if(isset($_POST['filesUploaed']))
 
     $file = $_FILES['cv'];
     uploadImagesOrCVEtudiant($etudiant_cne,$file,$bdd,2);
+    header('Location:etudiant-dashboard.php');
 }
-if($_SERVER['REQUEST_METHOD']=='POST') {
+if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
     require(__DIR__ . './../phpQueries/conxnBDD.php');
     $noffr = $_POST['noffr'];
     $cne= $_POST['cne'];
     $date=date("Y-m-d");
-    $query = "INSERT INTO POSTULER (NUM_OFFR,CNE_ETU,DATE_POST,ETATS_POST) VALUES ('$noffr','$cne','$date','POSTULE')";
+    $query = "INSERT INTO POSTULER (NUM_OFFR,CNE_ETU,DATE_POST,ETATS_POST) VALUES ('$noffr','$cne','$date','POSTULER')";
     $row=$bdd->exec($query);
     header('Location:etudiant-dashboard.php');
 
@@ -34,6 +35,8 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
   ?>
 
   <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -190,7 +193,7 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
       
                 <div class=" p-3  d-flex justify-content-around border-top-0">
 
-                  <button  id="" class="btn ps-5 pe-5  me-2 btn-postuler"  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
+                  <button  id=""  class="btn ps-5 pe-5  me-2 btn-postuler"  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
                   <a  id="" class="btn ps-5 pe-5 btn-voir-plus" target="_blank" href="offre-details.php?noffr='. $offre_stage["NUM_OFFR"] .'&niv='. $offre_stage["NUM_NIV"] .'" role="button">Voir plus</a>
 
                 </div>
@@ -323,7 +326,7 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
 
                                                               <div class="row mt-2 d-flex justify-content-around ">
                                                                   <div  class="mt-2 ms-3 col-xl-6 px-5 py-4  d-flex flex-column justify-content-center ">
-                                                                      <button type="submit" name="submit"  value="uploadCvPostuler" class="btn btn-filtre btn-primary  mb-3">    Postuler <i class="bi bi-plus-circle-fill"></i></button>
+                                                                      <button type="submit" name="btnOffre" value="uploadCvPostuler" class="btn btn-filtre btn-primary  mb-3">    Postuler <i class="bi bi-plus-circle-fill"></i></button>
 
 
 
@@ -367,12 +370,13 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
 
       </div>
     </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
       <script src="./../js/script2.js">
 
-          document.onload =verifyCvOnLoad();
       </script>
+      <script>
+          document.onload = verifyCvOnLoad();
+      </script>
+
 </body>
 
 </html>
