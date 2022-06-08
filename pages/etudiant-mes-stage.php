@@ -48,17 +48,17 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
                              
                             </div>
                            
-                                <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
+                                <div class="col-xl-3 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                     <div class="col-auto prop-name me-3">N° Stage :</div>
                                     <div class="col-auto prop-value"><?php echo $stage_actulle['NUM_STG'] ?></div>
                                  
                                
                             </div>
-                            <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
+                            <div class="col-xl-5 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                 <div class="col-auto prop-name me-3">Encadrant :</div>
-                                <div class="col-auto prop-value">Ahmed Bouzian</div>
+                                <div class="col-auto prop-value"><?php echo getJuryName($stage_jury) ?></div>
                              
                            
                         </div>
@@ -141,7 +141,7 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
                     </div>
 
                 
-            </div>
+            </div></div>
             
              <div class="intro  mt-5">
                 <h3> <b>Historique stages</b>  </h3> 

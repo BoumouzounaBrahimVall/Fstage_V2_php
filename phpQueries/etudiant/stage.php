@@ -25,5 +25,12 @@ $req_jury= "SELECT * from STAGE st,JUGER jr,ENSEIGNANT ens
 $Smt_jury_info = $bdd->query($req_jury);
 $stage_jury = $Smt_jury_info->fetchAll(PDO::FETCH_ASSOC);
 
+function getJuryName($stage_jury)
+{
+    foreach ($stage_jury as $jury)
+    {
+        if ($jury['EST_ENCADRER']==1) return $jury['PRENOM_ENS'].'  ' . $jury['NOM_ENS'];
+    }
+}
 
 ?>
