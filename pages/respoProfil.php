@@ -138,7 +138,7 @@ if(isset($_POST['btn-modifier_mdp_respo'])){
               <a class="nav-link" href="../pages/gererEtudiant.php">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Gérer stage</a>
+              <a class="nav-link" href="../pages/gererStage.php">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">

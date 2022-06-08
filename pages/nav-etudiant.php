@@ -29,12 +29,18 @@
             </li>
             
           </ul>
-            <?php if (isset($_SESSION['auth']))
-                echo '
-              <div class="d-flex align-items-center">
-              <a  href="./../pages/etudiant-profil.php">
-                  <img src="'.$etudiant_info['IMG_ETU'].'" class=" rounded-circle border profile_icon" alt="...">
-              </a>            <a
+
+       
+          <?php
+
+
+          if (isset($_SESSION['auth']))
+              echo '
+              <div class="d-flex">
+              <a  href="../pages/etudiant-profil.php">
+              <img class="profile_icon rounded-circle border" src="'. $etudiant_info['IMG_ETU'].'" alt=""> 
+              </a>            
+              <a
 
                       id="seDeconnecter"
                       class="btn btn-outline-primary  btn-selector pt-3"
