@@ -2,8 +2,8 @@
 <!-- Navbar  -->  
 <nav class="navbar navbar-expand-lg navbar-light ">
       <div class="container-fluid ">
-        <a class="navbar-brand" href="#">
-          <img id="logo" src="../assets/icon/logo.png" alt="logo" />
+        <a class="navbar-brand" href="./etudiant-dashboard.php">
+          <img id="logo" src="./../assets/icon/logo.png" alt="logo" />
         </a>
 
         <button
@@ -29,8 +29,8 @@
             </li>
             
           </ul>
-          
-        </div>
+
+       
           <?php
 
 
@@ -41,6 +41,7 @@
               <img class="profile_icon rounded-circle border" src="'. $etudiant_info['IMG_ETU'].'" alt=""> 
               </a>            
               <a
+
                       id="seDeconnecter"
                       class="btn btn-outline-primary  btn-selector pt-3"
                       href="../pages/login.php?logout"
@@ -51,7 +52,10 @@
           </div>
               
               '
-              ?>
+            ?>
+          
+        </div>
+
 
       </div>
     </nav>

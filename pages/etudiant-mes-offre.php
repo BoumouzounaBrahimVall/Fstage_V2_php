@@ -1,3 +1,68 @@
+<?php
+require( __DIR__.'./../phpQueries/etudiant/dash.php');
+$req_offre_postuler= "
+                        SELECT * FROM POSTULER pos,OFFREDESTAGE offre,ENTREPRISE ent
+                        WHERE pos.NUM_OFFR = offre.NUM_OFFR
+                        AND offre.NUM_ENT = ent.NUM_ENT 
+                        AND pos.CNE_ETU='$etudiant_cne'  
+                        AND pos.ETATS_POST !='ANNULER'
+                        
+                        ORDER BY  pos.DATE_POST DESC
+                
+                ";
+$Smt_offre_postuler = $bdd->query($req_offre_postuler);
+$etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
+
+
+if (isset($_POST['btnSelection']))
+{
+
+    $cne=$_POST['cne'];
+    $noffr=$_POST['noffre'];
+    $date=date("Y-m-d");
+    if ($_POST['responseSelected']=='OUI')
+        $response='ACCEPTER';
+    else
+        $response='REFUSER';
+
+
+    $req_offre_response= "
+                        UPDATE POSTULER 
+                        SET ETATS_POST='$response',date_reponse='$date'
+                        WHERE NUM_OFFR = '$noffr'
+                        AND  CNE_ETU='$etudiant_cne' 
+                ";
+    $offre_response = $bdd->exec($req_offre_response);
+    if ($response=='ACCEPTER')
+    {
+        //etablir un stage
+        $req_stage= "
+                        INSERT INTO STAGE (NUM_OFFR,CNE_ETU,ACTIVE_STG)
+                        VALUES ('$noffr','$etudiant_cne' ,'OUI')
+                ";
+        $stage_response = $bdd->exec($req_stage);
+
+        //suprimer la candidature dans laquelle est retenu
+
+    }
+
+
+}
+if (isset($_GET['noffr'])&&isset($_GET['cne'])){
+    $cne=$_GET['cne'];
+    $noffr=$_GET['noffr'];
+    $req_offre_response= "
+                        UPDATE POSTULER 
+                        SET ETATS_POST='ANNULER'
+                        WHERE NUM_OFFR = '$noffr'
+                        AND  CNE_ETU='$etudiant_cne' 
+                ";
+    $offre_response = $bdd->exec($req_offre_response);
+    header('Location:etudiant-mes-offre.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,19 +157,33 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
+                                <?php
+                                    foreach ($etudiant_offres_pos as $offre)
+                                    {
+                                        if ($offre['ETATS_POST']=='POSTULE')
+                                        {
+                                            echo '
+                                <tr>
+                                        <th scope="row">'.$offre['NUM_OFFR'].'</th>
 
-                                        <td>Atos</td>
-                                        <td>Developpeur back-end</td>
-                                        <td>20-06-2022</td>
-                                        <td>6 mois</td>
+                                        <td>'.$offre['LIBELLE_ENT'].'</td>
+                                        <td>'.$offre['POSTE_OFFR'].'</td>
+                                        <td>'.$offre['DATE_POST'].'</td>
+                                        <td>'.$offre['DURE_OFFR'].' mois</td>
                                         <td>
-                                            <a href="#" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
-                                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
+                                            <a href="etudiant-mes-offre.php?noffr='. $offre["NUM_OFFR"] .'&cne='. $offre["CNE_ETU"] .'" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
+                                            <a target="_blank" href="offre-details.php?noffr='. $offre["NUM_OFFR"] .'&niv='. $offre["NUM_NIV"] .'" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
+                                '    ;
+                                        }
+
+                                    }
+
+
+                                ?>
+
+
 
 
                                 </tbody>
@@ -186,39 +265,53 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
 
-                                        <td>Atos</td>
-                                        <td>Developpeur back-end</td>
-                                        <td>20-06-2022</td>
-                                        <td>6 mois</td>
+                                <?php
+                                foreach ($etudiant_offres_pos as $offre)
+                                {
+                                    if ($offre['ETATS_POST']=='RETENU')
+                                    {
+                                        echo '
+                                <tr>
+                                        <th scope="row">'.$offre['NUM_OFFR'].'</th>
+
+                                        <td>'.$offre['LIBELLE_ENT'].'</td>
+                                        <td>'.$offre['POSTE_OFFR'].'</td>
+                                        <td>'.$offre['DATE_POST'].'</td>
+                                        <td>'.$offre['DURE_OFFR'].' mois</td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col-12">
-
-
-                                                    <form action="" method="get">
+                                        <form action="" method="post">
                                                         <div class="col-auto">
-                                                            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                                                <option value="1" selected>Oui</option>
-                                                                <option value="2">Non</option>
+                                                        <input type="text" name="cne" hidden value="'.$offre['CNE_ETU'].'" id="">
+                                                     <input type="text" name="noffre" hidden value="'.$offre['NUM_OFFR'].'" id="">
+                                                     
+                                                            <select name="responseSelected" class="form-select  form-select-sm" aria-label=".form-select-sm example">
+                                                                <option value="OUI" selected>Oui</option>
+                                                                <option value="NON">Non</option>
 
                                                             </select>
                                                         </div>
                                                         <div class="col-auto mt-2">
-                                                            <div class=" col-auto prop-value"><a class="btn" style="border-radius: 20px; background-color:#7B61FF ;color: white;" href=""> Validate </a></div>
+                                                            <div class=" col-auto prop-value">
+                                                            <button
+                                                             class="btn" name="btnSelection" style="border-radius: 20px; background-color:#7B61FF ;color: white;" href=""> Validate </button></div>
 
                                                         </div>
 
                                                     </form>
-                                                </div>
-                                            </div>
-                                        </td>
+                                         </td>
                                     </tr>
+                                '    ;
+                                    }
 
-                                    </tr>
-                                    <tr>
+                                }
+
+
+                                ?>
+
+
+
+
 
 
                                 </tbody>

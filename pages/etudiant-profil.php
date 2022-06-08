@@ -1,30 +1,14 @@
 
 <?php
 require(__DIR__ . './../phpQueries/etudiant/profil.php');
+require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
 if($_SERVER['REQUEST_METHOD']=='POST')
 {
+    if(isset($_POST['filesUploaed']))
+    {
 
-    if (isset($_POST["submit"])) {
-
-        $b = $_FILES["cvfile"]["size"];
-
-        //Check if the user has selected an image
-        if ($b > 0) {
-            //Get the contents of the file
-            $file = $_FILES['cvfile']['tmp_name'];
-            $cv = addslashes(file_get_contents($file));
-
-            //Insert the cv file into the database
-            $queryA = "UPDATE  ETUDIANT SET CV_ETU='$cv' WHERE CNE_ETU='$etudiant_cne'";
-            $rows=$bdd->exec($queryA);
-            if ($rows>0) {
-                echo "File uploaded successfully.";
-            } else {
-                echo "File upload failed.";
-            }
-        } else {
-            echo "Please select an image to upload.";
-        }
+        $file = $_FILES['cv'];
+        uploadImagesOrCVEtudiant($etudiant_cne,$file,$bdd,2);
     }
 
 }
@@ -65,9 +49,11 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 
         <div class="row ps-4 my-4 ">
           <span class="modifier-info-headline">visualiser mes informations</span>
+
           <div class="mt-4 p-5 border border-1 rounded-3">
               <img style="width: 96px;height: 96px;" class="mx-auto mb-2 ms-4 rounded-circle" src="<?php echo $etudiant_info['IMG_ETU'];?>" alt="">
               <a class="mt-2 ms-2 btn btn-import-img" href="">Importer image <i class="bi bi-image-fill"></i></a>
+
 
             <div>
               <div class="row mt-5">
@@ -153,20 +139,20 @@ if($_SERVER['REQUEST_METHOD']=='POST')
                         <p class="mt-2">
                             Obligatoir d’importer votre Cv avant de postuler aux offres
                         </p>
-                        <form enctype="multipart/form-data" method="post" action="etudiant-profil.php">
+                        <form enctype="multipart/form-data" method="post" action="">
                             <div  style="width: fit-content" class="mt-2   px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                 <img style="margin: auto; max-width: 75px" src="./../assets/img/comment-section/cv.png" alt="" />
                                 <label for="inputfile" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
                                     Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                 </label>
-                                <input class="form-control d-none" name="cvfile" accept="application/pdf" type="file" id="inputfile">
+                                <input class="form-control d-none" name="cv" accept="application/pdf" type="file" id="inputfile">
 
                                 <!--                                                                      <a class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" href="">Importer  <i class="bi bi-file-arrow-up-fill"></i-->
                                 <!--                                                                          ></a>-->
                             </div>
                             <div class="row ">
                                 <div class="col-xl-8  mt-5">
-                                    <button type="submit" name="submit"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
+                                    <button type="submit" name="filesUploaed"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -186,7 +172,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
                     <div >
                         <p class="modifier-info-headline">Dernier Cv Importer  </p>
    
-                        <a href="displayCv.php" style="color:#7B61FF " target="_blank"> visualiser </a> 
+                        <a href="'.$cvetu.'" style="color:#7B61FF " target="_blank"> visualiser </a> 
                                           
                         </a>
 
