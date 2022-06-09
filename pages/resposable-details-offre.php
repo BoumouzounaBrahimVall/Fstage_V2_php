@@ -279,39 +279,51 @@ $donnee=array(
                             <div class="col mt-2">
                                 <form   action="" method="get" class="border rounded p-1">
                                     <input type="text" class="d-none "  value="<?php echo $offre_num;?>" name="numOffre" >
-                                    <div class="col">
+                                   <div class="row">
+                                       <div class="col">
 
-                                        <label  >Ville </label>
-                                        <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[6];?>" name="villeOffre" >
+                                           <label  >Ville </label>
+                                           <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[6];?>" name="villeOffre" >
 
+                                       </div>
+                                       <div class="col">
+
+                                           <label >Pays </label>
+                                           <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[7];?>" name="paysOffre" >
+
+                                       </div>
+                                   </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label >Rue</label>
+                                            <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[8];?>" name="lieuOffre" >
+                                        </div>
+                                        <div align="center" class="col mt-4">
+                                            <button type="submit" name="send" class="btn d-none"  id="subbtnAdr" >
+                                                <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
+                                            <a onclick="modifySubmitdate('inputAdr','modifyAdr','subbtnAdr')" id="modifyAdr" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                                        </div>
                                     </div>
-                                    <div class="col">
 
-                                        <label >Pays </label>
-                                        <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[7];?>" name="paysOffre" >
-
-                                    </div>
-                                    <div class="col">
-                                        <label >Rue</label>
-                                        <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[8];?>" name="lieuOffre" >
-                                        <button type="submit" name="send" class="btn d-none"  id="subbtnAdr" >
-                                            <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
-                                        <a onclick="modifySubmitdate('inputAdr','modifyAdr','subbtnAdr')" id="modifyAdr" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                    </div>
                                 </form>
 
                             </div>
+
+                        </div>
+                        <div class="row">
                             <div class="col mt-2">
                                 <form  action="resposable-details-offre.php" method="get" class="border rounded p-1" >
                                     <input type="text" class="d-none "  value="<?php echo $offre_num;?>" name="numOffre" >
-                                    <div class="col">
+                                    <div class="row">
+                                        <div class="col">
 
-                                        <label  >Poste </label>
-                                        <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[9];?>" name="Poste" >
-                                    </div>
-                                    <div class="col">
-                                        <label  >Sujet </label>
-                                        <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[10];?>" name="sujet" >
+                                            <label  >Poste </label>
+                                            <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[9];?>" name="Poste" >
+                                        </div>
+                                        <div class="col">
+                                            <label  >Sujet </label>
+                                            <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[10];?>" name="sujet" >
+                                        </div>
                                     </div>
                                     <div class="col">
                                         <label >Detail</label>
@@ -323,9 +335,7 @@ $donnee=array(
                                 </form>
 
                             </div>
-
                         </div>
-
 
                     </div>
                             

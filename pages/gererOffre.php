@@ -212,8 +212,8 @@
                   </thead>
                   <tbody>
                   <?php
-                      $req="SELECT of.*,ent.LIBELLE_ENT,niv.LIBELLE_NIV FROM `OFFREDESTAGE` of,NIVEAU niv ,ENTREPRISE ent 
-                      WHERE niv.NUM_NIV=of.NUM_NIV and ent.NUM_ENT=of.NUM_ENT and niv.NUM_FORM='$formation';";
+                      $req="SELECT ofr.*,ent.LIBELLE_ENT,niv.LIBELLE_NIV FROM `OFFREDESTAGE` ofr,NIVEAU niv ,ENTREPRISE ent 
+                      WHERE niv.NUM_NIV=ofr.NUM_NIV and ent.NUM_ENT=ofr.NUM_ENT and niv.NUM_FORM='$formation';";
                       $Smt=$bdd->query($req); 
                       $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC 
                       //afficher le tableau
