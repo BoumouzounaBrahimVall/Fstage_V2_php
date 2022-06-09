@@ -435,12 +435,18 @@ if(isset($_GET['passOublier'])) {
                       {
                           foreach($offres as $V):
 
-                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu='Oui<br>'.$V['date_reponse'];
+                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu=$V['date_reponse'];
                               else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='Non';
                               else $retenu='--';
 
-                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0) $accpt='Oui';
-                              else if(strcmp($V['ETATS_POST'],'No accepte')==0) $accpt="Non";
+                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
+                                  $retenu=$V['date_reponse'];
+                                  $accpt='Oui';
+                              }
+                              else if(strcmp($V['ETATS_POST'],'No accepte')==0){
+                                  $accpt="Non";
+                                  $retenu=$V['date_reponse'];
+                              }
                               else $accpt='--';
                               if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
                               else $anul='--';

@@ -67,7 +67,7 @@ if (isset($_POST['btnSelection']))
         //etablir un stage
         $req_stage= "
                         INSERT INTO STAGE (NUM_STG,NUM_OFFR,CNE_ETU,ACTIVE_STG)
-                        VALUES ('$last_num','$noffr','$etudiant_cne' ,'OUI')
+                        VALUES ('$last_num','$noffr','$etudiant_cne' ,'1')
                 ";
         $stage_response = $bdd->exec($req_stage);
         header('Location:etudiant-mes-offre.php');
