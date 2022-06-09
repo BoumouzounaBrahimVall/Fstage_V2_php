@@ -392,6 +392,7 @@ $donnee=array(
                           <th scope="col">Date Postuler</th>
                           <th scope="col">Retenu</th>
                           <th scope="col">Accepter</th>
+                            <th scope="col">Annuler</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -412,7 +413,8 @@ $donnee=array(
                               if(strcmp($V['ETATS_POST'],'accepte')==0) $accpt='Oui';
                               else if(strcmp($V['ETATS_POST'],'No accepte')==0) $accpt="Non";
                               else $accpt='--';
-
+                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
+                              else $anul='--';
                               echo' <tr>
                               <th scope="row"><a href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</a></th>
                               <td>'.$V['NOM_ETU'].'</td>
@@ -420,6 +422,7 @@ $donnee=array(
                               <td>'.$V['DATE_POST'].'</td>
                                 <td>'.$retenu.'</td>
                                 <td>'.$accpt.'</td>
+                                  <td>'.$anul.'</td>
                               <td>  
                                 <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
                                 <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>

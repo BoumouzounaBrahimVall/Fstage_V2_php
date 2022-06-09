@@ -111,7 +111,7 @@
               <a class="nav-link" href="#">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Gérer stage</a>
+              <a class="nav-link" href="gererStage.php">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">

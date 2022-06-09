@@ -138,7 +138,7 @@ if(isset($_GET['passOublier'])) {
               <a class="nav-link" href="gererEtudiant.php">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Gérer stage</a>
+              <a class="nav-link" href="gererStage.php">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -419,6 +419,7 @@ if(isset($_GET['passOublier'])) {
                           <th scope="col">Date Postuler</th>
                           <th scope="col">Retenu</th>
                           <th scope="col">Accepter</th>
+                          <th scope="col">Annuler</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -434,14 +435,15 @@ if(isset($_GET['passOublier'])) {
                       {
                           foreach($offres as $V):
 
-                              if( strcmp($V['ETATS_POST'],'retenu')==0)  $retenu='Oui<br>'.$V['date_reponse'];
-                              else if(strcmp($V['ETATS_POST'],'No retenu')==0) $retenu='Non';
+                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu='Oui<br>'.$V['date_reponse'];
+                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='Non';
                               else $retenu='--';
 
-                              if(strcmp($V['ETATS_POST'],'accepte')==0) $accpt='Oui';
+                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0) $accpt='Oui';
                               else if(strcmp($V['ETATS_POST'],'No accepte')==0) $accpt="Non";
                               else $accpt='--';
-
+                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
+                              else $anul='--';
                               echo' <tr>
                               <th scope="row"><a href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'">'.$V['NUM_OFFR'].'</a></th>
                               <td>'.$V['LIBELLE_ENT'].'</td>
@@ -449,6 +451,7 @@ if(isset($_GET['passOublier'])) {
                               <td>'.$V['DATE_POST'].'</td>
                                 <td>'.$retenu.'</td>
                                 <td>'.$accpt.'</td>
+                                 <td>'.$anul.'</td>
                               <td>  
                                 <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
                                 <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
