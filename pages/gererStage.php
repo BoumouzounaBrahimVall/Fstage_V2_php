@@ -134,67 +134,95 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
                 </div>
 
             </div>
-            <div class="row mt-4 m-0">
-                <div class="col-xl-6 col-sm-12  mt-sm-2  ">
-                    <form id="formDateDeb" class="row align-items-center  justify-content-start" action="" method="get">
-                        <div class="col-4 m-0 p-0 prop-name ">
-                            <label for="" class="form-label">Date debut </label>
-                        </div>
-                        <div class="col-6 m-0 p-0 prop-value">
-                            <input id="inputDateDeb" type="date" class="form-control" disabled value="2022-09-20" name="date" id="" aria-describedby="helpId" placeholder="">
-                        </div>
-                        <div class="col-2 ">
-                            <a onclick="modifySubmitdate('inputDateDeb','modifyDateDeb','formDateDeb')" id="modifyDateDeb" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-xl-6 col-sm-12 mt-sm-2 d-flex ">
-                    <form id="formDateFin" class="row align-items-center  justify-content-start" action="" method="get">
-                        <div class="col-4 m-0 p-0 prop-name ">
-                            <label for="" class="form-label">Date fin </label>
-                        </div>
-                        <div class="col-6 m-0 p-0 prop-value">
-                            <input id="inputDateFin" type="date" class="form-control" disabled value="2022-09-20" name="date" id="" aria-describedby="helpId" placeholder="">
-                        </div>
-                        <div class="col-2 ">
-                            <a onclick="modifySubmitdate('inputDateFin','modifyDateFin','formDateFin')" id="modifyDateFin" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row mt-4 m-0">
-                <div class="col-xl-5 col-sm-12  mt-sm-2  ">
-                    <form id="formEncadrant" class="row align-items-center  justify-content-start" action="" method="get">
-                        <div class="col-4 m-0 p-0 prop-name ">
-                            <label for="" class="form-label">Encadrant </label>
-                        </div>
-                        <div class="col-6 m-0 p-0 prop-value">
-                            <input id="inputEncadrant" list="datalistEncadrant" class="form-control" disabled name="encadrant" id="" aria-describedby="helpId" placeholder="">
-                            <datalist id="datalistEncadrant">
-                                <option value="Mr Bakkoucha">
-                                <option value="Mr Kissi">
-                                <option value="Mme Letrach">
 
-                            </datalist>
+
+            <div class="row border rounded-3 mb-2 p-1 pb-2">
+                <form   action="" method="get" >
+                    <input type="text" class="d-none "  value="<?php echo $cne;?>" name="num_stag" >
+                    <div class="row">
+                        <div class="col">
+
+                            <label for="inputdatDeb" >Date Debut </label>
+                            <input id="inputdatDeb" type="date"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[0];?>" name="dateDeb" >
+
                         </div>
-                        <div class="col-1 ">
-                            <a onclick="modifySubmitdate('inputEncadrant','modifyEncadrant','formEncadrant')" id="modifyEncadrant" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                        <div class="col">
+
+                            <label for="inputdatFin" >Date Fin </label>
+                            <input id="inputdatFin" type="date"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[1];?>" name="dateFin" >
+
                         </div>
-                    </form>
-                </div>
-                <div class="col-xl-7 col-sm-12 mt-sm-2 ">
-                    <form id="formDateFin" class="row align-items-center  justify-content-start" action="" method="get">
-                        <div class="col-2 m-0 p-0 prop-name ">
-                            <label for="" class="form-label">Lieux</label>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+
+                            <label for="inputEMAIL" >Encadrant </label>
+                            <select id="inputEMAIL" class="form-select inputPERSONE" disabled name="encadrant" aria-label="Default select example">
+                                <?php
+                                $req2="SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS
+                                     FROM `ENSEIGNANT` ens,`ENSEIGNER` ensg WHERE ensg.NUM_ENS=ens.NUM_ENS and ensg.NUM_FORM='$formation';";
+                                $Smt2=$bdd->query($req2);
+                                $ent=$Smt2->fetchAll(2);
+
+                                foreach($ent as $V):
+
+                                    if($V['NUM_ENT']==1)
+                                        echo" <option selected value=\"".$V['NUM_ENS']."\">".$V['NOM_ENS']." ".$V['PRENOM_ENS']."</option>";
+                                    else
+                                        echo" <option value=\"".$V['NUM_ENS']."\">".$V['NOM_ENS']." ".$V['PRENOM_ENS']."</option>";
+                                endforeach;
+                                ?>
+
+                            </select>
                         </div>
-                        <div class="col-8 m-0 p-0 prop-value">
-                            <input id="inputLieux" type="text" class="form-control" disabled value="Hay FAllah,Mohammedia , Maroc" name="lieux" id="" aria-describedby="helpId" placeholder="">
+                        <div class="col">
+
+                            <label for="inputVille" >Ville </label>
+                            <input id="inputVille" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="ville" >
                         </div>
-                        <div class="col-1 ">
-                            <a onclick="modifySubmitdate('inputLieux','modifyDateFin','formDateFin')" id="modifyDateFin" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                    </div>
+                    <div class="row ">
+                        <div class="col  ">
+                            <label for="inputPays" >Pays </label>
+                            <input id="inputTEL" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="pays" >
                         </div>
-                    </form>
-                </div>
+                        <div class="col-1 mt-4 ms-1">
+                            <button type="submit" name="send" class="btn d-none"  id="subbtnPERSONNE" >
+                                <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
+                            <a onclick="modifySubmitdate('inputPERSONE','modifyPERSONNE','subbtnPERSONNE')" id="modifyPERSONNE" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                        </div>
+                        <div class="col">
+                            <label for="inputTEL" >Lieu </label>
+                            <input id="inputTEL" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="lieu" >
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="row border rounded-3 mb-2 p-1 pb-2">
+                <form   action="" method="get" >
+                    <input type="text" class="d-none "  value="<?php echo $cne;?>" name="num_stag" >
+                    <div class="row">
+                        <div class="col">
+
+                            <label for="inputdatNotext" >Note encadrant externe</label>
+                            <input id="inputdatNotext" type="number"  class="form-control  inputext" disabled value="<?php echo $donnee[0];?>" name="noteext" >
+
+                        </div>
+                        <div class="col">
+
+                            <label for="inputSujet" >Sujet Stage </label>
+                            <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[1];?>" name="Sujet" >
+
+                        </div>
+                        <div class="col-1 mt-4">
+                            <button type="submit" name="send" class="btn d-none"  id="subbtnext" >
+                                <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
+                            <a onclick="modifySubmitdate('inputext','modifyext','subbtnext')" id="modifyext" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="row mt-4 m-0">
                 <div class="col-xl-6 col-sm-12  mt-sm-2 d-flex ">
@@ -671,7 +699,23 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script src="../js/script.js"></script>
+<script>
+    const modifySubmitdate = (inputId, btnId,subbtn) => {
+        console.log('pass');
+        let subBtn=document.getElementById(subbtn);
+        let input = document.getElementsByClassName(inputId);
+        let i;
+        let btn = document.getElementById(btnId);
+        subBtn.setAttribute("class","btn bt");
+        btn.setAttribute("class","d-none");
+        for(i = 0; i < input.length; i++)
+        {
+            input[i].disabled = false;
+        }
+        subBtn.setAttribute('value',btnId);
+        subBtn.setAttribute('type','submit');
+    }
+</script>
 </body>
 
 </html>

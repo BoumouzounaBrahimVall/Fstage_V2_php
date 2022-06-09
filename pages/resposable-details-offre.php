@@ -162,7 +162,7 @@ $donnee=array(
             </div>
         <div class="p-4 col-xl-9 col-sm-12">
             <div class="intro  mt-3">
-                <h3> <b>Détails offre</b>  </h3> 
+                <h3> <b>Détails offre № <?php echo  $detaiOff['NUM_OFFR']?></b>  </h3>
     
             </div>
             <div class="intro ">
@@ -392,36 +392,45 @@ $donnee=array(
                           <th scope="col">Date Postuler</th>
                           <th scope="col">Retenu</th>
                           <th scope="col">Accepter</th>
+                            <th scope="col">Annuler</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          
-                          <td>Atos</td>
-                          <td>Developpeur back-end</td>
-                          <td>20-06-2022</td>
-                          <td>Oui</td>
-                          <td>Non</td>
-                          <td>  
-                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                            <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                           </td>
-                        </tr>
-                        <th scope="row">1</th>
-                          
-                          <td>Atos</td>
-                          <td>Developpeur back-end</td>
-                          <td>20-06-2022</td>
-                          <td>Oui</td>
-                          <td>Non</td>
-                          <td>  
-                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                            <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                           </td>
-                        </tr>
-    
+                      <?php
+                      $reqEt=" SELECT pst.*,etu.* FROM `postuler` pst ,etudiant etu WHERE etu.CNE_ETU=pst.CNE_ETU and pst.NUM_OFFR='$offre_num'";
+                      $Smt_nbr=$bdd->query($reqEt);
+                      $etud=$Smt_nbr->fetchAll(PDO::FETCH_ASSOC);
+                      //afficher le tableau
+                      if(!empty($etud))
+                      {
+                          foreach($etud as $V):
+
+                              if( strcmp($V['ETATS_POST'],'retenu')==0)  $retenu='Oui<br>'.$V['date_reponse'];
+                              else if(strcmp($V['ETATS_POST'],'No retenu')==0) $retenu='Non';
+                              else $retenu='--';
+
+                              if(strcmp($V['ETATS_POST'],'accepte')==0) $accpt='Oui';
+                              else if(strcmp($V['ETATS_POST'],'No accepte')==0) $accpt="Non";
+                              else $accpt='--';
+                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
+                              else $anul='--';
+                              echo' <tr>
+                              <th scope="row"><a href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</a></th>
+                              <td>'.$V['NOM_ETU'].'</td>
+                              <td>'.$V['PRENOM_ETU'].'</td>
+                              <td>'.$V['DATE_POST'].'</td>
+                                <td>'.$retenu.'</td>
+                                <td>'.$accpt.'</td>
+                                  <td>'.$anul.'</td>
+                              <td>  
+                                <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
+                                <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
+                               </td>
+                        </tr>';
+                          endforeach;
+                      }
+                      ?>
                       </tbody>
                     </table>
                   </div>
