@@ -94,7 +94,6 @@ $donnee=array(
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
       <link rel="stylesheet" href="trumbowyg/dist/ui/trumbowyg.min.css">
-
     <link rel="stylesheet" href="../css/style.css" />
     <title>Details offre </title>
   </head>
@@ -327,7 +326,7 @@ $donnee=array(
                                     </div>
                                     <div class="col">
                                         <label >Detail</label>
-                                        <textarea   class="form-control inputDetail " disabled name="detail" rows="3" cols="21"><?php echo $donnee[11];?></textarea>
+                                        <textarea  id="detailoffre"  class="form-control inputDetail " disabled name="detail" rows="3" cols="21"> <?php echo  $donnee[11];?></textarea>
                                         <button type="submit" name="send" class="btn d-none"  id="subbtnDetail" >
                                             <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                         <a onclick="modifySubmitdate('inputDetail','modifyDetail','subbtnDetail')" id="modifyDetail" type="submit"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
@@ -471,6 +470,8 @@ $donnee=array(
     ></script>
     <script>
       const modifySubmitdate = (inputId, btnId,subbtn) => {
+
+
         console.log('pass');
           let subBtn=document.getElementById(subbtn);
         let input = document.getElementsByClassName(inputId);
@@ -488,10 +489,34 @@ $donnee=array(
                 }
             subBtn.setAttribute('value',btnId);
             subBtn.setAttribute('type','submit');
+
           //  icon.setAttribute("id", "sut");
         }
+          if (inputId=='inputDetail')
+          {
+              document.getElementsByClassName("trumbowyg-editor")[0].setAttribute('contenteditable',"true");
+              input[2].parentElement.classList.remove('trumbowyg-disabled');
+          }
 
 }
     </script>
+   <-- Import jQuery -->
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+
+   <-- Import Trumbowyg -->
+   <script src="trumbowyg/dist/trumbowyg.min.js"></script>
+
+   <-- Import Trumbowyg plugins... -->
+   <script src="trumbowyg/dist/plugins/upload/trumbowyg.cleanpaste.min.js"></script>
+   <script src="trumbowyg/dist/plugins/upload/trumbowyg.pasteimage.min.js"></script>
+
+   <-- Init Trumbowyg -->
+   <script>
+       // Doing this in a loaded JS file is better, I put this here for simplicity
+
+       $('#detailoffre').trumbowyg();
+
+   </script>
   </body>
 </html>
