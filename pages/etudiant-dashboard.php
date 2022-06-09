@@ -181,11 +181,11 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
                     <div class="headline">
                       <b>Details</b>
                     </div>
-                    <p class="card-text mt-2">
+                    <div class="card-text mt-2 overflow-auto">
 
                       '.html_entity_decode($offre_stage["DETAILS_OFFR"]).'
 
-                    </p>
+                    </div>
                   </div>
 
                 </div>

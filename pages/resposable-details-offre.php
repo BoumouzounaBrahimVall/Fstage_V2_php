@@ -416,13 +416,20 @@ $donnee=array(
                       {
                           foreach($etud as $V):
 
-                              if( strcmp($V['ETATS_POST'],'retenu')==0)  $retenu='Oui<br>'.$V['date_reponse'];
-                              else if(strcmp($V['ETATS_POST'],'No retenu')==0) $retenu='Non';
+                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu=$V['date_reponse'];
+                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='Non';
                               else $retenu='--';
-
-                              if(strcmp($V['ETATS_POST'],'accepte')==0) $accpt='Oui';
-                              else if(strcmp($V['ETATS_POST'],'No accepte')==0) $accpt="Non";
+                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
+                                  $retenu=$V['date_reponse'];
+                                  $accpt='Oui';
+                              }
+                              else if(strcmp($V['ETATS_POST'],'No accepte')==0){
+                                  $accpt="Non";
+                                  $retenu=$V['date_reponse'];
+                              }
                               else $accpt='--';
+                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
+                              else $anul='--';
                               if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
                               else $anul='--';
                               echo' <tr>
@@ -490,7 +497,7 @@ $donnee=array(
             subBtn.setAttribute('value',btnId);
             subBtn.setAttribute('type','submit');
 
-          //  icon.setAttribute("id", "sut");
+
         }
           if (inputId=='inputDetail')
           {
