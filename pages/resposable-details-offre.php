@@ -500,18 +500,18 @@ $donnee=array(
 
 }
     </script>
-   <-- Import jQuery -->
+   <!-- Import jQuery -->
    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 
-   <-- Import Trumbowyg -->
+   <!-- Import Trumbowyg -->
    <script src="trumbowyg/dist/trumbowyg.min.js"></script>
 
-   <-- Import Trumbowyg plugins... -->
+   <!-- Import Trumbowyg plugins... -->
    <script src="trumbowyg/dist/plugins/upload/trumbowyg.cleanpaste.min.js"></script>
    <script src="trumbowyg/dist/plugins/upload/trumbowyg.pasteimage.min.js"></script>
 
-   <-- Init Trumbowyg -->
+   <!-- Init Trumbowyg -->
    <script>
        // Doing this in a loaded JS file is better, I put this here for simplicity
 
