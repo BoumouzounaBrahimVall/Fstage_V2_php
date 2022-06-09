@@ -220,10 +220,12 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    
-                                     $req="SELECT ETUDIANT.CNE_ETU cne,ETUDIANT.NOM_ETU nom,ETUDIANT.PRENOM_ETU prenom, NIVEAU.LIBELLE_NIV niv
-                                     FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV 
-                                     and NIVEAU.NUM_FORM='$formation';";
+
+                                     $req="SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv
+                                            FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV
+                                            and  NIVEAU.NUM_FORM='$formation' and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
+                                                 where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
+                                                  (SELECT ET3.CNE_ETU from ETUDIER ET3 GROUP by ET3.CNE_ETU HAVING COUNT(ET3.CNE_ETU)=1)) ;";
                                      $Smt=$bdd->query($req); 
                                      $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC 
                                      //afficher le tableau
