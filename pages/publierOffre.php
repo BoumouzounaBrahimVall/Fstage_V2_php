@@ -62,7 +62,9 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../css/style.css">
+      <link rel="stylesheet" href="trumbowyg/dist/ui/trumbowyg.min.css">
+
+      <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <style>
@@ -392,6 +394,8 @@
 
  
   $(document).ready(function(){
+    
+         
     $('#div_nouvel_entre').hide();  
 
     $('#flexRadioDefault1').click(function(){
@@ -496,9 +500,9 @@
                    
                     
                   </div>
-                  <div class="row">
+                  <div class="row mt-3">
                    
-                      <div class="col-12 p-5">
+                      <div class="col-xl-12 ">
                         <label for="" class="form-label">Description</label>
                         <textarea class="form-control " name="detailoffre" id="detailoffre" rows="7" cols="20"></textarea> 
                       </div>
@@ -523,9 +527,27 @@
     </div>
   </div>
 </div>
-  <!-- JavaScript Bundle with Popper-->
+
+
+    <!-- JavaScript Bundle with Popper-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/script.js"></script>
 
+    <-- Import jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+
+    <-- Import Trumbowyg -->
+    <script src="trumbowyg/dist/trumbowyg.min.js"></script>
+
+    <-- Import Trumbowyg plugins... -->
+    <script src="trumbowyg/dist/plugins/upload/trumbowyg.cleanpaste.min.js"></script>
+    <script src="trumbowyg/dist/plugins/upload/trumbowyg.pasteimage.min.js"></script>
+
+    <-- Init Trumbowyg -->
+    <script>
+        // Doing this in a loaded JS file is better, I put this here for simplicity
+        $('#detailoffre').trumbowyg();
+    </script>
   </body>
 </html>

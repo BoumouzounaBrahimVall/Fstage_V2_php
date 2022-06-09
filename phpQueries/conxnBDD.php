@@ -1,6 +1,6 @@
 <?php
 try{
-    $bdd= new PDO("mysql:host=localhost;dbname=fstage","root","root");
+    $bdd= new PDO("mysql:host=localhost;dbname=fstage","root","");
 }
     catch(PDOException $e)
     {

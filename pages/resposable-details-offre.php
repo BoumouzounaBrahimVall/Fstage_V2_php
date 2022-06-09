@@ -93,6 +93,7 @@ $donnee=array(
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
+      <link rel="stylesheet" href="trumbowyg/dist/ui/trumbowyg.min.css">
 
     <link rel="stylesheet" href="../css/style.css" />
     <title>Details offre </title>
@@ -452,7 +453,6 @@ $donnee=array(
 
     </div>
     </div>
-    
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
