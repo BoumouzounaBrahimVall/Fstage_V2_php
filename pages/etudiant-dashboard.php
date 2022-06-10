@@ -15,7 +15,7 @@ if(isset($_POST['filesUploaed']))
     header('Location:etudiant-dashboard.php');
 }
 if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
-    require(__DIR__ . './../phpQueries/conxnBDD.php');
+
     $noffr = $_POST['noffr'];
     $cne= $_POST['cne'];
     $date=date("Y-m-d");
@@ -24,6 +24,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
     header('Location:etudiant-dashboard.php');
 
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -69,14 +71,15 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
         </div>
         <div class="row">
           <div class="filtre-bar ps-4  mt-5">
-            <form class="row g-3">
+            <form method="get" class="row g-3">
 
               <div class="col-auto">
                 <label for="inputVille2" class="col-form-label">Ville</label>
               </div>
               <div class="col-auto">
-                <input class="form-control" list="datalistVilles" id="inputVille2" placeholder="Type to search...">
+                <input class="form-control" value="All" name="ville" list="datalistVilles" id="inputVille2" placeholder="Type to search...">
                 <datalist id="datalistVilles">
+                    <option value="All" selected >All</option>
                     <?php
                     foreach ($villes as $ville)
                     {
@@ -93,15 +96,15 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
                 <label for="inputTrier2" class="col-form-label">Trier</label>
               </div>
               <div class="col-auto">
-                <select id="inputTrier2" class="form-select" aria-label="Default select example">
+                <select id="inputTrier2" name="order" class="form-select" aria-label="Default select example">
 
-                  <option selected>Trier par </option>
+                  <option value="none" selected>Trier par </option>
                   <option value="1">Ascendant</option>
                   <option value="2">Descendant </option>
                 </select>
               </div>
-              <div class="col-auto">
-                <button type="submit" class="btn btn-filtre btn-primary mb-3"> Chercher <i class="bi bi-search"></i></button>
+              <div class="col-auto ">
+                <button type="submit" class="btn filterSubmit btn-filtre btn-primary mb-3"> Chercher <i class="bi bi-search"></i></button>
               </div>
             </form>
           </div>
@@ -122,7 +125,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
 
                   echo '
                   <div class="m-3 ">
-              <div class="card border-link " style="min-width: 450px;min-height: 420px;">
+              <div class="card border-link rounded-5 " style="min-width: 450px;min-height: 420px;">
                 <div class="row">
                   <div class="col">
                     <span class="  m-3 badge-status  w-25  p-2  "> '.$offre_stage["ETATPUB_OFFR"] .'</span>
