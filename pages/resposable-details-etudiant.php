@@ -138,7 +138,7 @@ if(isset($_GET['passOublier'])) {
               <a class="nav-link" href="gererEtudiant.php">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Gérer stage</a>
+              <a class="nav-link" href="gererStage.php">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -419,36 +419,53 @@ if(isset($_GET['passOublier'])) {
                           <th scope="col">Date Postuler</th>
                           <th scope="col">Retenu</th>
                           <th scope="col">Accepter</th>
+                          <th scope="col">Annuler</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          
-                          <td>Atos</td>
-                          <td>Developpeur back-end</td>
-                          <td>20-06-2022</td>
-                          <td>Oui</td>
-                          <td>Non</td>
-                          <td>  
-                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                            <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                           </td>
-                        </tr>
-                        <th scope="row">1</th>
-                          
-                          <td>Atos</td>
-                          <td>Developpeur back-end</td>
-                          <td>20-06-2022</td>
-                          <td>Oui</td>
-                          <td>Non</td>
-                          <td>  
-                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                            <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                           </td>
-                        </tr>
-    
+                      <?php
+                      $reqoffr=" SELECT pst.*,ent.LIBELLE_ENT,offr.POSTE_OFFR ,offr.NUM_OFFR
+                                FROM `postuler` pst ,offredestage offr,entreprise ent 
+                                WHERE pst.NUM_OFFR=offr.NUM_OFFR and offr.NUM_ENT=ent.NUM_ENT and pst.CNE_ETU='$cne'";
+                      $Smt_offr=$bdd->query($reqoffr);
+                      $offres=$Smt_offr->fetchAll(PDO::FETCH_ASSOC);
+                      //afficher le tableau
+                      if(!empty($offres))
+                      {
+                          foreach($offres as $V):
+
+                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu=$V['date_reponse'];
+                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='Non';
+                              else $retenu='--';
+
+                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
+                                  $retenu=$V['date_reponse'];
+                                  $accpt='Oui';
+                              }
+                              else if(strcmp($V['ETATS_POST'],'No accepte')==0){
+                                  $accpt="Non";
+                                  $retenu=$V['date_reponse'];
+                              }
+                              else $accpt='--';
+                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
+                              else $anul='--';
+                              echo' <tr>
+                              <th scope="row"><a href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'">'.$V['NUM_OFFR'].'</a></th>
+                              <td>'.$V['LIBELLE_ENT'].'</td>
+                              <td>'.$V['POSTE_OFFR'].'</td>
+                              <td>'.$V['DATE_POST'].'</td>
+                                <td>'.$retenu.'</td>
+                                <td>'.$accpt.'</td>
+                                 <td>'.$anul.'</td>
+                              <td>  
+                                <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
+                                <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
+                               </td>
+                        </tr>';
+                          endforeach;
+                      }
+                      ?>
                       </tbody>
                     </table>
                   </div>

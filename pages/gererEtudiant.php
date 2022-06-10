@@ -50,9 +50,9 @@
     />
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <title>Gerer etudiants</title>
 
-     
-    <title>Publier offre</title>
+
   </head>
 <body>
   
@@ -87,7 +87,7 @@
               <a class="nav-link" href="#">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Gérer stage</a>
+              <a class="nav-link" href="gererStage.php">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -133,13 +133,13 @@
                                     </div>
                                     <div class="col p-4">
                                     <?php
-                                     $req1="SELECT COUNT(ETUDIANT.CNE_ETU)FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` 
+                                     $req1="SELECT COUNT(distinct( ETUDIANT.CNE_ETU)) nbr FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` 
                                      WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV 
                                      and NIVEAU.NUM_FORM='$formation';";
                                      $Smt1=$bdd->query($req1); 
                                      $nbr=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC 
                                      
-                                     echo '<h1 class=" text-center">'.$nbr['COUNT(ETUDIANT.CNE_ETU)'].'</h1>';//<h1 class=" text-center">250</h1>
+                                     echo '<h1 class=" text-center">'.$nbr['nbr'].'</h1>';//<h1 class=" text-center">250</h1>
                                      ?>
                                         <p class=" text-center">Nombre des Etudiants</p>
                                     </div>
@@ -205,8 +205,14 @@
                                     </div>
                                 </div>
                             </div>
+
+
                             <div class="row overflow-auto">
-                                <table class="table">
+                                <table class="table"
+                                       id="table"
+                                       data-toggle="table"
+                                       data-height="100"
+                                       data-pagination="true">
                                 <thead>
                                     <tr>
                                     <th scope="col">CNE</th>
@@ -220,10 +226,12 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    
-                                     $req="SELECT ETUDIANT.CNE_ETU cne,ETUDIANT.NOM_ETU nom,ETUDIANT.PRENOM_ETU prenom, NIVEAU.LIBELLE_NIV niv
-                                     FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV 
-                                     and NIVEAU.NUM_FORM='$formation';";
+
+                                     $req="SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv
+                                            FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV
+                                            and  NIVEAU.NUM_FORM='$formation' and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
+                                                 where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
+                                                  (SELECT ET3.CNE_ETU from ETUDIER ET3 GROUP by ET3.CNE_ETU HAVING COUNT(ET3.CNE_ETU)=1)) ;";
                                      $Smt=$bdd->query($req); 
                                      $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC 
                                      //afficher le tableau
@@ -251,10 +259,7 @@
                                      endforeach;
                                     
                                     ?>
-                                    
-                                    
-                                    
-                                    
+
                 
                                 </tbody>
                                 </table>
@@ -451,5 +456,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/script.js"></script>
+
+    <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
   </body>
 </html>

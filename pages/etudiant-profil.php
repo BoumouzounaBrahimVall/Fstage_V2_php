@@ -2,6 +2,8 @@
 <?php
 require(__DIR__ . './../phpQueries/etudiant/profil.php');
 require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
+$verification=0;//variable global pour la verification du mot de passe
+
 if($_SERVER['REQUEST_METHOD']=='POST')
 {
     if(isset($_POST['filesUploaed']))
@@ -11,6 +13,38 @@ if($_SERVER['REQUEST_METHOD']=='POST')
         uploadImagesOrCVEtudiant($etudiant_cne,$file,$bdd,2);
     }
 
+}
+//traitement du deuxieme formulaire
+if(isset($_POST['btn-modifier_mdp_respo'])){
+
+    //recuperer le mot de passe
+    $mdp=$_POST['inputmotdepasse']; //password d responsable
+
+    //selectionner le mot de passe du responsable courant
+    $password_respo="SELECT Etudiant.MOTDEPASSE_ETU from Etudiant where Etudiant.CNE_ETU='$etudiant_cne';";
+    $Smt_password=$bdd->query($password_respo);
+    $rows_password=$Smt_password->fetch(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
+    //si le mot de passe est correcte afficher les inputs de nouveau mot de passe
+
+    if(password_verify($mdp,$rows_password['MOTDEPASSE_ETU'])) $verification=1;
+    else $verification=0;
+
+}
+//traitement du troisieme formulaire
+if(isset($_POST['btn-modifier_mdp_responv'])){
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+        //recuperer les deux valeurs du mot de passe
+        $nouveau_pass2=$_POST['inputmotdepassenv2'];
+        $nouveau_pass1=$_POST['inputmotdepassenv'];
+        //premiere test: si les deux passwords ne sont pas egaux
+        if($nouveau_pass1==$nouveau_pass2){
+            $nouveau_pass1= password_hash($nouveau_pass1,PASSWORD_DEFAULT);
+            //etape2 : changer le mot de passe
+            $modifier_mdp="UPDATE etudiant 
+          set etudiant.MOTDEPASSE_ETU='$nouveau_pass1'where etudiant.CNE_ETU='$etudiant_cne'; ";
+            $bdd->exec($modifier_mdp);
+        }
+    }
 }
 
 
@@ -23,7 +57,9 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 <?php
   require_once "./meta-tag.php"
   ?>
-  <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+
+    <title>Dashboard</title>
 </head>
 
 <body>
@@ -185,9 +221,42 @@ if($_SERVER['REQUEST_METHOD']=='POST')
                
                 ' ;
                         };
-                        echo " ";
                         ?>
                     </div>
+                    <div class="row border">
+                        <div class="row ">
+                            <form action="" method="post">
+
+
+                                <label for="inputmotdepasse" class="col-form-label"><b>Changer le Mot de Passe</b></label><br>
+                                <label for="inputmotdepasse" class="col-form-label">Mot de passe</label>
+                                <input class="form-control " type="password" id="inputmotdepasse" name="inputmotdepasse" ><br>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary btn-login " id="btn-modifier_mdp_respo" name="btn-modifier_mdp_respo"> Valider </button>
+
+                                </div>
+
+                                <HR SIZE="4">
+                            </form>
+                        </div>
+
+                        <form action="" method="post" class="row" id="hdpss">
+                            <div class="col ">
+                                <label for="inputmotdepassenv" class="col-form-label" id="label_mdp">Nouveau mot de passe</label>
+                                <input class="form-control " type="password" id="inputmotdepassenv" name="inputmotdepassenv" >
+                            </div>
+
+                            <div class="col mb-2">
+                                <label for="inputmotdepassenv2" class="col-form-label" id="label_mdp2">Resaisir Mot de Passe</label>
+                                <input class="form-control " type="password" id="inputmotdepassenv2" name="inputmotdepassenv2" >
+                            </div>
+                            <div class="col mt-3 mb-2">
+                                <button type="submit" class="btn btn-selector" id="btn-modifier_mdp_responv" name="btn-modifier_mdp_responv"> Changer </button>
+                            </div>
+                        </form>
+
+                    </div>
+
                 </div>
             </div>
           </div>
@@ -203,6 +272,31 @@ if($_SERVER['REQUEST_METHOD']=='POST')
       </div>
     </div>
 
+      <?php
+      //si le mot de passe est incorrecte
+      if($verification==0)
+      {
+          echo"
+<script>
+  
+    $(document).ready(function(){
+           $('#hdpss').hide(); 
+  });
+    
+</script>
+";
+      }else{
+          echo
+          "
+        <script>
+      
+        $(document).ready(function(){
+            $('#hdpss').show(); 
+      });
+        </script>
+      ";
+      }
+      ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 

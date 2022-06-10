@@ -43,9 +43,7 @@ if (isset($_POST['btnSelection']))
     if ($response=='ACCEPTER')
     {
         //calculer date d'expiration
-
-
-
+/*
         $req_etat_expirer= "
                         SELECT offre.DELAI_JOFFR,pos.date_reponse FROM POSTULER pos,OFFREDESTAGE offre
                         WHERE pos.NUM_OFFR = offre.NUM_OFFR
@@ -53,34 +51,31 @@ if (isset($_POST['btnSelection']))
                         AND pos.CNE_ETU='$etudiant_cne'  
                 ";
         $Smt_etat_expirer = $bdd->query($req_etat_expirer);
-        $etat_expirer = $Smt_offre_postuler->fetch(PDO::FETCH_ASSOC);
+        $etat_expirer = $Smt_etat_expirer->fetch(PDO::FETCH_ASSOC);
         echo "date  reponse :".$etat_expirer['date_reponse'];
+        //$transdate=date('Y-M-D', $etat_expirer);
+        $jour_offr=$etat_expirer['DELAI_JOFFR'];
+        $date_rep=$etat_expirer['date_reponse'];
+       // $transdate= strtotime( $date_rep,'+ '.intval($jour_offr).' days');
+        $date1 = date("Y-m-d", strtotime( $date_rep,'+ '.intval($jour_offr).' days'));
         echo "date JOFFR :".$etat_expirer['DELAI_JOFFR'];
-        echo "date expiration :".$etat_expirer['date_reponse']+$etat_expirer['DELAI_JOFFR'];
+        echo "date expiration :". $date1;
 
+*/
 
-
-
-
-
-
-
-
-
-/*
 
         //etablir un stage
         $req_stage= "
                         INSERT INTO STAGE (NUM_STG,NUM_OFFR,CNE_ETU,ACTIVE_STG)
-                        VALUES ('$last_num','$noffr','$etudiant_cne' ,'OUI')
+                        VALUES ('$last_num','$noffr','$etudiant_cne' ,'1')
                 ";
         $stage_response = $bdd->exec($req_stage);
         header('Location:etudiant-mes-offre.php');
 
         //suprimer la candidature dans laquelle est retenu
-*/
+
     }
-    //header('Location:etudiant-mes-offre.php');
+    header('Location:etudiant-mes-offre.php');
 
 
 }

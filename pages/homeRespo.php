@@ -59,7 +59,7 @@
               <a class="nav-link" href="gererEtudiant.php">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Gérer stage</a>
+              <a class="nav-link" href="gererStage.php">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -114,7 +114,7 @@
                     </div>
                     <div class="col p-4">
                       <h1 class=" text-center"><?php
-                    $req="SELECT COUNT(NUM_OFFR) nbr_offre_total from 
+                    $req="SELECT COUNT(distinct(NUM_OFFR)) nbr_offre_total from 
                     `OFFREDESTAGE` ofr, `NIVEAU` niv where ofr.NUM_NIV=niv.NUM_NIV 
                     and niv.NUM_FORM='$formation'";
                     $Smt=$bdd->query($req); 
@@ -136,7 +136,7 @@
                     </div>
                     <div class="col p-4">
                       <h1 class=" text-center"><?php
-                    $req="SELECT COUNT(E.CNE_ETU) nbr_etudiant from `ETUDIANT` E,`ETUDIER` ETU, `NIVEAU` niv
+                    $req="SELECT COUNT(distinct (E.CNE_ETU)) nbr_etudiant from `ETUDIANT` E,`ETUDIER` ETU, `NIVEAU` niv
                      where E.CNE_ETU=ETU.CNE_ETU and ETU.NUM_NIV=niv.NUM_NIV and niv.NUM_FORM='$formation'";
                     $Smt=$bdd->query($req); 
                     $nbr_of_tt=$Smt->fetch(2); // arg: PDO::FETCH_ASSOC 

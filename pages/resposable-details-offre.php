@@ -93,7 +93,7 @@ $donnee=array(
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
-
+      <link rel="stylesheet" href="trumbowyg/dist/ui/trumbowyg.min.css">
     <link rel="stylesheet" href="../css/style.css" />
     <title>Details offre </title>
   </head>
@@ -162,7 +162,7 @@ $donnee=array(
             </div>
         <div class="p-4 col-xl-9 col-sm-12">
             <div class="intro  mt-3">
-                <h3> <b>Détails offre</b>  </h3> 
+                <h3> <b>Détails offre № <?php echo  $detaiOff['NUM_OFFR']?></b>  </h3>
     
             </div>
             <div class="intro ">
@@ -278,43 +278,55 @@ $donnee=array(
                             <div class="col mt-2">
                                 <form   action="" method="get" class="border rounded p-1">
                                     <input type="text" class="d-none "  value="<?php echo $offre_num;?>" name="numOffre" >
-                                    <div class="col">
+                                   <div class="row">
+                                       <div class="col">
 
-                                        <label  >Ville </label>
-                                        <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[6];?>" name="villeOffre" >
+                                           <label  >Ville </label>
+                                           <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[6];?>" name="villeOffre" >
 
+                                       </div>
+                                       <div class="col">
+
+                                           <label >Pays </label>
+                                           <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[7];?>" name="paysOffre" >
+
+                                       </div>
+                                   </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label >Rue</label>
+                                            <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[8];?>" name="lieuOffre" >
+                                        </div>
+                                        <div align="center" class="col mt-4">
+                                            <button type="submit" name="send" class="btn d-none"  id="subbtnAdr" >
+                                                <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
+                                            <a onclick="modifySubmitdate('inputAdr','modifyAdr','subbtnAdr')" id="modifyAdr" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                                        </div>
                                     </div>
-                                    <div class="col">
 
-                                        <label >Pays </label>
-                                        <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[7];?>" name="paysOffre" >
-
-                                    </div>
-                                    <div class="col">
-                                        <label >Rue</label>
-                                        <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[8];?>" name="lieuOffre" >
-                                        <button type="submit" name="send" class="btn d-none"  id="subbtnAdr" >
-                                            <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
-                                        <a onclick="modifySubmitdate('inputAdr','modifyAdr','subbtnAdr')" id="modifyAdr" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                    </div>
                                 </form>
 
                             </div>
+
+                        </div>
+                        <div class="row">
                             <div class="col mt-2">
                                 <form  action="resposable-details-offre.php" method="get" class="border rounded p-1" >
                                     <input type="text" class="d-none "  value="<?php echo $offre_num;?>" name="numOffre" >
-                                    <div class="col">
+                                    <div class="row">
+                                        <div class="col">
 
-                                        <label  >Poste </label>
-                                        <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[9];?>" name="Poste" >
-                                    </div>
-                                    <div class="col">
-                                        <label  >Sujet </label>
-                                        <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[10];?>" name="sujet" >
+                                            <label  >Poste </label>
+                                            <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[9];?>" name="Poste" >
+                                        </div>
+                                        <div class="col">
+                                            <label  >Sujet </label>
+                                            <input type="text" class="form-control inputDetail" disabled value="<?php echo $donnee[10];?>" name="sujet" >
+                                        </div>
                                     </div>
                                     <div class="col">
                                         <label >Detail</label>
-                                        <textarea   class="form-control inputDetail " disabled name="detail" rows="3" cols="21"><?php echo $donnee[11];?></textarea>
+                                        <textarea  id="detailoffre"  class="form-control inputDetail " disabled name="detail" rows="3" cols="21"> <?php echo  $donnee[11];?></textarea>
                                         <button type="submit" name="send" class="btn d-none"  id="subbtnDetail" >
                                             <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                         <a onclick="modifySubmitdate('inputDetail','modifyDetail','subbtnDetail')" id="modifyDetail" type="submit"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
@@ -322,9 +334,7 @@ $donnee=array(
                                 </form>
 
                             </div>
-
                         </div>
-
 
                     </div>
                             
@@ -392,36 +402,52 @@ $donnee=array(
                           <th scope="col">Date Postuler</th>
                           <th scope="col">Retenu</th>
                           <th scope="col">Accepter</th>
+                            <th scope="col">Annuler</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          
-                          <td>Atos</td>
-                          <td>Developpeur back-end</td>
-                          <td>20-06-2022</td>
-                          <td>Oui</td>
-                          <td>Non</td>
-                          <td>  
-                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                            <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                           </td>
-                        </tr>
-                        <th scope="row">1</th>
-                          
-                          <td>Atos</td>
-                          <td>Developpeur back-end</td>
-                          <td>20-06-2022</td>
-                          <td>Oui</td>
-                          <td>Non</td>
-                          <td>  
-                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                            <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                           </td>
-                        </tr>
-    
+                      <?php
+                      $reqEt=" SELECT pst.*,etu.* FROM `postuler` pst ,etudiant etu WHERE etu.CNE_ETU=pst.CNE_ETU and pst.NUM_OFFR='$offre_num'";
+                      $Smt_nbr=$bdd->query($reqEt);
+                      $etud=$Smt_nbr->fetchAll(PDO::FETCH_ASSOC);
+                      //afficher le tableau
+                      if(!empty($etud))
+                      {
+                          foreach($etud as $V):
+
+                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu=$V['date_reponse'];
+                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='Non';
+                              else $retenu='--';
+                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
+                                  $retenu=$V['date_reponse'];
+                                  $accpt='Oui';
+                              }
+                              else if(strcmp($V['ETATS_POST'],'No accepte')==0){
+                                  $accpt="Non";
+                                  $retenu=$V['date_reponse'];
+                              }
+                              else $accpt='--';
+                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
+                              else $anul='--';
+                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
+                              else $anul='--';
+                              echo' <tr>
+                              <th scope="row"><a href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</a></th>
+                              <td>'.$V['NOM_ETU'].'</td>
+                              <td>'.$V['PRENOM_ETU'].'</td>
+                              <td>'.$V['DATE_POST'].'</td>
+                                <td>'.$retenu.'</td>
+                                <td>'.$accpt.'</td>
+                                  <td>'.$anul.'</td>
+                              <td>  
+                                <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
+                                <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
+                               </td>
+                        </tr>';
+                          endforeach;
+                      }
+                      ?>
                       </tbody>
                     </table>
                   </div>
@@ -443,7 +469,6 @@ $donnee=array(
 
     </div>
     </div>
-    
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -452,6 +477,8 @@ $donnee=array(
     ></script>
     <script>
       const modifySubmitdate = (inputId, btnId,subbtn) => {
+
+
         console.log('pass');
           let subBtn=document.getElementById(subbtn);
         let input = document.getElementsByClassName(inputId);
@@ -469,10 +496,34 @@ $donnee=array(
                 }
             subBtn.setAttribute('value',btnId);
             subBtn.setAttribute('type','submit');
-          //  icon.setAttribute("id", "sut");
+
+
         }
+          if (inputId=='inputDetail')
+          {
+              document.getElementsByClassName("trumbowyg-editor")[0].setAttribute('contenteditable',"true");
+              input[2].parentElement.classList.remove('trumbowyg-disabled');
+          }
 
 }
     </script>
+   <!-- Import jQuery -->
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+
+   <!-- Import Trumbowyg -->
+   <script src="trumbowyg/dist/trumbowyg.min.js"></script>
+
+   <!-- Import Trumbowyg plugins... -->
+   <script src="trumbowyg/dist/plugins/upload/trumbowyg.cleanpaste.min.js"></script>
+   <script src="trumbowyg/dist/plugins/upload/trumbowyg.pasteimage.min.js"></script>
+
+   <!-- Init Trumbowyg -->
+   <script>
+       // Doing this in a loaded JS file is better, I put this here for simplicity
+
+       $('#detailoffre').trumbowyg();
+
+   </script>
   </body>
 </html>
