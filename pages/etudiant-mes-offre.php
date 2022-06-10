@@ -30,7 +30,7 @@ if (isset($_POST['btnSelection']))
     if ($_POST['responseSelected']=='OUI')
         $response='ACCEPTER';
     else
-        $response='REFUSER';
+        $response='NO ACCEPTER';
 
 
     $req_offre_response= "

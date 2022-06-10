@@ -36,3 +36,34 @@ const verifyCvUploaded = (num) =>
         myModalPostuler.show();
 
 }
+
+const modifySubmitdate = (inputId, btnId,subbtn) => {
+
+
+    console.log('pass');
+    let subBtn=document.getElementById(subbtn);
+    let input = document.getElementsByClassName(inputId);
+    let i;
+    let btn = document.getElementById(btnId);
+    let icon = btn.firstChild;
+    if (icon.getAttribute("id") === "modifier") {
+
+        subBtn.setAttribute("class","btn bt");
+
+        btn.setAttribute("class","d-none");
+        for(i = 0; i < input.length; i++)
+        {
+            input[i].disabled = false;
+        }
+        subBtn.setAttribute('value',btnId);
+        subBtn.setAttribute('type','submit');
+
+
+    }
+    if (inputId==='inputDetail')
+    {
+        document.getElementsByClassName("trumbowyg-editor")[0].setAttribute('contenteditable',"true");
+        input[2].parentElement.classList.remove('trumbowyg-disabled');
+    }
+
+}

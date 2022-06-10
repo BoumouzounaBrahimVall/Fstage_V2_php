@@ -13,6 +13,26 @@ if(isset($_POST['filesUpload'])) {
 }
 
 if (empty($offre_num)) header('location:gererOffre.php');
+
+if(isset($_GET['modifpost'])){
+
+        $cneEtu=$_GET['cne'];
+        $datReponse=$_GET['dateRep'];
+      //reponse entreprise
+        if(isset($_GET['responseEnt'])){
+            $reponse = $_GET['responseEnt'];
+            $reqP = "UPDATE postuler set ETATS_POST='$reponse',date_reponse='$datReponse' WHERE NUM_OFFR='$offre_num' and $cneEtu='$cneEtu'";
+            $bdd->exec($reqP);
+        }
+        else if($_GET['responseEnt']!='nothing'){
+            $reqP = "UPDATE postuler set date_reponse='$datReponse' WHERE NUM_OFFR='$offre_num' and $cneEtu='$cneEtu'";
+            $bdd->exec($reqP);
+        }
+        $loca='location:resposable-details-offre.php?numOffre='.$offre_num;
+    str_replace(' ', '', $loca);
+        header($loca);
+
+}
 //print_r($_GET);
 if(isset($_GET['send'])) {
     switch ($_GET['send']) {
@@ -48,6 +68,8 @@ if(isset($_GET['send'])) {
             break;
     }
     $bdd->exec($req);
+    header('location:resposable-details-offre.php?numOffre='.$offre_num);
+
 }
 
 $req1="SELECT offr.*,ent.IMAGE_ENT,ent.NUM_ENT FROM OFFREDESTAGE offr,ENTREPRISE ent,NIVEAU niv 
@@ -416,33 +438,56 @@ $donnee=array(
                       {
                           foreach($etud as $V):
 
-                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu=$V['date_reponse'];
-                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='Non';
+                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu='oui';
+                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='non';
                               else $retenu='--';
                               if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
-                                  $retenu=$V['date_reponse'];
+                                  $retenu='oui';
                                   $accpt='Oui';
                               }
-                              else if(strcmp($V['ETATS_POST'],'No accepte')==0){
+                              else if(strcmp($V['ETATS_POST'],'NO ACCEPTER')==0){
                                   $accpt="Non";
-                                  $retenu=$V['date_reponse'];
+                                  $retenu='Oui';
                               }
                               else $accpt='--';
                               if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
                               else $anul='--';
-                              if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
-                              else $anul='--';
+
                               echo' <tr>
                               <th scope="row"><a href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</a></th>
                               <td>'.$V['NOM_ETU'].'</td>
                               <td>'.$V['PRENOM_ETU'].'</td>
                               <td>'.$V['DATE_POST'].'</td>
-                                <td>'.$retenu.'</td>
-                                <td>'.$accpt.'</td>
+                                <form method="get">
+                                <td>
+                                <input type="text" class="d-none"  value=" '.$V['CNE_ETU'].'" name="cne" >
+                                <input type="text" class="d-none"  value=" '.$offre_num.'" name="numOffre" >
+                                <div class="col-10"><input type="date" required disabled class="form-control '."input".$V['CNE_ETU'].'"  value="'.$V['date_reponse'].'" name="dateRep" >
+                                </div>
+                                <div class="col-10">';
+                              if($accpt=='--'){
+                                  echo ' <select name="responseEnt" disabled class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">';
+                                  if($retenu=='oui')
+                                      echo '    <option value="RETENU" selected>Oui</option>
+                                          <option value="REFUSER">Non</option>';
+                                  else if($retenu=='non')
+                                      echo '    <option value="RETENU">Oui</option>
+                                          <option value="REFUSER" selected>Non</option>';
+                                  else echo '
+                                           <option value="nothing" selected>--</option>
+                                           <option value="RETENU">Oui</option>
+                                            <option value="REFUSER" >Non</option> ';
+                                  echo ' </select></div>';
+                              }
+                              echo'
+                                    </td>
+                                   <td>'.$accpt.'</td>
                                   <td>'.$anul.'</td>
                               <td>  
-                                <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                                <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
+                                <button type="submit" name="modifpost" class="btn d-none"  id="'."subbtn".$V['CNE_ETU'].'" >
+                                            <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
+                                        <a onclick=\'modifySubmitdate("'."input".$V['CNE_ETU'].'","'."modify".$V['CNE_ETU'].'","'."subbtn".$V['CNE_ETU'].'")\' id="'."modify".$V['CNE_ETU'].'" type="submit"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                                    </form>
                                </td>
                         </tr>';
                           endforeach;
@@ -475,38 +520,8 @@ $donnee=array(
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    <script>
-      const modifySubmitdate = (inputId, btnId,subbtn) => {
+   <script src="../js/script2.js"></script>
 
-
-        console.log('pass');
-          let subBtn=document.getElementById(subbtn);
-        let input = document.getElementsByClassName(inputId);
-        let i;
-        let btn = document.getElementById(btnId);
-        let icon = btn.firstChild;
-        if (icon.getAttribute("id") === "modifier") {
-
-            subBtn.setAttribute("class","btn bt");
-
-            btn.setAttribute("class","d-none");
-            for(i = 0; i < input.length; i++)
-                {
-                  input[i].disabled = false;
-                }
-            subBtn.setAttribute('value',btnId);
-            subBtn.setAttribute('type','submit');
-
-
-        }
-          if (inputId=='inputDetail')
-          {
-              document.getElementsByClassName("trumbowyg-editor")[0].setAttribute('contenteditable',"true");
-              input[2].parentElement.classList.remove('trumbowyg-disabled');
-          }
-
-}
-    </script>
    <!-- Import jQuery -->
    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
