@@ -15,7 +15,11 @@ else $nbr_retenu = 0;
     <ul type="none">
         <li> <a href="./etudiant-dashboard.php"><i class=" active  bi bi-house-fill"></i>Offre disponible</a></li>
 
-        <li> <a href="./etudiant-mes-offre.php"><i class="bi bi-briefcase-fill"></i>Mes Offres<i class="bi bi-bell-fill" style="color:red;" id="notification"></i></a></li>
+        <li><a href="./etudiant-mes-offre.php">
+
+                <i class="bi bi-briefcase-fill">
+
+                </i>Mes Offres<i class="bi bi-bell-fill ps-2" style="color:red;font-size: 16px;" id="notification"></i>  </a> </li>
         <li> <a href="./etudiant-mes-stage.php"><i class="bi bi-briefcase-fill"></i>Mes stage</a></li>
         <li> <a href="./etudiant-profil.php"><i class="bi bi-person-lines-fill"></i>Mon Profil</a></li>
 
@@ -27,8 +31,8 @@ echo "
 <script>
     
           if( $nbr_retenu ==0 ){
-          document.getElementById('notification').style.display = 'none'; }
-          else document.getElementById('notification').style.display = 'block';
+          document.getElementById('notification').classList.add('d-none'); }
+          else document.getElementById('notification').classList.remove('d-none');
 </script>
 ";
 ?>
