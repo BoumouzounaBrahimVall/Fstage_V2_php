@@ -2,7 +2,7 @@
           <ul type="none">
             <li> <a href="./etudiant-rapport.php"><i class=" active  bi bi-house-fill"></i>Home</a></li>
 
-            <li> <a href=""><i class="bi bi-file-earmark-fill"></i>Mes Rapport</a></li>
+            <li> <a href="./etudiant-mes-rapport.php"><i class="bi bi-file-earmark-fill"></i>Mes Rapport</a></li>
 
 
           </ul>
