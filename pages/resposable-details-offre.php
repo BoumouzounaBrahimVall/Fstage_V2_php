@@ -93,8 +93,9 @@ $donnee=array(
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
-      <link rel="stylesheet" href="trumbowyg/dist/ui/trumbowyg.min.css">
-    <link rel="stylesheet" href="../css/style.css" />
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css">
+
+      <link rel="stylesheet" href="../css/style.css" />
     <title>Details offre </title>
   </head>
 
@@ -511,12 +512,8 @@ $donnee=array(
    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 
-   <!-- Import Trumbowyg -->
-   <script src="trumbowyg/dist/trumbowyg.min.js"></script>
-
-   <!-- Import Trumbowyg plugins... -->
-   <script src="trumbowyg/dist/plugins/upload/trumbowyg.cleanpaste.min.js"></script>
-   <script src="trumbowyg/dist/plugins/upload/trumbowyg.pasteimage.min.js"></script>
+   <!--Import Trumbowyg -->
+   <script src="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
 
    <!-- Init Trumbowyg -->
    <script>
