@@ -93,7 +93,7 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
                                 <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start align-items-center">
 
                                     <div class="col-auto prop-name me-3">Contrat :</div>
-                                    <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="">voir plus</a></div>
+                                    <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="<?php echo $stage_actulle['CONTRAT_STG'] ?>">voir plus</a></div>
                                  
                                
                                 </div>
@@ -210,38 +210,79 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td >1</td>
-                        <td>Atos</td>
+                    <?php
+                    foreach ($stage_preced as $stage)
+                    {
+                        $num_stage1=$stage['NUM_STG'];
+                        $req_jury2= "SELECT * from STAGE st,JUGER jr,ENSEIGNANT ens
+                        WHERE   st.NUM_STG=jr.NUM_STG
+                        and ens.NUM_ENS = jr.NUM_ENS 
+                        and st.NUM_STG='$num_stage1'
+                ";
+                        $Smt_jury_info2 = $bdd->query($req_jury2);
+                        $stage_jury2 = $Smt_jury_info2->fetchAll(PDO::FETCH_ASSOC);
+
+
+                        $req_rapp_stage= "SELECT * from RAPPORT 
+                        WHERE   NUM_STG='$num_stage1'
                         
-                        <td>20-06-2022</td>
-                        <td>20-06-2023</td>
-                        <td>16/20</td>
-                        <td>  
-                          <a  class="me-3" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1"><i class=" active  bi bi-info-circle-fill" ></i></a>
+                       
+                ";
+// and st.DATEFIN_STG >='$date'
+                        $Smt_rapp_stage = $bdd->query($req_rapp_stage);
+                        $rapp_stage = $Smt_rapp_stage->fetch(PDO::FETCH_ASSOC);
+                        if (isset($rapp_stage['PATH_RAP']))
+                            $path=$rapp_stage['PATH_RAP'];
+                        else
+                            $path="#";
+
+
+
+
+                        echo '
+                                   <td >'.$stage['NUM_STG'].'</td>    
+                                   <td >'.$stage['LIBELLE_ENT'].'</td>
+                                   <td >'.$stage['DATEDEB_STG'].'</td> 
+                                   <td >'.$stage['DATEFIN_STG'].'</td>   
+                                   <td >'.$stage['NOTE_ENEX'].'</td>  
+                                   <td>  
+                          <a  class="me-3" data-bs-toggle="collapse" href="#collapseExample'.$stage['NUM_STG'].'" role="button" aria-expanded="false" aria-controls="collapseExample1"><i class=" active  bi bi-info-circle-fill" ></i></a>
                           
                          </td>
-                      </tr>
+                      </tr> 
                       <tr>
                         <td colspan="7" class="p-0">
-                          <div class="collapse" id="collapseExample1"> 
+                          <div class="collapse" id="collapseExample'.$stage['NUM_STG'].'"> 
                             <div class="row mt-2">
-                              <div class="col-auto prop-name  me-3">Liste Jury avec note:</div>
-                            <div class="col-auto prop-value"><span class="me-2"> ahmed DAMI  6/20</span><span class="me-2"> ahmed DAMI  6/20</span><span class="me-2"> ahmed DAMI  6/20</span></div>
+                              <div class="col-auto prop-name  me-3">Liste Jury :</div>
+                            <div class="col-auto prop-value">';
+                                foreach ($stage_jury2 as $jury2)
+                                {
+
+                                            echo    '  <span class="me-2"> '. $jury2['PRENOM_ENS'].' '. $jury2['NOM_ENS'].'</span>'
+                                                  
+                                                  ;
+                                }
+                                echo '
+                                    </div>
                          
                             </div>
                             <div class="row align-items-center">
                               <div class="col-auto prop-name  me-3">Rapport</div>
-                              <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="">voir plus</a></div>
+                              <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="'. $path.'">voir plus</a></div>
                               <div class="col-auto prop-name  me-3">Contrat</div>
-                              <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="">voir plus</a></div>
+                              <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="'.$stage['CONTRAT_STG'].'">voir plus</a></div>
                                  
 
                             </div>
                             
                           </div>
                         </td>
-                      </tr>
+                      </tr>    
+                                      ';
+                    }
+                    ?>
+
                       
   
                     </tbody>
