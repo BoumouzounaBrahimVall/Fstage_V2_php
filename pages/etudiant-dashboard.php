@@ -69,46 +69,57 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
             liste des offres disponible
           </p>
         </div>
-        <div class="row">
-          <div class="filtre-bar ps-4  mt-5">
-            <form method="get" class="row g-3">
-
-              <div class="col-auto">
-                <label for="inputVille2" class="col-form-label">Ville</label>
+          <div class="row">
+              <div class="col-xl-6 col-sm-12">
+                  <button class="ms-4 mb-3 btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      filtrer les données <i class=" ms-5 bi bi-filter-right"></i>
+                  </button>
               </div>
-              <div class="col-auto">
-                <input class="form-control" value="All" name="ville" list="datalistVilles" id="inputVille2" placeholder="Type to search...">
-                <datalist id="datalistVilles">
-                    <option value="All" selected >All</option>
-                    <?php
-                    foreach ($villes as $ville)
-                    {
-                        echo '
+          </div>
+
+          <div class="collapse " id="collapseExample">
+              <div class="row">
+                  <div class="filtre-bar ps-4  mt-5">
+                      <form method="get" class="row g-3">
+
+                          <div class="col-xl-auto col-sm-4">
+                              <label for="inputVille2" class="col-form-label">Ville</label>
+                          </div>
+                          <div class="col-xl-auto col-sm-7">
+                              <input class="form-control" value="All" name="ville" list="datalistVilles" id="inputVille2" placeholder="Type to search...">
+                              <datalist id="datalistVilles">
+                                  <option value="All" selected >All</option>
+                                  <?php
+                                  foreach ($villes as $ville)
+                                  {
+                                      echo '
                             <option value="'. $ville  .'">'. $ville  .'</option>
                             ';
-                    }
+                                  }
 
-                    ?>
-                </datalist>
-              </div>
+                                  ?>
+                              </datalist>
+                          </div>
 
-              <div class="col-auto">
-                <label for="inputTrier2" class="col-form-label">Trier</label>
-              </div>
-              <div class="col-auto">
-                <select id="inputTrier2" name="order" class="form-select" aria-label="Default select example">
+                          <div class="col-xl-auto col-sm-4">
+                              <label for="inputTrier2" class="col-form-label">Trier</label>
+                          </div>
+                          <div class="col-xl-auto col-sm-7">
+                              <select id="inputTrier2" name="order" class="form-select" aria-label="Default select example">
 
-                  <option value="none" selected>Trier par </option>
-                  <option value="1">Ascendant</option>
-                  <option value="2">Descendant </option>
-                </select>
+                                  <option value="none" selected>Trier par </option>
+                                  <option value="1">Ascendant</option>
+                                  <option value="2">Descendant </option>
+                              </select>
+                          </div>
+                          <div class="col-xl-auto col-sm-12 ">
+                              <button type="submit" class="btn filterSubmit btn-filtre btn-primary mb-3"> Chercher <i class=" ms-5 bi bi-search"></i></button>
+                          </div>
+                      </form>
+                  </div>
               </div>
-              <div class="col-auto ">
-                <button type="submit" class="btn filterSubmit btn-filtre btn-primary mb-3"> Chercher <i class="bi bi-search"></i></button>
-              </div>
-            </form>
           </div>
-        </div>
+
 
           <div class="cv" hidden>
               <input type="text" name="" value="<?php
@@ -118,14 +129,14 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
                   echo 2;?>
 "id="cv">
           </div>
-        <div class=" list-offre mt-3">
+        <div class=" list-offre mt-xl-3">
           <div  class="container-card d-flex flex-row flex-wrap">
               <?php foreach ($etudiant_offres as $offre_stage):
                   if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
 
                   echo '
-                  <div class="m-3 ">
-              <div class="card border-link rounded-5 " style="min-width: 450px;min-height: 420px;">
+                  <div class="m-xl-3 ">
+              <div class="card border-link rounded-5 " style="min-width: 365px;min-height: 420px;">
                 <div class="row">
                   <div class="col">
                     <span class="  m-3 badge-status  w-25  p-2  "> '.$offre_stage["ETATPUB_OFFR"] .'</span>
@@ -189,7 +200,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
                 <div class=" p-3  d-flex justify-content-around border-top-0">
 
                   <button  id=""  class="btn ps-5 pe-5  me-2 btn-postuler"  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
-                  <a  id="" class="btn ps-5 pe-5 btn-voir-plus" target="_blank" href="offre-details.php?noffr='. $offre_stage["NUM_OFFR"] .'&niv='. $offre_stage["NUM_NIV"] .'" role="button">Voir plus</a>
+                  <a  id="" class="btn ps-5 pe-5 btn-voir-plus" target="_blank" href="offre-details.php?noffr='. $offre_stage["NUM_OFFR"] .'&niv='. $offre_stage["NUM_NIV"] .'" role="button">Détails</a>
 
                 </div>
               </div>
@@ -206,6 +217,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
           </div>
         </div>
       </div>
+        <div class="row "style="margin-top: 75px">
+
+        </div>
     </div>
 
 

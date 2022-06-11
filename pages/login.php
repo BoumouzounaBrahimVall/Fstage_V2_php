@@ -141,7 +141,7 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 </nav>
-<h4 class="pb-5 text-center">Acceder a mon compte</h4>
+<h4 class="pb-5 text-center " style="margin-top: 50px">Acceder a mon compte</h4>
 
 
 <!-- Main Content Area -->
@@ -150,10 +150,10 @@ if (isset($_GET['logout'])) {
         <!-- Pills navs pills-login pills-register-->
         <div class="nav nav-pills mb-3 ">
 
-            <button class="btn btn-selector mx-auto btn-seconnecter" id="tab-etudiant">Espace Etudiant</button>
+            <button class="btn btn-selector  mx-auto btn-seconnecter" id="tab-etudiant">Espace Etudiant</button>
 
 
-            <button class="btn btn-selector mx-auto " id="tab-responsible">Espace Responsable</button>
+            <button class="btn btn-selector mt-sm-2 mx-auto " id="tab-responsible">Espace Responsable</button>
         </div>
         <!-- Pills navs  fade show active-->
 
