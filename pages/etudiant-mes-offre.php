@@ -116,7 +116,7 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
                 ?>
             </div>
             <div class="p-4 col-xl-9 col-sm-12">
-                <div>
+                <div style="margin-top: 50px">
 
 
                     <div class="intro  mt-3">
@@ -175,7 +175,7 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
                             </div>
                         </div>
                         <div class="row overflow-auto">
-                            <table class="table">
+                            <table class="table mt-5">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -224,7 +224,7 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
                 </div>
 
 
-                <div>
+                <div style="margin-top: 75px">
 
 
                     <div class="intro  mt-3">
@@ -283,7 +283,7 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
                             </div>
                         </div>
                         <div class="row overflow-auto">
-                            <table class="table">
+                            <table class="table mt-5">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

@@ -33,7 +33,7 @@ require_once(__DIR__.'./../phpQueries/etudiant/detailoffr.php');
               exploiter les differentes informations concernant l'offre du stage
             </p>
           </div>
-          <div class="row ms-4 mt-4 p-4 border-link border rounded-3">
+          <div class="row ms-xl-4 mt-xl-4 p-xl-4 border-link border rounded-3">
               <?php
               if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
 
@@ -49,25 +49,7 @@ require_once(__DIR__.'./../phpQueries/etudiant/detailoffr.php');
             <div class="col-xl-9">
               <div class="card-body">
                 <h4 class="card-title" style="text-transform: capitalize"><b>'.$offre_stage["POSTE_OFFR"] .'</b></h4>
-                <div class="badges d-flex justify-content-start">
-                  <div class="mt-3">
-                    <span class="badge p-2 badge-key rounded-pill bg-primary"
-                      >info</span
-                    >
-                  </div>
-                  <div class="mt-3">
-                    <span
-                      class="badge ms-3 p-2 badge-key rounded-pill bg-success"
-                      >Stage PFA</span
-                    >
-                  </div>
-                  <div class="mt-3">
-                    <span
-                      class="badge ms-3 p-2 badge-key rounded-pill bg-danger"
-                      >Front-end</span
-                    >
-                  </div>
-                </div>
+                
                 <div class="sujet mt-3">
                   <span class="title-specification">Sujet </span> <br />
                   <span class="detail-specification"
@@ -104,37 +86,7 @@ require_once(__DIR__.'./../phpQueries/etudiant/detailoffr.php');
                   </p>
                 </div>
               </div>
-              '. ((empty($etudiant_info['CV_ETU']))?' 
-                <div class="row mt-4">
-                <h4><b>Postulé ma candidature</b></h4>
-                <div
-                  style="width: fit-content"
-                  class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link"
-                >
-                  <img
-                    style="margin: auto; max-width: 64px"
-                    src="./../assets/img/comment-section/cv.png"
-                    alt=""
-                  />
-                  <a
-                    class="mt-3 btn-voir-plus py-2 px-4"
-                    style="width: fit-content; font-size: 16px"
-                    href=""
-                    >Importer Cv <i class="bi bi-file-arrow-up-fill"></i
-                  ></a>
-                </div>
-                <div class="mt-3">
-                  <a
-                    name=""
-                    id=""
-                    class=" btn ps-5 pe-5 btn-postuler"
-                    href="#"
-                    role="button"
-                    >Postuler</a
-                  >
-                </div>
-              </div>
-              ': " ").'
+            
              
             </div>
               '
