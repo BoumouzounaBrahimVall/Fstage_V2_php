@@ -41,7 +41,7 @@ require_once(__DIR__.'./../phpQueries/etudiant/detailoffr.php');
               
               <div class="col-xl-3">
               <img
-                class="m-4 company-logo"
+                class="m-4 company-logo" style="max-width: 150px;"
                 src='.$offre_stage["IMAGE_ENT"] .'
                 alt=""
               />
