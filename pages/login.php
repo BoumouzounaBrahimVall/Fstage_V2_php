@@ -97,9 +97,7 @@ if (isset($_GET['logout'])) {
           rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        * {
-            font-family: 'Reem Kufi', sans-serif;
-        }
+
     </style>
 
     <title>Login</title>
@@ -109,7 +107,7 @@ if (isset($_GET['logout'])) {
 
 </style>
 <!-- Navbar  -->
-<nav class="navbar navbar-expand-lg navbar-light ">
+<nav class="navbar navbar m-0 px-5  py-3 navbar-expand-lg navbar-light ">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img id="logo" src="../assets/icon/logo.png" alt=""/>
@@ -143,7 +141,7 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 </nav>
-<h4 class="pb-5 text-center">Acceder a mon copmpte</h4>
+<h4 class="pb-5 text-center">Acceder a mon compte</h4>
 
 
 <!-- Main Content Area -->
@@ -208,36 +206,40 @@ if (isset($_GET['logout'])) {
 </div>
 
 <!-- Pills content -->
-<footer>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex  justify-content-around align-items-center p-5">
+<footer  style="height: fit-content">
+    <div style="margin-top: 120px" class="container">
+        <div class="">
+            <div >
+                <div class="row justify-content-around align-items-center p-5">
 
 
-                    <div>
-                        <img id="logo-light" src="../assets/icon/logo-light.png" alt=""/>
+                    <div class="col-xl-auto col-sm-12 mt-sm-2">
+                        <img id="logo-light" src="./../assets/icon/logo-light.png" alt="" />
                     </div>
-                    <a href="#">
+                    <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
+                        Offre de stage
+                    </a>
+
+                    <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
                         Contact
                     </a>
-                    <a href="#">
+                    <a  class="col-xl-auto col-sm-12  mt-sm-2" href="#">
                         A propos
                     </a>
-                    <a href="#">
+                    <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
                         Espace Responsable
                     </a>
-                    <a href="#">
+                    <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
                         Espace Etudiant
-                    </a></div>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="d-flex justify-content-center">
+            <div class="justify-content-center">
 
-                <div class="col-3.5">
-                    <p class="copyright">Copyright © Stage FSTM 2022. Tous droits réservés.</p>
-                </div>
+                <p class="copyright" style="text-align: center">Copyright © Stage FSTM 2022. Tous droits réservés.</p>
+
             </div>
         </div>
     </div>

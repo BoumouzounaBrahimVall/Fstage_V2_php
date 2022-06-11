@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light ">
+<nav class="navbar m-0 px-5  py-3 navbar-expand-lg navbar-light ">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img id="logo" src="./../assets/icon/logo.png" alt="" />

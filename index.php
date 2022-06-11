@@ -1,3 +1,15 @@
+
+<?php
+require(__DIR__ . './phpQueries/conxnBDD.php');
+$req_landingp_offres = "SELECT * from OFFREDESTAGE offre,ENTREPRISE ent
+                        WHERE offre.NUM_ENT = ent.NUM_ENT 
+                        LIMIT  2
+                
+                ";
+$Stmt_landingp_offres = $bdd->query($req_landingp_offres);
+$landingp_offres = $Stmt_landingp_offres->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,9 +34,9 @@
   ?>
 
   <div  class="container header-section">
-    <div class="row">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="col-lg-6">
+    <div class="row  justify-content-between align-items-center">
+
+        <div class="col-lg-6 col-sm-12">
           <div>
             <h3 id="headline-title">Etes vous a la recherche du stage ?</h3>
             <p id="body-text">
@@ -34,12 +46,12 @@
             <a  id="btn-seconnecter-body" class="btn btn-primary mt-3" href="#" role="button">Se Connecter</a>
           </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-sm-12 d-xl-block d-sm-none ">
           <div>
-            <img class="img-etud-header" src="./assets/img/img_lp.png" alt="" />
+            <img class="img-etud-header w-100" src="./assets/img/img_lp.png" alt="" />
           </div>
         </div>
-      </div>
+
     </div>
   </div>
   <div style="margin-top: 50px" class="container  main-stat-section">
@@ -66,39 +78,38 @@
 
   <div style="margin-top: 200px" id="Comment" class="container  comment-section">
     <div class="row mt-5">
-      <div class="col-12">
+      <div class="col-xl-12">
         <h4 style="
                 text-align: center;
                 font-weight: 600;
                 font-size: 36px;
-                line-height: 23px;
               ">
           Comment ça marche
         </h4>
       </div>
     </div>
-    <div class="row mt-5">
-      <div class="d-flex   justify-content-around ">
-        <div class="col-3 mt-5 d-flex flex-column  align-items-center d-block justify-content-center alignit">
+    <div class="row mt-5 justify-content-around ">
+
+        <div class="col-xl-3 col-sm-12  mt-5 d-flex flex-column  align-items-center d-block justify-content-center alignit">
           <img id="user-comment" src="./assets/img/comment-section/user.png" alt="">
           <h5 class="mt-5">Je connecte a mon compte</h5>
           <p class="p-comment" style="text-align: center;">J'entre toutes les informations me concernant pour améliorer ma visibilité.</p>
 
         </div>
-        <div class="col-3 mt-5 d-flex flex-column  align-items-center d-block justify-content-center alignit">
+        <div class="col-xl-3 col-sm-12 mt-5 d-flex flex-column  align-items-center d-block justify-content-center alignit">
           <img id="user-comment" src="./assets/img/comment-section/cv.png" alt="">
           <h5 class="mt-5">Je joins mon CV</h5>
           <p class="p-comment" style="text-align: center;">Je joins mon CV à mon profil et je remplis tous les champs du CV .</p>
 
         </div>
-        <div class="col-3 mt-5 d-flex flex-column  align-items-center d-block justify-content-center alignit">
+        <div class="col-xl-3 col-sm-12 mt-5 d-flex flex-column  align-items-center d-block justify-content-center alignit">
           <img id="user-comment" src="./assets/img/comment-section/loopsearch.png" alt="">
-          <h5 class="mt-5 ">Je choisis l'offre de stage qui me correspond</h5>
+          <h5 class="mt-5 " style="text-align: center;">Je choisis l'offre de stage qui me correspond</h5>
           <p class="p-comment" style="text-align: center;">Je postule et j'envoie ma candidature </p>
 
         </div>
       </div>
-    </div>
+
   </div>
 
   <div style="margin-top: 200px" class="container   offer-section">
@@ -108,154 +119,95 @@
                 text-align: center;
                 font-weight: 600;
                 font-size: 36px;
-                line-height: 23px;
               ">
           Offres de stage à la Une
         </h4>
       </div>
     </div>
-    <div class="row mt-5 ">
-      <div class="d-flex   justify-content-center ">
+    <div class="row mt-5    ">
+      <div class="d-flex flex-row flex-wrap justify-content-center">
 
-        <div class="">
-          <div class="card border-link ">
-            <div class="row">
-              <div class="col">
-                <span class="  m-3 badge-status  w-25  p-2  "> Nouveau </span>
+          <?php foreach ($landingp_offres as $offre_stage):
+              if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
 
-              </div>
-            </div>
-            <div>
+              echo '
+                  <div class="m-3 ">
+              <div class="card border-link rounded-5 " style="min-width: 365px;min-height: 420px;">
+                <div class="row">
+                  <div class="col">
+                    <span class="  m-3 badge-status  w-25  p-2  "> '.$offre_stage["ETATPUB_OFFR"] .'</span>
 
-            </div>
-            <div class="row">
-              <div class="col">
-                <img class=" m-4 company-logo" src="./ressources/company/images/atos.png" alt="">
-
-              </div>
-            </div>
-
-            <div class="card-body">
-              <h4 class="card-title"> <b>Developpeur Front-end</b> </h4>
-              <div class="badges d-flex justify-content-start">
-
-                <div class="mt-3">
-                  <span class="badge   p-2 badge-key rounded-pill bg-primary">info</span>
+                  </div>
                 </div>
-                <div class="mt-3">
-                  <span class="badge  ms-3 p-2 badge-key rounded-pill bg-success">Stage PFA</span>
-                </div>
-                <div class="mt-3">
-                  <span class="badge ms-3 p-2 badge-key rounded-pill bg-danger">Front-end</span>
-                </div>
-              </div>
-              <div class="loc-time mt-3 d-flex ">
                 <div>
-                  <img class="place-svg" src="./assets/icon/card/place.svg" alt="">
-                  <span class="place-location">
-                    Mohammedia,Maroc
-                  </span>
+
                 </div>
-                <div class="ms-5">
-                  <img class="place-svg" src="./assets/icon/card/time.svg" alt="">
-                  <span class="place-location">
-                    6 mois
-                  </span>
+                <div class="row">
+                  <div class="col">
+                    <img class=" m-4 company-logo" src='. substr($offre_stage["IMAGE_ENT"] ,1).' alt="">
+
+                  </div>
                 </div>
-              </div>
-              <div class="mt-3">
-                <div class="headline">
-                  <b>Details</b>
+
+                <div class="card-body">
+                  <h4 class="card-title" style="text-transform: capitalize"> <b>'.$offre_stage["POSTE_OFFR"] .'</b> </h4>
+                  
+                  <div class="loc-time mt-3 d-flex ">
+                  
+                    <div class="">
+                      <img class="place-svg" src="./../assets/icon/card/place.svg" alt="">
+                      <span class="place-location">
+                       '.$offre_stage["VILLE_OFFR"] .','.$offre_stage["PAYS_OFFR"] .' 
+                      </span>
+                    </div>
+                    <div class="ms-5">
+                      <img class="place-svg" src="./../assets/icon/card/time.svg" alt="">
+                      <span class="place-location">
+                        '.$offre_stage["DURE_OFFR"] .' mois
+                      </span>
+                    </div>
+                  </div>
+                  <div class="mt-3 border-top pt-2">
+                    <div class="headline">
+                      <b>Societé </b>
+                    </div>
+                    <p class="card-text mt-2">
+
+                      '.$offre_stage["LIBELLE_ENT"] .'
+
+                    </p>
+                  </div>
+                  <div class="mt-3">
+                    <div class="headline">
+                      <b>Sujet </b>
+                    </div>
+                    <p class="card-text mt-2 overflow-auto">
+
+                      '.$offre_stage["SUJET_OFFR"].'
+
+                    </p>
+                  </div>
+                  
+                  
+
                 </div>
-                <p class="card-text mt-2">
+                
+      
+                <div class=" p-3  d-flex justify-content-around border-top-0">
 
-                  – Missions principales : <br>
-                  Etude, conception et réalisation d’une application mobile <br>
-                  – Mode travail : à distance 100% <br>
-                  – Ville : Rabat<br>
+                  <button  id="" disabled  class="btn ps-5 pe-5  me-2 btn-postuler"  role="button">Postuler</button>
+                  <a  id="" class="btn ps-5 pe-5 btn-voir-plus" target="_blank" href="pages/offre-details.php?noffr='. $offre_stage["NUM_OFFR"] .'&niv='. $offre_stage["NUM_NIV"] .'" role="button">Voir plus</a>
 
-                </p>
-              </div>
-
-            </div>
-            <div class="card-footer-p p-3  d-flex justify-content-around border-top-0">
-
-              <a name="" id="" class="btn ps-5 pe-5 btn-postuler" href="#" role="button">Postuler</a>
-              <a name="" id="" class="btn ps-5 pe-5 btn-voir-plus" href="#" role="button">Voir plus</a>
-
-            </div>
-          </div>
-
-
-        </div>
-        <div class="ms-5">
-          <div class="card border-link ">
-            <div class="row">
-              <div class="col">
-                <span class="  m-3 badge-status  w-25  p-2  "> Nouveau </span>
-
-              </div>
-            </div>
-            <div>
-
-            </div>
-            <div class="row">
-              <div class="col">
-                <img class=" m-4 company-logo" src="./ressources/company/images/atos.png" alt="">
-
-              </div>
-            </div>
-
-            <div class="card-body">
-              <h4 class="card-title"> <b>Developpeur Front-end</b> </h4>
-              <div class="badges d-flex justify-content-start">
-
-                <div class="mt-3">
-                  <span class="badge   p-2 badge-key rounded-pill bg-primary">info</span>
-                </div>
-                <div class="mt-3">
-                  <span class="badge  ms-3 p-2 badge-key rounded-pill bg-success">Stage PFA</span>
-                </div>
-                <div class="mt-3">
-                  <span class="badge ms-3 p-2 badge-key rounded-pill bg-danger">Front-end</span>
                 </div>
               </div>
-              <div class="loc-time mt-3 d-flex ">
-                <div>
-                  <img class="place-svg" src="./assets/icon/card/place.svg" alt="">
-                  <span class="place-location">
-                    Mohammedia,Maroc
-                  </span>
-                </div>
-                <div class="ms-5">
-                  <img class="place-svg" src="./assets/icon/card/time.svg" alt="">
-                  <span class="place-location">
-                    6 mois
-                  </span>
-                </div>
-              </div>
-              <div class="mt-3">
-                <div class="headline">
-                  <b>Details</b>
-                </div>
-                <p class="card-text mt-2">
 
-                  – Missions principales : <br> Etude, conception et réalisation d’une application mobile <br> – Mode travail : à distance 100% <br> – Ville : Rabat<br>
-
-                </p>
-              </div>
 
             </div>
-            <div class="card-footer-p p-3  d-flex justify-content-around border-top-0">
+                  ';
 
-              <a name="" id="" class="btn ps-5 pe-5 btn-postuler" href="#" role="button">Postuler</a>
-              <a name="" id="" class="btn ps-5 pe-5 btn-voir-plus" href="#" role="button">Voir plus</a>
+          endforeach;
 
-            </div>
-          </div>
-
-
-        </div>
+          ?>
       </div>
     </div>
   </div>
@@ -269,14 +221,14 @@
                 line-height: 23px;
               ">
           A propos
-        </h4>
-        <div class="row mt-5">
-          <div class=" ">
-            <div class="d-flex mt-5 justify-content-center">
-              <div class="col-3">
+        </h4></div>
+        <div class="">
+          <div class="  mt-5">
+            <div class="row mt-5 justify-content-center align-items-center">
+              <div class="col-xl-3 col-sm-12 ">
                 <img class="logo-apropos" src="assets/icon/logo-apropos.png" alt="">
               </div>
-              <div class="col-6">
+              <div class="col-xl-6 col-sm-12">
                 <p class=" project-desc">
                   Stage FSTM est une plateforme digitale a pour le but aider les etudiants de la fstm de trouver les stages facilement qui le convient et aussi de partager les rapports de stage entre eux
 
@@ -287,7 +239,7 @@
         </div>
       </div>
     </div>
-  </div>
+
   <div style="margin-top: 200px" id="contact" class="container  contact-section">
     <div class="row">
       <div class="col-12">
@@ -295,7 +247,6 @@
                 text-align: center;
                 font-weight: 600;
                 font-size: 36px;
-                line-height: 23px;
               ">
           Contactez Nous
         </h4>
@@ -303,7 +254,7 @@
       </div>
     </div>
     <div class="row mt-5 d-flex justify-content-center">
-      <div class="col-4">
+      <div class="col-xl-4 p-3">
         <form>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email </label>
@@ -334,41 +285,40 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     -->
 
-  <footer>
+  <footer  style="height: fit-content">
     <div style="margin-top: 120px" class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="d-flex  justify-content-around align-items-center p-5">
+      <div class="">
+        <div >
+          <div class="row justify-content-around align-items-center p-5">
 
 
-            <div>
+            <div class="col-xl-auto col-sm-12 mt-sm-2">
               <img id="logo-light" src="/assets/icon/logo-light.png" alt="" />
             </div>
-            <a href="#">
+            <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
               Offre de stage
             </a>
 
-            <a href="#">
+            <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
               Contact
             </a>
-            <a href="#">
+            <a  class="col-xl-auto col-sm-12  mt-sm-2" href="#">
               A propos
             </a>
-            <a href="#">
+            <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
               Espace Responsable
             </a>
-            <a href="#">
+            <a class="col-xl-auto col-sm-12  mt-sm-2" href="#">
               Espace Etudiant
             </a>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="d-flex justify-content-center">
+        <div class="justify-content-center">
 
-          <div class="col-3.5">
-            <p class="copyright">Copyright © Stage FSTM 2022. Tous droits réservés.</p>
-          </div>
+            <p class="copyright" style="text-align: center">Copyright © Stage FSTM 2022. Tous droits réservés.</p>
+
         </div>
       </div>
     </div>
