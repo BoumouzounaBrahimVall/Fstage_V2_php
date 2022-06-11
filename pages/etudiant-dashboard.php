@@ -121,6 +121,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
         <div class=" list-offre mt-3">
           <div  class="container-card d-flex flex-row flex-wrap">
               <?php foreach ($etudiant_offres as $offre_stage):
+              
                   if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
 
                   echo '
@@ -188,7 +189,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
       
                 <div class=" p-3  d-flex justify-content-around border-top-0">
 
-                  <button  id=""  class="btn ps-5 pe-5  me-2 btn-postuler"  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
+                  <button  id="" '.$visiblePostuler.'  class="btn ps-5 pe-5  me-2 btn-postuler"  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
                   <a  id="" class="btn ps-5 pe-5 btn-voir-plus" target="_blank" href="offre-details.php?noffr='. $offre_stage["NUM_OFFR"] .'&niv='. $offre_stage["NUM_NIV"] .'" role="button">Voir plus</a>
 
                 </div>
