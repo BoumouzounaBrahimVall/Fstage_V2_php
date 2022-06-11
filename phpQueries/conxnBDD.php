@@ -4,7 +4,12 @@
 //mysql://b847878388960a:cec449ca@us-cdbr-east-05.cleardb.net/heroku_93aab640ed42c57?reconnect=true
 try{
     //$bdd= new PDO("mysql:host=localhost;dbname=fstage","root","");
-    $bdd= new PDO("mysql:host=us-cdbr-east-05.cleardb.net;dbname=heroku_93aab640ed42c57","b847878388960a","cec449ca");
+    $host = 'us-cdbr-east-05.cleardb.net';
+    $dbname = 'heroku_93aab640ed42c57';
+    $user = 'b847878388960a';
+    $pass = 'cec449ca';
+    $bdd= new PDO("mysql:host=".$host."; dbname=".$dbname, $user, $pass);
+    echo 'connection establiched';
 }
     catch(PDOException $e)
     {
