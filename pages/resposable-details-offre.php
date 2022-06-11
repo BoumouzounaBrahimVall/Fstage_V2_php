@@ -441,7 +441,7 @@ $donnee=array(
 
                               if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu='oui';
                               else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='non';
-                              else $retenu='--';
+                              else $retenu='-';
                               if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
                                   $retenu='oui';
                                   $accpt='Oui';
