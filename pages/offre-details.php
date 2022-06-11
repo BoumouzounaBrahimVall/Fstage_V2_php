@@ -73,8 +73,8 @@ require_once(__DIR__.'./../phpQueries/etudiant/detailoffr.php');
                   <span class="detail-specification"> '.$offre_stage["LIBELLE_NIV"] .'</span>
                 </div>
                 <div class="societe mt-3">
-                  <span class="title-specification">Domain : </span>
-                  <span class="detail-specification"> Informatique </span>
+                  <span class="title-specification">Effectif : </span>
+                  <span class="detail-specification"> '.$offre_stage["EFFECTIF_OFFRE"] .' poste</span>
                 </div>
 
                 <div class="mt-3">
