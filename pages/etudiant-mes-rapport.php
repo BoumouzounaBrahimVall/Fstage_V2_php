@@ -26,9 +26,9 @@
 
 function info_etu($rap,$etu,$bdd)
 {
-  $student = "SELECT ETUDIANT.NOM_ETU,ETUDIANT.PRENOM_ETU,ETUDIANT.CV_ETU,niveau.NUM_NIV,niveau.LIBELLE_NIV from STAGE,ETUDIANT,etudier,niveau
-  where STAGE.CNE_ETU=ETUDIANT.CNE_ETU and etudiant.CNE_ETU=etudier.CNE_ETU and etudier.NUM_NIV=niveau.NUM_NIV
-  and STAGE.NUM_RAP='$rap' order by NUM_NIV desc ; ";
+  $student = "SELECT ETUDIANT.NOM_ETU,ETUDIANT.PRENOM_ETU,ETUDIANT.CV_ETU,niveau.NUM_NIV,niveau.LIBELLE_NIV from STAGE,ETUDIANT,etudier,niveau,RAPPORT
+  where STAGE.CNE_ETU=ETUDIANT.CNE_ETU and etudiant.CNE_ETU=etudier.CNE_ETU and etudier.NUM_NIV=niveau.NUM_NIV and RAPPORT.NUM_STG=STAGE.NUM_STG
+  and RAPPORT.NUM_RAP='$rap' order by NUM_NIV desc ; ";
 $info_etu=$bdd->query($student);
 
 $etu=$info_etu->fetchAll(2);

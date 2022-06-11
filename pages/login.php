@@ -3,10 +3,9 @@ session_start();
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo 'post method<br>';
+
     $user = $_POST['username'];
     $pass = $_POST['password'];
-    //   password_hash($_POST['password'],PASSWORD_DEFAULT);
     $who = $_POST['who'];
 
 
@@ -65,17 +64,6 @@ if (isset($_GET['logout'])) {
     require_once(__DIR__ . '../../phpQueries/deconnecter.php');
     header("Location:../pages/login.php");
 }
-
-
-/*
-
-                   $_SESSION['auth'] = $user;
-                   unset($_SESSION['error']);
-                   if (!isset($_SESSION['vers']))
-                       header("Location:../pages/homeRespo.php");
-                   else
-                       header('Location:' . $_SESSION['vers']);
-                   // die("ggelakjrdniogbuf");*/
 ?>
 <!DOCTYPE html>
 <html lang="fr">

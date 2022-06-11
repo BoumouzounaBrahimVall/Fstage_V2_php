@@ -18,7 +18,7 @@ if (isset($_POST['btnSelection']))
 {
     // get last NUM_STG
 
-    $req_num_stg='SELECT NUM_STG FROM `stage` ORDER BY NUM_STG DESC';
+    $req_num_stg='SELECT NUM_STG FROM `stage`  ORDER BY NUM_STG DESC';
     $smt_num_stg=$bdd->query($req_num_stg);
     $last_num_stg=$smt_num_stg->fetch(2);
     $last_num=$last_num_stg['NUM_STG'];
