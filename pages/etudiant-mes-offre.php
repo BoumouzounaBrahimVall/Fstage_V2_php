@@ -1,5 +1,6 @@
 <?php
 require( __DIR__.'./../phpQueries/etudiant/dash.php');
+require( __DIR__.'./../phpQueries/etudiant/etudiant-niveau.php');
 $req_offre_postuler= "
                         SELECT * FROM POSTULER pos,OFFREDESTAGE offre,ENTREPRISE ent
                         WHERE pos.NUM_OFFR = offre.NUM_OFFR
@@ -70,6 +71,16 @@ if (isset($_POST['btnSelection']))
                         VALUES ('$last_num','$noffr','$etudiant_cne' ,'1')
                 ";
         $stage_response = $bdd->exec($req_stage);
+
+$last_niv=$etudiant_niveau['NUM_NIV'];
+$req_update_offre = " update postuler 
+set postuler.ETATS_POST='ANNULER' 
+WHERE postuler.NUM_OFFR IN (
+    							SELECT NUM_OFFR FROM offredestage WHERE NUM_NIV='$last_niv'
+                               and offredestage.NUM_OFFR!='$noffr' and postuler.CNE_ETU='$etudiant_cne'
+    )
+and postuler.CNE_ETU='$etudiant_cne';";
+$modifier_etat_Offre = $bdd->exec($req_update_offre);
         header('Location:etudiant-mes-offre.php');
 
         //suprimer la candidature dans laquelle est retenu

@@ -80,8 +80,10 @@ $Smt_stg = $bdd->query($req_last_stg);
 $last_stg= $Smt_stg->fetch(PDO::FETCH_ASSOC);
 $visiblePostuler=" ";
 
-if($niv==@$last_stg['NUM_NIV'])
+if($niv==@$last_stg['NUM_NIV']){
 $visiblePostuler="disabled";
+
+}
 else
 $visiblePostuler=" ";
 
