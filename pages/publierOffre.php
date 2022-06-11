@@ -62,7 +62,7 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-      <link rel="stylesheet" href="trumbowyg/dist/ui/trumbowyg.min.css">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css">
 
       <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -536,14 +536,11 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 
-    <-- Import Trumbowyg -->
-    <script src="trumbowyg/dist/trumbowyg.min.js"></script>
 
-    <-- Import Trumbowyg plugins... -->
-    <script src="trumbowyg/dist/plugins/upload/trumbowyg.cleanpaste.min.js"></script>
-    <script src="trumbowyg/dist/plugins/upload/trumbowyg.pasteimage.min.js"></script>
+    <!--Import Trumbowyg -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
 
-    <-- Init Trumbowyg -->
+    <-!- Init Trumbowyg -->
     <script>
         // Doing this in a loaded JS file is better, I put this here for simplicity
         $('#detailoffre').trumbowyg();

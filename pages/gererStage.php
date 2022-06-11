@@ -199,12 +199,13 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Entreprise</th>
-                                    <th scope="col">Poste</th>
+                                    <th scope="col">№ stage</th>
+                                    <th scope="col">№ offre</th>
+                                    <th scope="col">CNE etudiant</th>
+                                    <th scope="col">Sujet</th>
                                     <th scope="col">Niveau</th>
-                                    <th scope="col">Effectif</th>
-                                    <th scope="col">Nbr candidats</th>
+                                    <th scope="col">Date Deb</th>
+                                    <th scope="col">Date Fin</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
