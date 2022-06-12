@@ -306,10 +306,7 @@ require_once "nav-etudiant.php";
     <div class="modal fade" id="myModalPostuler" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="min-width: 500px;max-width: 700px">
             <div class="modal-content d-flex justify-content-center " style="max-width: 800px;margin:auto;">
-                <div class="modal-header border-0">
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
