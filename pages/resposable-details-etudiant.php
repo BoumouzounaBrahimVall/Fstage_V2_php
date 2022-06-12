@@ -191,7 +191,7 @@ if(isset($_GET['passOublier'])) {
 
 
                             <label for="files" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
-                            <input type="file" disabled class="d-none inputImg" onchange="uploadFileToFirebase('files','modifyphoto','pathStorageImg')"  name="file" id="files">
+                            <input type="file" disabled class="d-none inputImg" onchange="uploadFileToFirebase('files','modifyphoto','pathStorageImg',1,'<?php echo $cne;?>')"  name="file" id="files">
                             <button type="submit" name="filesUploaed" class="btn d-none"  id="subbtnimg" >
                                 <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                             <a onclick="modifySubmitdate('inputImg','modifyphoto','subbtnimg')" id="modifyphoto" type="btn"><i id="btnSubmit" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
@@ -279,7 +279,7 @@ if(isset($_GET['passOublier'])) {
 
                                             <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
                                             <label for="filesc" style="color: #7B61FF;" class="p-1" ><i class="bi bi-file-earmark-person"></i>changer CV ?</label>
-                                            <input type="file" disabled class="d-none inputCV"  accept="application/pdf" onchange="uploadFileToFirebase('filesc','modifycv','pathStorageFileCv')" name="cv" id="filesc">
+                                            <input type="file" disabled class="d-none inputCV"  accept="application/pdf" onchange="uploadFileToFirebase('filesc','modifycv','pathStorageFileCv',2,'<?php echo $cne;?>')" name="cv" id="filesc">
                                             <button type="submit" name="filesUploaed" class="btn d-none"  id="subbtncv" >
                                                 <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                             <a onclick="modifySubmitdate('inputCV','modifycv','subbtncv')" id="modifycv" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>

@@ -19,15 +19,36 @@ console.log(firebase)
 const fileIsAnImage = (file) => ["image/png", "image/jpeg"].includes(file.type);
 const fileIsADocument = (file) => ["application/pdf"].includes(file.type);
 
-const getPathToTpload = (file) => {
-    const img_upload_path = "images/";
-    const doc_upload_path = "document/";
+const getPathToTpload = (file,pathType,id) => {
+    let img_upload_path = "images/";
+    let doc_upload_path = "document/";
+    let fileDestination="";
+    switch (pathType)
+    {
+        case 1://photo etudiant
+            fileDestination=img_upload_path + "EtudiantPhoto/"+id;
+            break;
+        case 2://cv etudiant
+            fileDestination= doc_upload_path+ "EtudiantCv/"+id;
+            break;
+        case 3:///logo ent
+            fileDestination=img_upload_path+ "CompanyPhoto/"+id;
+            break;
+        case 4:/// photo responsable
+            fileDestination=img_upload_path+ "ResposablesPhoto/"+id;
+            break;
+    }
+
+    fileDestination=fileDestination+'.'+file.name.split('.').pop();
+    console.log(fileDestination);
+    return fileDestination;
+/*
     if (fileIsAnImage(file)) return img_upload_path;
-    if (fileIsADocument(file)) return doc_upload_path;
+    if (fileIsADocument(file)) return doc_upload_path;*/
 };
 
 
-const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId)=>
+const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId,pathType,id)=>
 {
         document.getElementById(btnSubmit).disabled = true;
 
@@ -41,7 +62,7 @@ const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId)=>
         //Loops through all the selected files
         for (let i = 0; i < files.length; i++) {
             //create a storage reference
-            var storage = firebase.storage().ref(getPathToTpload(files[i]) + files[i].name);
+            var storage = firebase.storage().ref(getPathToTpload(files[i],pathType,id) );
             //upload file
             var upload = storage.put(files[i]);
 
@@ -59,7 +80,7 @@ const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId)=>
                 },
 
                 function complete() {
-                    getFileUrl(getPathToTpload(files[i]) + files[i].name,btnSubmit,pathStorageId);
+                    getFileUrl(getPathToTpload(files[i],pathType,id),btnSubmit,pathStorageId);
                 }
             );
         }
