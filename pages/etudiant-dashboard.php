@@ -167,7 +167,7 @@ require_once "nav-etudiant.php";
                     <div class="ms-5">
                       <img class="place-svg" src="./../assets/icon/card/time.svg" alt="">
                       <span class="place-location">
-                        '.$offre_stage["DURE_OFFR"] .' mois
+                        '.@$offre_stage["DURE_OFFR"] .' mois
                       </span>
                     </div>
                   </div>
@@ -199,7 +199,7 @@ require_once "nav-etudiant.php";
       
                 <div class=" p-3  d-flex justify-content-around border-top-0">
 
-                  <button  id=""  class="btn ps-5 pe-5  me-2 btn-postuler"  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
+                  <button  id=""  class="btn ps-5 pe-5  me-2 btn-postuler" '.$visiblePostuler.'  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
                   <a  id="" class="btn ps-5 pe-5 btn-voir-plus" target="_blank" href="offre-details.php?noffr='. $offre_stage["NUM_OFFR"] .'&niv='. $offre_stage["NUM_NIV"] .'" role="button">Détails</a>
 
                 </div>
