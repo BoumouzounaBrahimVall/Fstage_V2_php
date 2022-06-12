@@ -5,6 +5,7 @@ require(  __DIR__.'../../phpQueries/uploads.php');
 $cne=$_GET['cne'];
 
 //print_r($_GET);
+/*
 if(isset($_POST['filesUploaed'])){
     echo 'yes';
     $cne=$_POST['cne'];
@@ -18,6 +19,22 @@ if(isset($_POST['filesUploaed'])){
             $file = $_FILES['cv'];
             echo 'cv';
             uploadImagesOrCVEtudiant($cne,$file,$bdd,2);
+            break;
+    }
+}*/
+if(isset($_POST['filesUploaed'])){
+    echo 'yes';
+    $cne=$_POST['cne'];
+    switch ($_POST['filesUploaed']){
+        case 'modifyphoto':
+            $file = $_POST['cvPath'];
+            echo 'photo';
+            uploadImagesOrCVFirebase($cne, $file, $bdd, 1);
+            break;
+        case 'modifycv':
+            $file = $_POST['cvPath'];
+            echo 'cv';
+            uploadImagesOrCVFirebase($cne,$file,$bdd,2);
             break;
     }
 }
@@ -84,26 +101,9 @@ if(isset($_GET['passOublier'])) {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
-    />
-
-    <link rel="stylesheet" href="../css/style.css" />
-
+      <?php
+      require_once "./meta-tag.php"
+      ?>
     <title>Infos etudiant</title>
   </head>
 
@@ -187,11 +187,14 @@ if(isset($_GET['passOublier'])) {
                     <div class="row border rounded-3 py-2">
                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
                             <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
-                            <label for="imgEtu" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
-                            <input type="file" disabled class="d-none inputImg" name="file" id="imgEtu">
+                            <input class="form-control d-none" name="cvPath" id="pathStorageImg" >
+
+
+                            <label for="files" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
+                            <input type="file" disabled class="d-none inputImg" onchange="uploadFileToFirebase('files','modifyphoto','pathStorageImg')"  name="file" id="files">
                             <button type="submit" name="filesUploaed" class="btn d-none"  id="subbtnimg" >
                                 <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
-                            <a onclick="modifySubmitdate('inputImg','modifyphoto','subbtnimg')" id="modifyphoto" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                            <a onclick="modifySubmitdate('inputImg','modifyphoto','subbtnimg')" id="modifyphoto" type="btn"><i id="btnSubmit" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
 
                         </form>
                     </div>
@@ -272,9 +275,11 @@ if(isset($_GET['passOublier'])) {
                                     </div>
                                     <div class="col d-flex align-items-center justify-content-center">
                                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
+                                            <input class="form-control d-none" name="cvPath" id="pathStorageFileCv" >
+
                                             <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
-                                            <label for="cvEtu" style="color: #7B61FF;" class="p-1" ><i class="bi bi-file-earmark-person"></i>changer CV ?</label>
-                                            <input type="file" disabled class="d-none inputCV" name="cv" id="cvEtu">
+                                            <label for="filesc" style="color: #7B61FF;" class="p-1" ><i class="bi bi-file-earmark-person"></i>changer CV ?</label>
+                                            <input type="file" disabled class="d-none inputCV"  accept="application/pdf" onchange="uploadFileToFirebase('filesc','modifycv','pathStorageFileCv')" name="cv" id="filesc">
                                             <button type="submit" name="filesUploaed" class="btn d-none"  id="subbtncv" >
                                                 <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                             <a onclick="modifySubmitdate('inputCV','modifycv','subbtncv')" id="modifycv" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
@@ -491,6 +496,7 @@ if(isset($_GET['passOublier'])) {
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
+     <script src="../js/script-upload.js"></script>
      <script>
          const modifySubmitdate = (inputId, btnId,subbtn) => {
              console.log('pass');

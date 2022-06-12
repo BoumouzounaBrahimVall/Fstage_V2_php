@@ -25,16 +25,17 @@ const getPathToTpload = (file) => {
     if (fileIsAnImage(file)) return img_upload_path;
     if (fileIsADocument(file)) return doc_upload_path;
 };
-document.getElementById("files").addEventListener("change", function(e) {
-    document.getElementById("btnSubmit").disabled = true;
 
-    var files = e.target.files;
-    console.log(files[0]);
-    uploadFileToFirebase(files);
 
-});
-const uploadFileToFirebase=(files)=>
+const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId)=>
 {
+        document.getElementById(btnSubmit).disabled = true;
+
+        var files = document.getElementById(inputFile).files;
+        console.log(files[0]);
+
+
+
     //checks if files are selected
     if (files.length != 0) {
         //Loops through all the selected files
@@ -58,7 +59,7 @@ const uploadFileToFirebase=(files)=>
                 },
 
                 function complete() {
-                    getFileUrl(getPathToTpload(files[i]) + files[i].name);
+                    getFileUrl(getPathToTpload(files[i]) + files[i].name,btnSubmit,pathStorageId);
                 }
             );
         }
@@ -67,7 +68,7 @@ const uploadFileToFirebase=(files)=>
     }
 }
 
-function getFileUrl(filename) {
+function getFileUrl(filename,btnSubmit,pathStorageFile) {
     //create a storage reference
     var storage = firebase.storage().ref(filename);
 
@@ -76,8 +77,8 @@ function getFileUrl(filename) {
         .getDownloadURL()
         .then(function(url) {
            // document.getElementById("pathStorageFile").innerHTML += `${url}`;
-            document.getElementById("pathStorageFile").setAttribute("value",url);
-            document.getElementById("btnSubmit").disabled = false;;
+            document.getElementById(pathStorageFile).setAttribute("value",url);
+            document.getElementById(btnSubmit).disabled = false;;
             console.log(url);
         })
         .catch(function(error) {
