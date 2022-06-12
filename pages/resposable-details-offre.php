@@ -1,8 +1,8 @@
 <?php
-require(  __DIR__.'../../phpQueries/uploads.php');
+require(  __DIR__.'./../phpQueries/uploads.php');
 $offre_num=$_GET['numOffre'];
 
-
+/*
 if(isset($_POST['filesUpload'])) {
     echo 'yes';
     $ent = $_POST['numEnt'];
@@ -10,6 +10,16 @@ if(isset($_POST['filesUpload'])) {
     $file = $_FILES['file'];
     echo 'logo';
     uploadImagesOrCVEtudiant($ent, $file, $bdd, 3);
+}*/
+if(isset($_POST['filesUpload']))
+{
+
+    $file = $_POST['cvPath'];
+    $entNum=$_POST['numEnt'];
+    $numOffre=$_POST['numOffre'];
+    uploadImagesOrCVFirebase($entNum,$file,$bdd,3);
+    header('location:resposable-details-offre.php?numOffre='.$numOffre);
+
 }
 
 if (empty($offre_num)) header('location:gererOffre.php');
@@ -100,26 +110,9 @@ $donnee=array(
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
-    />
-      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css">
-
-      <link rel="stylesheet" href="../css/style.css" />
+      <?php
+      require_once "./meta-tag.php"
+      ?>
     <title>Details offre </title>
   </head>
 
@@ -204,11 +197,13 @@ $donnee=array(
                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
                             <input type="text" class="d-none "  value="<?php echo $offre_num;?>" name="numOffre" >
                             <input type="text" class="d-none "  value="<?php echo $donnee[13];?>" name="numEnt" >
-                            <label for="imgEnt" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
-                            <input type="file" disabled class="d-none inputEnt" name="file" id="imgEnt">
-                            <button type="submit" name="filesUpload" class="btn d-none"  id="subbtnEnt" >
+
+                            <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
+                            <label for="files" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
+                            <input  disabled type="file"  class="d-none inputEnt" name="file" id="files">
+                            <button  type="submit" name="filesUpload" class="btn d-none"  id="subbtnEnt" >
                                 <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
-                            <a onclick="modifySubmitdate('inputEnt','modifyEnt','subbtnEnt')" id="modifyEnt" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                            <a onclick="modifySubmitdate('inputEnt','btnSubmit','subbtnEnt')" id="btnSubmit" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
 
                         </form>
                     </div>
@@ -524,6 +519,7 @@ $donnee=array(
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
+   <script src="../js/script-upload.js"></script>
    <script src="../js/script2.js"></script>
 
    <!-- Import jQuery -->
