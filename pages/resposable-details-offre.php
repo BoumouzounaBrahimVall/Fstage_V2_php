@@ -15,22 +15,24 @@ if(isset($_POST['filesUpload'])) {
 if (empty($offre_num)) header('location:gererOffre.php');
 
 if(isset($_GET['modifpost'])){
-
+        echo 'yes';
         $cneEtu=$_GET['cne'];
         $datReponse=$_GET['dateRep'];
       //reponse entreprise
-        if(isset($_GET['responseEnt'])){
-            $reponse = $_GET['responseEnt'];
-            $reqP = "UPDATE postuler set ETATS_POST='$reponse',date_reponse='$datReponse' WHERE NUM_OFFR='$offre_num' and CNE_ETU='$cneEtu'";
-            $bdd->exec($reqP);
-        }
-        else if($_GET['responseEnt']!='nothing'){
+
+    if(isset($_GET['responseEnt'])){
+        $reponse = $_GET['responseEnt'];
+        $reqP = "UPDATE postuler set ETATS_POST='$reponse',date_reponse='$datReponse' WHERE NUM_OFFR='$offre_num' and CNE_ETU='$cneEtu'";
+        $bdd->exec($reqP);
+    }
+    else if($_GET['responseEnt']!='nothing'){
+
             $reqP = "UPDATE postuler set date_reponse='$datReponse' WHERE NUM_OFFR='$offre_num' and CNE_ETU='$cneEtu'";
             $bdd->exec($reqP);
         }
         $loca='location:resposable-details-offre.php?numOffre='.$offre_num;
     str_replace(' ', '', $loca);
-        header($loca);
+    header($loca);
 
 }
 //print_r($_GET);
@@ -468,7 +470,7 @@ $donnee=array(
                                 </div>
                                 <div class="col-10">';
                               if($accpt=='--'){
-                                  echo ' <select name="responseEnt" disabled class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">';
+                                  echo ' <select name="responseEnt" disabled required class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">';
                                   if($retenu=='oui')
                                       echo '    <option value="RETENU" selected>Oui</option>
                                           <option value="REFUSER">Non</option>';

@@ -1,6 +1,6 @@
 
 <!-- Navbar  -->  
-<nav class="navbar navbar-expand-lg navbar-light ">
+<nav class="navbar px-5  py-3  m-0 navbar-expand-lg navbar-light ">
       <div class="container-fluid ">
         <a class="navbar-brand" href="./etudiant-dashboard.php">
           <img id="logo" src="./../assets/icon/logo.png" alt="logo" />

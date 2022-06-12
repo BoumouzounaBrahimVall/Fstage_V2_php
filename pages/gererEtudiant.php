@@ -165,7 +165,7 @@
                                 </div>
                             </div>
                             <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                filtrer les données
+                                filtrer les données <i class="bi bi-search"></i>
                             </button>
                            
                             <div class="collapse " id="collapseExample">
@@ -198,7 +198,7 @@
                                                             <option value="date">Date</option>
                                                             <option value="Alpha">Ordre Alphabetique</option>
                                                             </select></div>
-                                                <div class="col-xl-6">
+                                                <div class="col-xl-6 col-sm-10">
                                                 <button type="submit" class="btn btn-filtre  w-100 mb-3">    Chercher <i class="bi bi-search"></i></button>
                                             </div>
                                             </form>
