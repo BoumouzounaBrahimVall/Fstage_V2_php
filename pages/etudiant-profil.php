@@ -104,6 +104,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                   <input disabled class="form-control" value="<?php echo $etudiant_info['PRENOM_ETU'];?>" type="text" id="inputPrenom2" placeholder="Type to search...">
                 </div>
 
+
               </div>
 
               <div class="row mt-5">
@@ -140,9 +141,13 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
               </div>
 
               <div class="row  mt-5">
+                  <div class="col-xl-4  col-sm-12">
+                      <label for="dateNaiss" class="col-form-label">CNE</label>
 
+                      <input disabled class="form-control" value="<?php echo $etudiant_info['CNE_ETU'];?>" type="text" id="dateNaiss" placeholder="Type to search...">
+                  </div>
 
-                <div class="col-xl-6 col-sm-12">
+                <div class="col-xl-4  col-sm-12">
                   <label for="inputNiveaux" class="col-form-label">Niveaux</label>
 
                   <select disabled id="inputNiveaux" class="form-select" aria-label="Default select example">
@@ -150,7 +155,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                   </select>
                 </div>
 
-                <div class="col-xl-6 col-sm-12">
+                <div class="col-xl-4  col-sm-12">
                   <label for="inputFormation2" class="col-form-label">Formation</label>
 
                   <select disabled id="inputFormation2" class="form-select" aria-label="Default select example">
@@ -206,7 +211,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                
 
                     <div >
-                        <p class="modifier-info-headline">Dernier Cv Importer  </p>
+                        <p class="modifier-info-headline mt-sm-4">Dernier Cv Importer  </p>
    
                         <a href="'.$cvetu.'" style="color:#7B61FF " target="_blank"> visualiser </a> 
                                           
@@ -223,37 +228,45 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                         };
                         ?>
                     </div>
-                    <div class="row border">
-                        <div class="row ">
-                            <form action="" method="post">
+                    <div class="row mt-5 ">
+                        <div class="col-xl-6 col-sm-12">
+                            <div>
+                                <span class="modifier-info-headline">Changer mot de passe</span>
+                            </div>
+                            <p class="mt-2">
+                                vous pouvez réinitialiser votre mot de passe
+                            </p>
+                            <div class="row mt-4">
+                                <form action="" method="post">
 
 
-                                <label for="inputmotdepasse" class="col-form-label"><b>Changer le Mot de Passe</b></label><br>
-                                <label for="inputmotdepasse" class="col-form-label">Mot de passe</label>
-                                <input class="form-control " type="password" id="inputmotdepasse" name="inputmotdepasse" ><br>
-                                <div class="col">
-                                    <button type="submit" class="btn btn-primary btn-login " id="btn-modifier_mdp_respo" name="btn-modifier_mdp_respo"> Valider </button>
+                                    <label for="inputmotdepasse" class="col-form-label">Mot de passe actuelle</label>
+                                    <input class="form-control " type="password" id="inputmotdepasse" name="inputmotdepasse" ><br>
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary btn-login " id="btn-modifier_mdp_respo" name="btn-modifier_mdp_respo"> Valider </button>
 
+                                    </div>
+
+                                    <HR SIZE="4">
+                                </form>
+                            </div>
+
+                            <form action="" method="post" class="row" id="hdpss">
+                                <div class="col-xl-12 col-sm-12 ">
+                                    <label for="inputmotdepassenv" class="col-form-label" id="label_mdp">Nouveau mot de passe</label>
+                                    <input class="form-control " type="password" id="inputmotdepassenv" name="inputmotdepassenv" >
                                 </div>
 
-                                <HR SIZE="4">
+                                <div class="col-xl-12 col-sm-12 mb-2">
+                                    <label for="inputmotdepassenv2" class="col-form-label" id="label_mdp2">Resaisir Mot de Passe</label>
+                                    <input class="form-control " type="password" id="inputmotdepassenv2" name="inputmotdepassenv2" >
+                                </div>
+                                <div class="col-xl-12 col-sm-12 mt-3 mb-2">
+                                    <button type="submit" class="btn btn-selector" id="btn-modifier_mdp_responv" name="btn-modifier_mdp_responv"> Changer </button>
+                                </div>
                             </form>
                         </div>
 
-                        <form action="" method="post" class="row" id="hdpss">
-                            <div class="col ">
-                                <label for="inputmotdepassenv" class="col-form-label" id="label_mdp">Nouveau mot de passe</label>
-                                <input class="form-control " type="password" id="inputmotdepassenv" name="inputmotdepassenv" >
-                            </div>
-
-                            <div class="col mb-2">
-                                <label for="inputmotdepassenv2" class="col-form-label" id="label_mdp2">Resaisir Mot de Passe</label>
-                                <input class="form-control " type="password" id="inputmotdepassenv2" name="inputmotdepassenv2" >
-                            </div>
-                            <div class="col mt-3 mb-2">
-                                <button type="submit" class="btn btn-selector" id="btn-modifier_mdp_responv" name="btn-modifier_mdp_responv"> Changer </button>
-                            </div>
-                        </form>
 
                     </div>
 
