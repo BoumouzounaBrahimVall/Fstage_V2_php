@@ -13,5 +13,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
+ <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
 
+ <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
     <link rel="stylesheet" href="./../css/style.css" />
