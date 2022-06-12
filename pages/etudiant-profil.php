@@ -67,7 +67,6 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
 <?php
   require_once "./meta-tag.php"
   ?>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 
     <title>Dashboard</title>
 </head>

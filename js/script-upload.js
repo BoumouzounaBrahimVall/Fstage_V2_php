@@ -26,6 +26,8 @@ const getPathToTpload = (file) => {
     if (fileIsADocument(file)) return doc_upload_path;
 };
 document.getElementById("files").addEventListener("change", function(e) {
+    document.getElementById("btnSubmit").disabled = true;
+
     var files = e.target.files;
     console.log(files[0]);
     uploadFileToFirebase(files);
