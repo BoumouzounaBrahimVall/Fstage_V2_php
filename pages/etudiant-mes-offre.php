@@ -44,25 +44,25 @@ if (isset($_POST['btnSelection']))
     if ($response=='ACCEPTER')
     {
         //calculer date d'expiration
-/*
-        $req_etat_expirer= "
-                        SELECT offre.DELAI_JOFFR,pos.date_reponse FROM POSTULER pos,OFFREDESTAGE offre
-                        WHERE pos.NUM_OFFR = offre.NUM_OFFR
-                        AND offre.NUM_OFFR ='$noffr'
-                        AND pos.CNE_ETU='$etudiant_cne'  
-                ";
-        $Smt_etat_expirer = $bdd->query($req_etat_expirer);
-        $etat_expirer = $Smt_etat_expirer->fetch(PDO::FETCH_ASSOC);
-        echo "date  reponse :".$etat_expirer['date_reponse'];
-        //$transdate=date('Y-M-D', $etat_expirer);
-        $jour_offr=$etat_expirer['DELAI_JOFFR'];
-        $date_rep=$etat_expirer['date_reponse'];
-       // $transdate= strtotime( $date_rep,'+ '.intval($jour_offr).' days');
-        $date1 = date("Y-m-d", strtotime( $date_rep,'+ '.intval($jour_offr).' days'));
-        echo "date JOFFR :".$etat_expirer['DELAI_JOFFR'];
-        echo "date expiration :". $date1;
+        /*
+                $req_etat_expirer= "
+                                SELECT offre.DELAI_JOFFR,pos.date_reponse FROM POSTULER pos,OFFREDESTAGE offre
+                                WHERE pos.NUM_OFFR = offre.NUM_OFFR
+                                AND offre.NUM_OFFR ='$noffr'
+                                AND pos.CNE_ETU='$etudiant_cne'
+                        ";
+                $Smt_etat_expirer = $bdd->query($req_etat_expirer);
+                $etat_expirer = $Smt_etat_expirer->fetch(PDO::FETCH_ASSOC);
+                echo "date  reponse :".$etat_expirer['date_reponse'];
+                //$transdate=date('Y-M-D', $etat_expirer);
+                $jour_offr=$etat_expirer['DELAI_JOFFR'];
+                $date_rep=$etat_expirer['date_reponse'];
+               // $transdate= strtotime( $date_rep,'+ '.intval($jour_offr).' days');
+                $date1 = date("Y-m-d", strtotime( $date_rep,'+ '.intval($jour_offr).' days'));
+                echo "date JOFFR :".$etat_expirer['DELAI_JOFFR'];
+                echo "date expiration :". $date1;
 
-*/
+        */
 
 
         //etablir un stage
@@ -72,15 +72,15 @@ if (isset($_POST['btnSelection']))
                 ";
         $stage_response = $bdd->exec($req_stage);
 
-$last_niv=$etudiant_niveau['NUM_NIV'];
-$req_update_offre = " update postuler 
+        $last_niv=$etudiant_niveau['NUM_NIV'];
+        $req_update_offre = " update postuler 
 set postuler.ETATS_POST='ANNULER' 
 WHERE postuler.NUM_OFFR IN (
     							SELECT NUM_OFFR FROM offredestage WHERE NUM_NIV='$last_niv'
                                and offredestage.NUM_OFFR!='$noffr' and postuler.CNE_ETU='$etudiant_cne'
     )
 and postuler.CNE_ETU='$etudiant_cne';";
-$modifier_etat_Offre = $bdd->exec($req_update_offre);
+        $modifier_etat_Offre = $bdd->exec($req_update_offre);
         header('Location:etudiant-mes-offre.php');
 
         //suprimer la candidature dans laquelle est retenu
@@ -116,95 +116,95 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
 </head>
 
 <body>
-    <?php
-    require_once "./nav-etudiant.php"
-    ?>
-    <div class="container ">
-        <div class="row">
-            <div class="col-xl-3   col-sm-12">
-                <?php
-                require_once "./etudiant-sidebar-offre.php"
-                ?>
-            </div>
-            <div class="p-4 col-xl-9 col-sm-12">
-                <div style="margin-top: 50px">
+<?php
+require_once "./nav-etudiant.php"
+?>
+<div class="container ">
+    <div class="row">
+        <div class="col-xl-3   col-sm-12">
+            <?php
+            require_once "./etudiant-sidebar-offre.php"
+            ?>
+        </div>
+        <div class="p-4 col-xl-9 col-sm-12">
+            <div style="margin-top: 50px">
 
 
-                    <div class="intro  mt-3">
-                        <h3> <b>Mes Offre postulé</b> </h3>
+                <div class="intro  mt-3">
+                    <h3> <b>Mes Offre postulé</b> </h3>
 
-                    </div>
-                    <div class="intro ">
-                        <p>
-                            consulter et gérer mes offres de stages
+                </div>
+                <div class="intro ">
+                    <p>
+                        consulter et gérer mes offres de stages
 
-                        </p>
-                    </div>
+                    </p>
+                </div>
 
 
-                    <div class="mt-4">
-                        <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            filtrer les données
-                        </button>
+                <div class="mt-4">
+                    <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        filtrer les données
+                    </button>
 
-                        <div class="collapse " id="collapseExample">
-                            <div class="row">
-                                <div class="filtre-bar ps-4  mt-5">
-                                    <form class="row g-3">
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputIntitule2" class="col-form-label">CNE</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <input class="form-control" type="text" id="inputIntitule2" placeholder="CNE...">
-                                        </div>g
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="ILISI1">ILISI1</option>
-                                                <option value="ILISI2">ILISI2</option>
-                                                <option value="ILISI3">ILISI3</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputTrier2" class="col-form-label">Trier</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="date">Date</option>
-                                                <option value="Alpha">Ordre Alphabetique</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <button type="submit" class="btn btn-filtre  w-100 mb-3"> Chercher <i class="bi bi-search"></i></button>
-                                        </div>
-                                    </form>
-                                </div>
+                    <div class="collapse " id="collapseExample">
+                        <div class="row">
+                            <div class="filtre-bar ps-4  mt-5">
+                                <form class="row g-3">
+                                    <div class="col-xl-2 col-sm-6">
+                                        <label for="inputIntitule2" class="col-form-label">CNE</label>
+                                    </div>
+                                    <div class="col-xl-4 col-sm-6">
+                                        <input class="form-control" type="text" id="inputIntitule2" placeholder="CNE...">
+                                    </div>g
+                                    <div class="col-xl-2 col-sm-6">
+                                        <label for="inputNiveaux" class="col-form-label">Niveaux</label>
+                                    </div>
+                                    <div class="col-xl-4 col-sm-6">
+                                        <select id="inputNiveaux" class="form-select" aria-label="Default select example">
+                                            <option selected>Trier par </option>
+                                            <option value="ILISI1">ILISI1</option>
+                                            <option value="ILISI2">ILISI2</option>
+                                            <option value="ILISI3">ILISI3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-2 col-sm-6">
+                                        <label for="inputTrier2" class="col-form-label">Trier</label>
+                                    </div>
+                                    <div class="col-xl-4 col-sm-6">
+                                        <select id="inputTrier2" class="form-select" aria-label="Default select example">
+                                            <option selected>Trier par </option>
+                                            <option value="date">Date</option>
+                                            <option value="Alpha">Ordre Alphabetique</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <button type="submit" class="btn btn-filtre  w-100 mb-3"> Chercher <i class="bi bi-search"></i></button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="row overflow-auto">
-                            <table class="table mt-5">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Entreprise</th>
-                                        <th scope="col">Poste</th>
+                    </div>
+                    <div class="row overflow-auto">
+                        <table class="table mt-5">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Entreprise</th>
+                                <th scope="col">Poste</th>
 
-                                        <th scope="col">Date Postuler</th>
-                                        <th scope="col">Duree</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                    foreach ($etudiant_offres_pos as $offre)
-                                    {
-                                        if ($offre['ETATS_POST']=='POSTULER')
-                                        {
-                                            echo '
+                                <th scope="col">Date Postuler</th>
+                                <th scope="col">Duree</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach ($etudiant_offres_pos as $offre)
+                            {
+                                if ($offre['ETATS_POST']=='POSTULER')
+                                {
+                                    echo '
                                 <tr>
                                         <th scope="row">'.$offre['NUM_OFFR'].'</th>
 
@@ -218,102 +218,102 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
                                         </td>
                                     </tr>
                                 '    ;
-                                        }
+                                }
 
-                                    }
-
-
-                                ?>
+                            }
 
 
+                            ?>
 
 
-                                </tbody>
-                            </table>
-                        </div>
+
+
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+            </div>
+
+
+            <div style="margin-top: 75px">
+
+
+                <div class="intro  mt-3">
+                    <h3> <b>Mes Offre retenu</b> </h3>
+
+                </div>
+                <div class="intro ">
+                    <p>
+                        Accepter ou refuser un stage
+
+                    </p>
                 </div>
 
 
-                <div style="margin-top: 75px">
+                <div class="mt-4">
+                    <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        filtrer les données
+                    </button>
 
-
-                    <div class="intro  mt-3">
-                        <h3> <b>Mes Offre retenu</b> </h3>
-
-                    </div>
-                    <div class="intro ">
-                        <p>
-                            Accepter ou refuser un stage
-
-                        </p>
-                    </div>
-
-
-                    <div class="mt-4">
-                        <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            filtrer les données
-                        </button>
-
-                        <div class="collapse " id="collapseExample">
-                            <div class="row">
-                                <div class="filtre-bar ps-4  mt-5">
-                                    <form class="row g-3">
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputIntitule2" class="col-form-label">CNE</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <input class="form-control" type="text" id="inputIntitule2" placeholder="CNE...">
-                                        </div>g
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="ILISI1">ILISI1</option>
-                                                <option value="ILISI2">ILISI2</option>
-                                                <option value="ILISI3">ILISI3</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputTrier2" class="col-form-label">Trier</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="date">Date</option>
-                                                <option value="Alpha">Ordre Alphabetique</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <button type="submit" class="btn btn-filtre  w-100 mb-3"> Chercher <i class="bi bi-search"></i></button>
-                                        </div>
-                                    </form>
-                                </div>
+                    <div class="collapse " id="collapseExample">
+                        <div class="row">
+                            <div class="filtre-bar ps-4  mt-5">
+                                <form class="row g-3">
+                                    <div class="col-xl-2 col-sm-6">
+                                        <label for="inputIntitule2" class="col-form-label">CNE</label>
+                                    </div>
+                                    <div class="col-xl-4 col-sm-6">
+                                        <input class="form-control" type="text" id="inputIntitule2" placeholder="CNE...">
+                                    </div>g
+                                    <div class="col-xl-2 col-sm-6">
+                                        <label for="inputNiveaux" class="col-form-label">Niveaux</label>
+                                    </div>
+                                    <div class="col-xl-4 col-sm-6">
+                                        <select id="inputNiveaux" class="form-select" aria-label="Default select example">
+                                            <option selected>Trier par </option>
+                                            <option value="ILISI1">ILISI1</option>
+                                            <option value="ILISI2">ILISI2</option>
+                                            <option value="ILISI3">ILISI3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-2 col-sm-6">
+                                        <label for="inputTrier2" class="col-form-label">Trier</label>
+                                    </div>
+                                    <div class="col-xl-4 col-sm-6">
+                                        <select id="inputTrier2" class="form-select" aria-label="Default select example">
+                                            <option selected>Trier par </option>
+                                            <option value="date">Date</option>
+                                            <option value="Alpha">Ordre Alphabetique</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <button type="submit" class="btn btn-filtre  w-100 mb-3"> Chercher <i class="bi bi-search"></i></button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="row overflow-auto">
-                            <table class="table mt-5">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Entreprise</th>
-                                        <th scope="col">Poste</th>
+                    </div>
+                    <div class="row overflow-auto">
+                        <table class="table mt-5">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Entreprise</th>
+                                <th scope="col">Poste</th>
 
-                                        <th scope="col">Date Postuler</th>
-                                        <th scope="col">Duree</th>
-                                        <th scope="col">Accepter</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                <th scope="col">Date Postuler</th>
+                                <th scope="col">Duree</th>
+                                <th scope="col">Accepter</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                                <?php
-                                foreach ($etudiant_offres_pos as $offre)
+                            <?php
+                            foreach ($etudiant_offres_pos as $offre)
+                            {
+                                if ($offre['ETATS_POST']=='RETENU')
                                 {
-                                    if ($offre['ETATS_POST']=='RETENU')
-                                    {
-                                        echo '
+                                    echo '
                                 <tr>
                                         <th scope="row">'.$offre['NUM_OFFR'].'</th>
 
@@ -344,29 +344,22 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
                                          </td>
                                     </tr>
                                 '    ;
-                                    }
-
                                 }
 
-
-                                ?>
-
+                            }
 
 
+                            ?>
 
 
 
-                                </tbody>
-                            </table>
-                        </div>
+
+
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-
-
-
-
-
             </div>
 
 
@@ -374,13 +367,20 @@ if (isset($_GET['noffr'])&&isset($_GET['cne'])){
 
 
 
-
-
         </div>
+
+
+
+
+
+
+
+
     </div>
+</div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>
