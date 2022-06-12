@@ -153,7 +153,7 @@ $donnee=array(
               <a class="nav-link" href="gererEtudiant.php">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Gérer stage</a>
+              <a class="nav-link" href="gererStage.php">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -197,7 +197,7 @@ $donnee=array(
             <div class="row  border border-link rounded-3 p-4">
 
                 <div class="col-xl-2 col-sm-12 me-4 " >
-                    <img style="width: 96px;height: 96px;" class="mx-auto mb-2 ms-4 " src="<?php echo $donnee[12];?>" alt="">
+                    <img style="max-width: 120px; border-radius:10%;" class=" mb-2 ms-1" src="<?php echo $donnee[12];?>" alt="">
                     <div class="row border rounded-3 py-2">
                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
                             <input type="text" class="d-none "  value="<?php echo $offre_num;?>" name="numOffre" >
@@ -441,7 +441,7 @@ $donnee=array(
 
                               if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu='oui';
                               else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='non';
-                              else $retenu='--';
+                              else $retenu='-';
                               if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
                                   $retenu='oui';
                                   $accpt='Oui';

@@ -202,7 +202,6 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                                     <th scope="col">№ stage</th>
                                     <th scope="col">№ offre</th>
                                     <th scope="col">CNE etudiant</th>
-                                    <th scope="col">Sujet</th>
                                     <th scope="col">Niveau</th>
                                     <th scope="col">Date Deb</th>
                                     <th scope="col">Date Fin</th>
@@ -211,8 +210,8 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                                 </thead>
                                 <tbody>
                                 <?php
-                                $req="SELECT ofr.*,ent.LIBELLE_ENT,niv.LIBELLE_NIV FROM `OFFREDESTAGE` ofr,NIVEAU niv ,ENTREPRISE ent 
-                      WHERE niv.NUM_NIV=ofr.NUM_NIV and ent.NUM_ENT=ofr.NUM_ENT and niv.NUM_FORM='$formation';";
+                                $req="SELECT stg.*,niv.LIBELLE_NIV FROM `OFFREDESTAGE` ofr,stage stg,NIVEAU niv 
+                      WHERE niv.NUM_NIV=ofr.NUM_NIV and stg.NUM_OFFR=ofr.NUM_OFFR and niv.NUM_FORM='$formation';";
                                 $Smt=$bdd->query($req);
                                 $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
                                 //afficher le tableau
@@ -222,15 +221,14 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                                     $Smt2=$bdd->query($nbr);
                                     $nbrCnd=$Smt2->fetch(PDO::FETCH_ASSOC);
                                     echo' <tr>
-                      <th scope="row">'.$V['NUM_OFFR'].'</th>
-                    
-                            <td>'.$V['LIBELLE_ENT'].'</td>
-                            <td>'.$V['POSTE_OFFR'].'</td> 
+                      <th scope="row">'.$V['NUM_STG'].'</th>
+                            <td><a  href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'">'.$V['NUM_OFFR'].'</td>
+                            <td><a  href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</td> 
                             <td>'.$V['LIBELLE_NIV'].'</td> 
-                            <td>'.$V['EFFECTIF_OFFRE'].'</td>
-                            <td>'.$nbrCnd['nbrpost'].'</td>
+                            <td>'.$V['DATEDEB_STG'].'</td>
+                            <td>'.$V['DATEFIN_STG'].'</td>
                             <td>  
-                          <a class="ms-3" href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'"><i class=" active  bi bi-pencil-fill"></i></a>
+                          <a class="ms-3" href="../pages/resposable-details-stage.php?numStage='.$V['NUM_STG'].'"><i class=" active  bi bi-pencil-fill"></i></a>
                         </td></tr>
                         
                     <tr>';

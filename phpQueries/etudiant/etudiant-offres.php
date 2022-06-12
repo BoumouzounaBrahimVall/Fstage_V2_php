@@ -64,4 +64,30 @@ else
 }
 $Smt_etudiant_offres = $bdd->query($req_etudiant_offres);
 $etudiant_offres = $Smt_etudiant_offres->fetchAll(PDO::FETCH_ASSOC);
+
+/******************** recuperer dernier niveau de l etudiant  ******************** */
+$req_last_niv = " SELECT ETUDIER.NUM_NIV from ETUDIER where CNE_ETU='$etudiant_cne' order by NUM_NIV desc; ";
+$Smt_niv = $bdd->query($req_last_niv);
+$last_niv = $Smt_niv->fetch(PDO::FETCH_ASSOC);
+$niv=$last_niv['NUM_NIV'];
+$req_last_stg = " SELECT offre.NUM_NIV 
+                from STAGE st,OFFREDESTAGE offre 
+                where offre.NUM_NIV='$niv'
+                AND st.CNE_ETU='$etudiant_cne' ;
+                ";
+
+$Smt_stg = $bdd->query($req_last_stg);
+$last_stg= $Smt_stg->fetch(PDO::FETCH_ASSOC);
+$visiblePostuler=" ";
+
+if($niv==@$last_stg['NUM_NIV']){
+$visiblePostuler="disabled";
+
+}
+else
+$visiblePostuler=" ";
+
+
+
+
 ?>

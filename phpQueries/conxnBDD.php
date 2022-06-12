@@ -9,7 +9,7 @@ try {
     $username = 'b847878388960a';
     $password = 'cec449ca';
     $bdd = new PDO("mysql:host=" . $host . "; dbname=" . $dbname, $username, $password);*/
-    //echo 'connection establiched';
+   // echo 'connection establiched';
 } catch (PDOException $e) {
     echo "votre connection n'est pas reussi " . $e->getMessage();
     exit();

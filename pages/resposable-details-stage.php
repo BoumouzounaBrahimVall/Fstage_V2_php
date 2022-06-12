@@ -1,6 +1,72 @@
 
 <?php
-require(  __DIR__.'../../phpQueries/uploads.php');?>
+require(  __DIR__.'../../phpQueries/uploads.php');
+$stage_num=$_GET['numStage'];
+ if(!isset($stage_num)) header('location:gererStage.php');
+
+$req2=" SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
+                                                FROM juger ju ,`ENSEIGNANT` ens,`ENSEIGNER` ensg WHERE ensg.NUM_ENS=ens.NUM_ENS 
+                                                and ens.NUM_ENS=ju.NUM_ENS and  ju.NUM_STG='$stage_num' and ensg.NUM_FORM='$formation';";
+$Smt2=$bdd->query($req2);
+$ens=$Smt2->fetchAll(2);
+if(isset($_GET['send'])) {
+    switch ($_GET['send']) {
+        case 'modifystg1':
+            $idEns = $_GET['encadrant'];
+            $numoff=$_GET['numOffre'];
+            $datDeb=$_GET['dateDeb'];
+            $datFin=$_GET['dateFin'];
+            $ville=$_GET['ville'];
+            $pays=$_GET['pays'];
+            $lieu=$_GET['lieu'];
+
+            $requpdate = "UPDATE OFFREDESTAGE set VILLE_OFFR='$ville',PAYS_OFFR='$pays',LIEUX_OFFR='$lieu' WHERE NUM_OFFR='$numoff'";
+            $bdd->exec($requpdate);
+            $requpdate = "UPDATE stage set DATEDEB_STG='$datDeb',DATEFIN_STG='$datFin' WHERE NUM_STG='$stage_num'";
+            $bdd->exec($requpdate);
+            //initialiser le jurie ( personne n'est un 'encadrant') pour ne pas avoir plus q'un encadrent
+            foreach($ens as $V):
+                $requpdate = "UPDATE juger set EST_ENCADRER='0' WHERE NUM_STG='$stage_num'";
+                $bdd->exec($requpdate);
+            endforeach;
+            //affecter le nouveau encadrant parmit le jurie
+            $requpdate = "UPDATE juger set EST_ENCADRER='1' WHERE NUM_STG='$stage_num' and NUM_ENS='$idEns'";
+            $bdd->exec($requpdate);
+            break;
+        case 'wallo':
+            $etat = $_GET['inputEtat'];
+            $req = "UPDATE OFFREDESTAGE set ETATPUB_OFFR='$etat' WHERE NUM_OFFR='$stage_num'";
+            break;
+
+    }
+   // $bdd->exec($req);
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
+
+}
+
+
+$req1="SELECT offr.*,stg.*,ent.IMAGE_ENT,ent.LIBELLE_ENT FROM OFFREDESTAGE offr,ENTREPRISE ent,NIVEAU niv,stage stg 
+                                               WHERE offr.NUM_ENT=ent.NUM_ENT and stg.NUM_OFFR=offr.NUM_OFFR and stg.NUM_STG='$stage_num';";
+$Smt1=$bdd->query($req1);
+$detaiOff=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
+$donnee=array(
+    $detaiOff['NUM_STG'],
+    $detaiOff['NUM_OFFR'],
+    $detaiOff['CNE_ETU'],
+    $detaiOff['DATEDEB_STG'],
+    $detaiOff['DATEFIN_STG'],
+    $detaiOff['NOTE_ENEX'],
+    $detaiOff['SUJET_STG'],
+
+    $detaiOff['VILLE_OFFR'],//7
+    $detaiOff['PAYS_OFFR'],
+    $detaiOff['LIEUX_OFFR'],
+
+    $detaiOff['IMAGE_ENT'], //10
+    $detaiOff['LIBELLE_ENT'],
+    $detaiOff['CONTRAT_STG'],
+);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +91,7 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
     <link rel="stylesheet" href="../css/style.css" />
 
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <title>Profile</title>
+    <title>Details Stage</title>
 </head>
 
 <body>
@@ -95,7 +161,7 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
         </div>
         <div class="p-4 col-xl-9 col-sm-12">
             <div class="intro  mt-3">
-                <h3> <b>Stage N°12546</b> </h3>
+                <h3> <b>Stage N°<?php echo $donnee[0];?></b> </h3>
 
             </div>
             <div class="intro ">
@@ -107,21 +173,21 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
             <div class="row  border border-link rounded-3 py-4 px-2">
 
                 <div class="col-xl-2 col-sm-12 me-4 ">
-                    <img class="mx-auto mb-2" style="max-width: 150px;" src="./../../ressources/company/images/atos.png" alt="">
+                    <img class="mx-auto mb-2" style="max-width: 150px; border-radius:10%; " src="<?php echo $donnee[10];?>" alt="">
                 </div>
                 <div class="col-xl-9 col-sm-12 me-4">
                     <div class="row mt-2">
                         <div class="col-xl-4 col-sm-12 m-0 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3  p-0">Société :</div>
-                            <div class="col-auto prop-value">Atos</div>
+                            <div class="col-auto prop-value"><?php echo $donnee[11];?></div>
 
                         </div>
 
                         <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto me-3 p-0 prop-name ">N° stage :</div>
-                            <div class="col-auto prop-value">19658</div>
+                            <div class="col-auto prop-value"><?php echo $donnee[0];?></div>
 
 
                         </div>
@@ -138,18 +204,19 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
 
                     <div class="row border rounded-3 mb-2 p-1 pb-2">
                         <form   action="" method="get" >
-                            <input type="text" class="d-none "  value="<?php echo $cne;?>" name="num_stag" >
+                            <input type="text" class="d-none "  value="<?php echo $stage_num;?>" name="numStage" >
+                            <input type="text" class="d-none "  value="<?php echo $donnee[1];?>" name="numOffre" >
                             <div class="row">
                                 <div class="col">
 
                                     <label for="inputdatDeb" >Date Debut </label>
-                                    <input id="inputdatDeb" type="date"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[0];?>" name="dateDeb" >
+                                    <input id="inputdatDeb" type="date"  class="form-control  inputstg1" disabled value="<?php echo $donnee[3];?>" name="dateDeb" >
 
                                 </div>
                                 <div class="col">
 
                                     <label for="inputdatFin" >Date Fin </label>
-                                    <input id="inputdatFin" type="date"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[1];?>" name="dateFin" >
+                                    <input id="inputdatFin" type="date"  class="form-control  inputstg1" disabled value="<?php echo $donnee[4];?>" name="dateFin" >
 
                                 </div>
                             </div>
@@ -157,16 +224,10 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
                                 <div class="col">
 
                                     <label for="inputEMAIL" >Encadrant </label>
-                                    <select id="inputEMAIL" class="form-select inputPERSONE" disabled name="encadrant" aria-label="Default select example">
+                                    <select id="inputEMAIL" class="form-select inputstg1" disabled name="encadrant" aria-label="Default select example">
                                         <?php
-                                        $req2="SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS
-                                     FROM `ENSEIGNANT` ens,`ENSEIGNER` ensg WHERE ensg.NUM_ENS=ens.NUM_ENS and ensg.NUM_FORM='$formation';";
-                                        $Smt2=$bdd->query($req2);
-                                        $ent=$Smt2->fetchAll(2);
-
-                                        foreach($ent as $V):
-
-                                            if($V['NUM_ENT']==1)
+                                        foreach($ens as $V):
+                                            if($V['EST_ENCADRER']=='1')
                                                 echo" <option selected value=\"".$V['NUM_ENS']."\">".$V['NOM_ENS']." ".$V['PRENOM_ENS']."</option>";
                                             else
                                                 echo" <option value=\"".$V['NUM_ENS']."\">".$V['NOM_ENS']." ".$V['PRENOM_ENS']."</option>";
@@ -178,22 +239,22 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
                                 <div class="col">
 
                                     <label for="inputVille" >Ville </label>
-                                    <input id="inputVille" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="ville" >
+                                    <input id="inputVille" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[7];?>" name="ville" >
                                 </div>
                             </div>
                             <div class="row ">
                                 <div class="col  ">
                                     <label for="inputPays" >Pays </label>
-                                    <input id="inputTEL" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="pays" >
+                                    <input id="inputTEL" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[8];?>" name="pays" >
                                 </div>
                                 <div class="col-1 mt-4 ms-1">
-                                    <button type="submit" name="send" class="btn d-none"  id="subbtnPERSONNE" >
+                                    <button type="submit" name="send" class="btn d-none"  id="subbtnstg1" >
                                         <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
-                                    <a onclick="modifySubmitdate('inputPERSONE','modifyPERSONNE','subbtnPERSONNE')" id="modifyPERSONNE" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                                    <a onclick="modifySubmitdate('inputstg1','modifystg1','subbtnstg1')" id="modifystg1" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
                                 </div>
                                 <div class="col">
                                     <label for="inputTEL" >Lieu </label>
-                                    <input id="inputTEL" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="lieu" >
+                                    <input id="inputTEL" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[9];?>" name="lieu" >
                                 </div>
 
                             </div>
@@ -202,18 +263,18 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
                     </div>
                     <div class="row border rounded-3 mb-2 p-1 pb-2">
                         <form   action="" method="get" >
-                            <input type="text" class="d-none "  value="<?php echo $cne;?>" name="num_stag" >
+                            <input type="text" class="d-none "  value="<?php echo $stage_num;?>" name="numStage" >
                             <div class="row">
                                 <div class="col">
 
                                     <label for="inputdatNotext" >Note encadrant externe</label>
-                                    <input id="inputdatNotext" type="number"  class="form-control  inputext" disabled value="<?php echo $donnee[0];?>" name="noteext" >
+                                    <input id="inputdatNotext" type="number"  class="form-control  inputext" disabled value="<?php echo $donnee[5];?>" name="noteext" >
 
                                 </div>
                                 <div class="col">
 
                                     <label for="inputSujet" >Sujet Stage </label>
-                                    <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[1];?>" name="Sujet" >
+                                    <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[6];?>" name="Sujet" >
 
                                 </div>
                                 <div class="col-1 mt-4">
@@ -316,40 +377,20 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
                         </div>
 
                     </div>
-                    <div class="row mt-4 m-0">
-                        <div class="col-xl-12 col-sm-12  mt-sm-2 ">
 
-
-
-                            <form id="formSujet" class="row align-items-center  justify-content-start" action="" method="get">
-                                <div class="col-3 m-0 p-0 prop-name ">
-                                    <label for="" class="form-label">Sujet  </label>
-                                </div>
-                                <div class="col-8 m-0 p-0 prop-value">
-                                    <input id="inputSujet" type="text" class="form-control " value="developper une application mobile" disabled name="Sujet" id="" aria-describedby="helpId" placeholder="">
-
-                                </div>
-                                <div class="col-1 ">
-                                    <a onclick="modifySubmitdate('inputSujet','modifySujet','formSujet')" id="modifySujet" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                </div>
-                            </form>
-
-                        </div>
-
-                    </div>
 
                     <div class="row mt-4">
                         <div class="col-xl-4 col-sm-12 m-0 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3  p-0">Offre de stage N°:</div>
-                            <div class="col-auto prop-value " style="color: #7B61FF;"><a href="">123568</a> </div>
+                            <div class="col-auto prop-value " style="color: #7B61FF;"><a href="../pages/resposable-details-offre.php?numOffre=<?php echo $donnee[1];?>"><?php echo $donnee[1];?></a> </div>
 
                         </div>
 
                         <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto me-3 p-0 prop-name ">Etudiant N° :</div>
-                            <div class="col-auto prop-value" style="color: #7B61FF;"><a href="">C14258967</a> </div>
+                            <div class="col-auto prop-value" style="color: #7B61FF;"><a href="../pages/resposable-details-etudiant.php?cne=<?php echo $donnee[2];?>"><?php echo $donnee[2];?></a> </div>
 
 
                         </div>
@@ -362,102 +403,6 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
 
 
             </div>
-
-            <div class="intro  mt-5">
-                <h3> <b>Détails offres postulé</b> </h3>
-
-            </div>
-            <div class="mt-4">
-                <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    filtrer les données
-                </button>
-
-                <div class="collapse " id="collapseExample">
-                    <div class="row">
-                        <div class="filtre-bar ps-4  mt-5">
-                            <form class="row g-3">
-                                <div class="col-xl-2 col-sm-6">
-                                    <label for="inputIntitule2" class="col-form-label">CNE</label>
-                                </div>
-                                <div class="col-xl-4 col-sm-6">
-                                    <input class="form-control" type="text" id="inputIntitule2" placeholder="CNE...">
-                                </div>g
-                                <div class="col-xl-2 col-sm-6">
-                                    <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                                </div>
-                                <div class="col-xl-4 col-sm-6">
-                                    <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                        <option selected>Trier par </option>
-                                        <option value="ILISI1">ILISI1</option>
-                                        <option value="ILISI2">ILISI2</option>
-                                        <option value="ILISI3">ILISI3</option>
-                                    </select>
-                                </div>
-                                <div class="col-xl-2 col-sm-6">
-                                    <label for="inputTrier2" class="col-form-label">Trier</label>
-                                </div>
-                                <div class="col-xl-4 col-sm-6">
-                                    <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                        <option selected>Trier par </option>
-                                        <option value="date">Date</option>
-                                        <option value="Alpha">Ordre Alphabetique</option>
-                                    </select></div>
-                                <div class="col-xl-6">
-                                    <button type="submit" class="btn btn-filtre  w-100 mb-3">    Chercher <i class="bi bi-search"></i></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="row overflow-auto">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Entreprise</th>
-                            <th scope="col">Poste</th>
-
-                            <th scope="col">Date Postuler</th>
-                            <th scope="col">Retenu</th>
-                            <th scope="col">Accepter</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-
-                            <td>Atos</td>
-                            <td>Developpeur back-end</td>
-                            <td>20-06-2022</td>
-                            <td>Oui</td>
-                            <td>Non</td>
-                            <td>
-                                <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                                <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                            </td>
-                        </tr>
-                        <th scope="row">1</th>
-
-                        <td>Atos</td>
-                        <td>Developpeur back-end</td>
-                        <td>20-06-2022</td>
-                        <td>Oui</td>
-                        <td>Non</td>
-                        <td>
-                            <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                            <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                        </td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-
-
 
         </div>
 
@@ -699,23 +644,7 @@ require(  __DIR__.'../../phpQueries/uploads.php');?>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script>
-    const modifySubmitdate = (inputId, btnId,subbtn) => {
-        console.log('pass');
-        let subBtn=document.getElementById(subbtn);
-        let input = document.getElementsByClassName(inputId);
-        let i;
-        let btn = document.getElementById(btnId);
-        subBtn.setAttribute("class","btn bt");
-        btn.setAttribute("class","d-none");
-        for(i = 0; i < input.length; i++)
-        {
-            input[i].disabled = false;
-        }
-        subBtn.setAttribute('value',btnId);
-        subBtn.setAttribute('type','submit');
-    }
-</script>
+<script src="/js/script2.js"></script>
 </body>
 
 </html>
