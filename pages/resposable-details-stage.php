@@ -89,7 +89,6 @@ $donnee=array(
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
     <link rel="stylesheet" href="../css/style.css" />
-
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <title>Details Stage</title>
 </head>
@@ -271,17 +270,18 @@ $donnee=array(
                                     <input id="inputdatNotext" type="number"  class="form-control  inputext" disabled value="<?php echo $donnee[5];?>" name="noteext" >
 
                                 </div>
+                                <div class="col-1 mt-4">
+                                    <button type="submit" name="send" class="btn d-none"  id="subbtnext" >
+                                        <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
+                                    <a onclick="modifySubmitdate('inputext','modifyext','subbtnext')" id="modifyext" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                                </div>
                                 <div class="col">
 
                                     <label for="inputSujet" >Sujet Stage </label>
                                     <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[6];?>" name="Sujet" >
 
                                 </div>
-                                <div class="col-1 mt-4">
-                                    <button type="submit" name="send" class="btn d-none"  id="subbtnext" >
-                                        <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
-                                    <a onclick="modifySubmitdate('inputext','modifyext','subbtnext')" id="modifyext" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                </div>
+
                             </div>
                         </form>
                     </div>
@@ -315,33 +315,48 @@ $donnee=array(
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-4 m-0" id="divMere">
+                                        <?php
+                                        foreach($ens as $V):
+                                            $jur=$V["NUM_ENS"]; //les autre ens du formation
+                                            $req3=" SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS from `ENSEIGNANT` ens,`ENSEIGNER` ensg WHERE ensg.NUM_ENS=ens.NUM_ENS 
+                                                and ens.NUM_ENS!='$jur' and ensg.NUM_FORM='$formation';";
+                                            $Smt3=$bdd->query($req3);
+                                            $ens2=$Smt3->fetchAll(2);
 
-                    <div class="row mt-4 m-0">
-                        <div class="col-xl-12 col-sm-12  mt-sm-2 ">
+                                           echo'<div style="max-width: 220px; min-width: 220px" class="col p-1 m-1  border rounded-3" id="divFils"><!--Affecter jury de stage-->
+                                                <form> 
+                                                    <label for="inputJury" class="form-label">jury </label>
+                                                    <select id="inputJury"  class="form-control inputJury'.$V['NUM_ENS'].'" disabled name="jury" >
+                                                    ';
+                                                        foreach ($ens2 as $en):
+                                                        echo'<option  value="'.$en['NUM_ENS'].'">'.$en['NOM_ENS'].' '.$en['PRENOM_ENS'].'</option>';
+                                                        endforeach;
+
+                                                        echo '<option selected value="'.$V['NUM_ENS'].'">'.$V['NOM_ENS'].' '.$V['PRENOM_ENS'].'</option>';
+                                                    echo'</select>
+                                                    <label for="" class="form-label">Note</label>
+                                                    <input id="inputJury" type="number" class="form-control inputJury'.$V['NUM_ENS'].'" value="'.$V['NOTE'].'" disabled name="Note" >
+                                                    
+                                                        <a onclick="AddJury(\'#divFils\',\'#divMere\')" id="suprim" type="btn"><i id="ajouter" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-plus-square"></i></a>
+                                                        <button type="submit" name="modif" class="btn d-none"  id="subbtnJury'.$V['NUM_ENS'].'" >
+                                                            <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
+                                                        <a onclick="modifySubmitdate(\'inputJury'.$V['NUM_ENS'].'\',\'modifyJury'.$V['NUM_ENS'].'\',\'subbtnJury'.$V['NUM_ENS'].'\')" id="modifyJury'.$V['NUM_ENS'].'" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                                                    
+                                                </form>
+                                             </div>
+                                          
+                                             '
+                                                ;
+                                       endforeach; ?>
 
 
-
-                            <form id="formJury" class="row align-items-center  justify-content-start" action="" method="get">
-                                <div class="col-4 m-0 p-0 prop-name ">
-                                    <label for="" class="form-label">Affecter jury de stage  </label>
-                                </div>
-                                <div class="col-6 m-0 p-0 prop-value">
-                                    <input id="inputJury" list="datalistJury" class="form-control " disabled name="jury" id="" aria-describedby="helpId" placeholder="">
-                                    <datalist id="datalistJury">
-                                        <option value="Mr Bakkoucha">
-                                        <option value="Mr Kissi">
-                                        <option value="Mme Letrach">
-
-                                    </datalist>
-                                </div>
-                                <div class="col-2 ">
-                                    <a onclick="modifySubmitdate('inputJury','modifyJury','formJury')" id="modifyJury" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                </div>
-                            </form>
-
+                                    </div>
+                        <div class="col-4 mt-5" align="center">
+                            <a onclick="AddJury('#divFils','#divMere')" id="ajoutJury" type="btn"><i id="ajouter" style="font-size: 50px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-plus-square"></i></a>
                         </div>
 
-                    </div>
+
                     <div class="row mt-4 m-0">
                         <div class="col-xl-12 col-sm-12  mt-sm-2 ">
 
@@ -645,6 +660,11 @@ $donnee=array(
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="/js/script2.js"></script>
+<script>
+   const AddJury=(divFils,divMere)=>{
+       $(divFils).clone().appendTo(divMere);
+   }
+</script>
 </body>
 
 </html>
