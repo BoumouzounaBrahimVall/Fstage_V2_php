@@ -19,12 +19,14 @@ if(isset($_GET['modifpost'])){
         $cneEtu=$_GET['cne'];
         $datReponse=$_GET['dateRep'];
       //reponse entreprise
+
     if(isset($_GET['responseEnt'])){
         $reponse = $_GET['responseEnt'];
         $reqP = "UPDATE postuler set ETATS_POST='$reponse',date_reponse='$datReponse' WHERE NUM_OFFR='$offre_num' and CNE_ETU='$cneEtu'";
         $bdd->exec($reqP);
     }
     else if($_GET['responseEnt']!='nothing'){
+
             $reqP = "UPDATE postuler set date_reponse='$datReponse' WHERE NUM_OFFR='$offre_num' and CNE_ETU='$cneEtu'";
             $bdd->exec($reqP);
         }
@@ -153,7 +155,7 @@ $donnee=array(
               <a class="nav-link" href="gererEtudiant.php">Gérer les comptes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="gererStage.php">Gérer stage</a>
+              <a class="nav-link" href="#">Gérer stage</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -197,7 +199,7 @@ $donnee=array(
             <div class="row  border border-link rounded-3 p-4">
 
                 <div class="col-xl-2 col-sm-12 me-4 " >
-                    <img style="max-width: 120px; border-radius:10%;" class=" mb-2 ms-1" src="<?php echo $donnee[12];?>" alt="">
+                    <img style="width: 96px;height: 96px;" class="mx-auto mb-2 ms-4 " src="<?php echo $donnee[12];?>" alt="">
                     <div class="row border rounded-3 py-2">
                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
                             <input type="text" class="d-none "  value="<?php echo $offre_num;?>" name="numOffre" >
@@ -434,6 +436,7 @@ $donnee=array(
                       $reqEt=" SELECT pst.*,etu.* FROM `postuler` pst ,etudiant etu WHERE etu.CNE_ETU=pst.CNE_ETU and pst.NUM_OFFR='$offre_num'";
                       $Smt_nbr=$bdd->query($reqEt);
                       $etud=$Smt_nbr->fetchAll(PDO::FETCH_ASSOC);
+                      
                       //afficher le tableau
                       if(!empty($etud))
                       {
