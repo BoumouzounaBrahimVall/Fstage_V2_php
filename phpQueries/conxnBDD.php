@@ -3,13 +3,13 @@
 //heroku db mysql
 //mysql://b847878388960a:cec449ca@us-cdbr-east-05.cleardb.net/heroku_93aab640ed42c57?reconnect=true
 try {
-    $bdd= new PDO("mysql:host=localhost;dbname=fstage","root","");
-    /*$host = 'us-cdbr-east-05.cleardb.net';
+    //$bdd= new PDO("mysql:host=localhost;dbname=fstage","root","");
+    $host = 'us-cdbr-east-05.cleardb.net';
     $dbname = 'heroku_93aab640ed42c57';
     $username = 'b847878388960a';
     $password = 'cec449ca';
-    $bdd = new PDO("mysql:host=" . $host . "; dbname=" . $dbname, $username, $password);*/
-   // echo 'connection establiched';
+    $bdd = new PDO("mysql:host=" . $host . "; dbname=" . $dbname, $username, $password);
+
 } catch (PDOException $e) {
     echo "votre connection n'est pas reussi " . $e->getMessage();
     exit();
