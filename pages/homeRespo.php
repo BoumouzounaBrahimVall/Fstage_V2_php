@@ -107,7 +107,7 @@
               <div class="row  p-4 mt-2">
                 <div class="col  p-4 mr-2 ">
                 
-                  <div class="row  p-4 statis-div-1">
+                  <div class="row mx-1 p-xl-4 statis-div-1">
                       
                     <div class="col-3 col-sm-5  p-4">
                       <img  src="../assets/icon/bag_purple.png" alt="offres">
@@ -129,7 +129,7 @@
                 <!-- the other one-->
                 <div class="col p-4 mr-2 ">
                 
-                  <div class="row  p-4 statis-div-2">
+                  <div class="row mx-1 p-xl-4 statis-div-2">
                       
                     <div class="col-3 col-sm-5  p-4">
                       <img  src="../assets/icon/student.png" alt="offres">
@@ -160,40 +160,7 @@
     <!-- Main Content Area -->
  
   <!-- Pills content -->
-  <footer>
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col-12">
-          <div class="d-flex  justify-content-around align-items-center p-5">
 
-         
-          <div>
-            <img id="logo-light" src="../assets/icon/logo-light.png" alt="" />
-          </div>
-          <a href="#">
-            Contact
-          </a>
-          <a href="#">
-            A propos
-        </a>
-          <a href="#">
-            Espace Responsable
-          </a>
-          <a href="#">
-            Espace Etudiant
-          </a> </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="d-flex justify-content-center">
-
-        <div class="col-3.5">
-          <p class="copyright" >Copyright © Stage FSTM 2022. Tous droits réservés.</p>
-        </div>
-      </div>
-      </div>
-    </div>
-  </footer>
   <!-- JavaScript Bundle with Popper-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/script.js"></script>

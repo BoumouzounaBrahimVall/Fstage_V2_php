@@ -1,5 +1,29 @@
 <?php
 
+function uploadImagesOrCVFirebase($id,$fileDestination,$bdd,$typ){
+    if (!empty($fileDestination))
+    {
+        switch ($typ) {
+            case 1://photo etudiant
+                $req = "  UPDATE `ETUDIANT` SET `IMG_ETU` = '$fileDestination' WHERE `ETUDIANT`.`CNE_ETU` = '$id';";
+                break;
+            case 2: //cv etudiant
+                $req = "  UPDATE `ETUDIANT` SET `CV_ETU`= '$fileDestination' WHERE `ETUDIANT`.`CNE_ETU` = '$id';";
+                break;
+            case 3://logo ent
+                $req = "  UPDATE `ENTREPRISE` SET `IMAGE_ENT`= '$fileDestination' WHERE `ENTREPRISE`.`NUM_ENT` = '$id';";
+                break;
+            case 4: // photo responsable
+                $req = "  UPDATE `RESPONSABLE` SET `IMAGE_RESP`= '$fileDestination' WHERE `RESPONSABLE`.`USERNAME_RES` = '$id';";
+                break;
+
+        }
+
+        $bdd->exec($req);
+    }
+
+
+}
 function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
     $fileName = $file['name'];
     $fileTmpName =$file['tmp_name'];

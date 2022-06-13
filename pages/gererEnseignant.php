@@ -307,8 +307,8 @@
   </footer>
   <!-- Ajouter enseignant-->
   <div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="min-width: 500px;max-width: 800px">
-      <div class="modal-content d-flex justify-content-center "style="max-width: 800px;margin:auto;">
+    <div class="modal-dialog" style="min-width: 370px;max-width: 800px">
+      <div class="modal-content d-flex justify-content-center "style="min-width: 370px;max-width: 800px;margin:auto;">
         <div class="modal-header border-0">
         
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

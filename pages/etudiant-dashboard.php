@@ -6,13 +6,23 @@
 require( __DIR__.'./../phpQueries/etudiant/dash.php');
 require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
 
-
+/*
 if(isset($_POST['filesUploaed']))
 {
 
     $file = $_FILES['cv'];
     uploadImagesOrCVEtudiant($etudiant_cne,$file,$bdd,2);
     header('Location:etudiant-dashboard.php');
+}*/
+if($_SERVER['REQUEST_METHOD']=='POST')
+{
+    if(isset($_POST['filesUploaed']))
+    {
+
+        $file = $_POST['cvPath'];
+        uploadImagesOrCVFirebase($etudiant_cne,$file,$bdd,2);
+    }
+
 }
 if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
 
@@ -224,14 +234,11 @@ require_once "nav-etudiant.php";
 
 
     <!-- Modal Cv upload -->
-    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="min-width: 500px;max-width: 700px">
             <div class="modal-content d-flex justify-content-center " style="max-width: 800px;margin:auto;">
-                <div class="modal-header border-0">
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+                <div class="modal-body mt-5">
                     <div class="container-fluid">
                         <div class="row">
                             <span class="headline-form"> Completer ma condidature</span>
@@ -252,16 +259,18 @@ require_once "nav-etudiant.php";
                                                 <div class=" p-3 ">
 
                                                     <div>
+                                                        <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
+
                                                         <input type="text" name="cne" value="<?php echo $_SESSION['auth'] ?>" hidden id="">
                                                         <input type="text" id="noffre" name="noffr"  hidden >
 
                                                         <div class="row mt-2 d-flex justify-content-around ">
                                                             <div style="width: fit-content" class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center ">
                                                                 <img style="margin: auto; max-width: 64px" src="./../assets/img/comment-section/cv.png" alt="" />
-                                                                <label for="inputfile" class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
+                                                                <label for="fileCv" class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
                                                                     Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                                                 </label>
-                                                                <input class="form-control d-none" name="cv" accept="application/pdf" type="file" id="inputfile">
+                                                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmit','pathStorageFile',2,'<?php echo $_SESSION['auth'] ?>')"  accept="application/pdf" type="file" id="fileCv">
 
                                                                 <!--                                                                      <a class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" href="">Importer  <i class="bi bi-file-arrow-up-fill"></i-->
                                                                 <!--                                                                          ></a>-->
@@ -286,7 +295,7 @@ require_once "nav-etudiant.php";
                                     </div>
                                     <div class="row ms-4">
                                         <div class="col-xl-6  mt-4">
-                                            <button type="submit" name="filesUploaed"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
+                                            <button type="submit" name="filesUploaed"  id="btnSubmit" value="uploadCvPostuler"  class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
                                         </div>
                                     </div>
                                 </form>
@@ -379,6 +388,8 @@ require_once "nav-etudiant.php";
 
         </div>
     </div>
+    <script src="./../js/script-upload.js"></script>
+
     <script src="./../js/script2.js">
 
     </script>
