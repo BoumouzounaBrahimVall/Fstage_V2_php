@@ -54,7 +54,7 @@ return $motcl;
 
 //var_dump(info_etu(1,@$etu,$bdd)[0]["NOM_ETU"]);
 
-  $req_rapport = "SELECT * from rapport where NUM_RAP in (select NUM_RAP from stage where CNE_ETU='$etudiant_cne') ;";
+  $req_rapport = "SELECT * from rapport where rapport.NUM_STG in (select NUM_STG from stage where stage.CNE_ETU='$etudiant_cne') ;";
 $All_rapport = $bdd->query($req_rapport);
 $fich_rapport = $All_rapport->fetchAll(2);
   
