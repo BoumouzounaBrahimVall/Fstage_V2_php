@@ -325,7 +325,9 @@ color: #772B00;
   border-radius: 20px;
   }
 
-
+.prop-name{
+    font-weight: bold;
+}
 
 .btn-filtre{
 background: #7B61FF;

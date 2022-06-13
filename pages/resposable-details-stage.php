@@ -230,28 +230,28 @@ $donnee=array(
                     </div>
 
 
-                    <div class="row border rounded-3 mb-2 p-1 pb-2">
+                    <div class="row border rounded-3 mt-3 mb-2 p-1 pb-2">
                         <form   action="" method="get" >
                             <input type="text" class="d-none "  value="<?php echo $stage_num;?>" name="numStage" >
                             <input type="text" class="d-none "  value="<?php echo $donnee[1];?>" name="numOffre" >
                             <div class="row">
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12 ">
 
-                                    <label for="inputdatDeb" >Date Debut </label>
+                                    <label class="prop-name mt-2" for="inputdatDeb" >Date Debut </label>
                                     <input id="inputdatDeb" type="date"  class="form-control  inputstg1" disabled value="<?php echo $donnee[3];?>" name="dateDeb" >
 
                                 </div>
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputdatFin" >Date Fin </label>
+                                    <label class="prop-name mt-2" for="inputdatFin" >Date Fin </label>
                                     <input id="inputdatFin" type="date"  class="form-control  inputstg1" disabled value="<?php echo $donnee[4];?>" name="dateFin" >
 
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputEMAIL" >Encadrant </label>
+                                    <label class="prop-name mt-2" for="inputEMAIL" >Encadrant </label>
                                     <select id="inputEMAIL" class="form-select inputstg1" disabled name="encadrant" aria-label="Default select example">
                                         <?php
                                         foreach($ens as $V):
@@ -264,15 +264,15 @@ $donnee=array(
 
                                     </select>
                                 </div>
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputVille" >Ville </label>
+                                    <label class="prop-name mt-2" for="inputVille" >Ville </label>
                                     <input id="inputVille" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[7];?>" name="ville" >
                                 </div>
                             </div>
                             <div class="row ">
-                                <div class="col  ">
-                                    <label for="inputPays" >Pays </label>
+                                <div class="col-xl-6 col-sm-12  ">
+                                    <label class="prop-name mt-2" for="inputPays" >Pays </label>
                                     <input id="inputTEL" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[8];?>" name="pays" >
                                 </div>
                                 <div class="col-1 mt-4 ms-1">
@@ -280,8 +280,8 @@ $donnee=array(
                                         <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                     <a onclick="modifySubmitdate('inputstg1','modifystg1','subbtnstg1')" id="modifystg1" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
                                 </div>
-                                <div class="col">
-                                    <label for="inputTEL" >Lieu </label>
+                                <div class="col-xl-6 col-sm-12">
+                                    <label class="prop-name mt-2" for="inputTEL" >Lieu </label>
                                     <input id="inputTEL" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[9];?>" name="lieu" >
                                 </div>
 
@@ -293,9 +293,9 @@ $donnee=array(
                         <form   action="" method="get" >
                             <input type="text" class="d-none "  value="<?php echo $stage_num;?>" name="numStage" >
                             <div class="row">
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputdatNotext" >Note encadrant externe</label>
+                                    <label class="prop-name mt-2" for="inputdatNotext" >Note encadrant externe</label>
                                     <input id="inputdatNotext" type="number"  class="form-control  inputext" disabled value="<?php echo $donnee[5];?>" name="noteext" >
 
                                 </div>
@@ -304,9 +304,9 @@ $donnee=array(
                                         <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                     <a onclick="modifySubmitdate('inputext','modifyext','subbtnext')" id="modifyext" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
                                 </div>
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputSujet" >Sujet Stage </label>
+                                    <label class="prop-name mt-2" for="inputSujet" >Sujet Stage </label>
                                     <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[6];?>" name="Sujet" >
 
                                 </div>
@@ -315,9 +315,9 @@ $donnee=array(
                         </form>
                     </div>
                     <div class="row mt-4 m-0">
-                        <div class="col-xl-6 col-sm-12  mt-sm-2 d-flex ">
-                            <div class="row align-items-center  justify-content-start">
-                                <div class="col-auto m-0 p-0 prop-name ">
+                        <div class="col-xl-6 col-sm-12   d-flex ">
+                            <div class="row mt-3 align-items-center   justify-content-start">
+                                <div class="col-auto m-0 p-0 prop-name  ">
                                     <span>Rapport </span>
                                 </div>
                                 <div class="col-auto m-0 p-0 prop-value">
@@ -329,7 +329,7 @@ $donnee=array(
 
                             </div>
 
-                        </div> <div class="col-xl-6 col-sm-12  mt-sm-2 d-flex ">
+                        </div> <div class="col-xl-6 col-sm-12 mt-3  d-flex ">
                             <div class="row align-items-center  justify-content-start">
                                 <div class="col-auto m-0 p-0 prop-name ">
                                     <span>Contrat </span>

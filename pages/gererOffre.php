@@ -98,7 +98,7 @@
               </div>
               
               <div class="container-fluid d-flex justify-content-center align-items-center row mt-2">
-                <div class="col-lg-6 col-md-12 p-xl-4 m-2 ">
+                <div class="col-lg-6 col-md-12 p-xl-4 mr-2 my-sm-2 ">
                 
                   <div class="row  pt-3 pb-3 statis-div-2">
                       
@@ -121,7 +121,7 @@
                     </div>
                 </div>
                 <!-- the other one-->
-                <div class="col-lg-6 col-md-12  p-xl-4 m-2 ">
+                <div class="col-lg-6 col-md-12  p-xl-4 mr-2 my-sm-2 ">
                 
                   <div class="row   pt-3 pb-3  statis-div-3">
                       
