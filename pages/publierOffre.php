@@ -276,6 +276,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
               
               <div class="col-3 col-sm-6">
                 <?php
+
                     $req="SELECT * FROM ENTREPRISE";
                     $Smt=$bdd->query($req);
                     $rows=$Smt->fetchAll(2);
@@ -284,7 +285,13 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                       
                     foreach($rows as $V):
                       echo '<option  value='.$V['NUM_ENT'].'>'.$V['LIBELLE_ENT'].' </option>';
-                    endforeach;  
+                        $lastNum=$V['NUM_ENT'];
+                    endforeach;
+
+                $lastNum++;
+
+
+
                 ?>
                  
                 </select></div>
@@ -305,7 +312,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                       <label for="files" class="col-form-label mt-2 btn btn-import-img">
                       Importer logo <i class="bi bi-image-fill"></i>
                       </label>
-                      <input class="form-control d-none" accept="image/*" type="file" id="files">
+                      <input class="form-control d-none" onchange="uploadFileToFirebase('files','btnSubmit','pathStorageFile',3,'<?php echo $lastNum; ?>')" accept="image/*" type="file" id="files">
       
                       <div>
                           <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
@@ -521,7 +528,6 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
   </div>
 </div>
     <script src="./../js/script-upload.js"></script>
-
     <!-- JavaScript Bundle with Popper-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 

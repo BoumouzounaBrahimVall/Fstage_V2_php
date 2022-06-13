@@ -200,7 +200,7 @@ $donnee=array(
 
                             <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
                             <label for="files" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
-                            <input  disabled type="file"  class="d-none inputEnt" name="file" id="files">
+                            <input  disabled type="file"  class="d-none inputEnt"  name="file"  onchange="uploadFileToFirebase('files','btnSubmit','pathStorageFile',3,'<?php echo $donnee[13];?>')" id="files">
                             <button  type="submit" name="filesUpload" class="btn d-none"  id="subbtnEnt" >
                                 <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                             <a onclick="modifySubmitdate('inputEnt','btnSubmit','subbtnEnt')" id="btnSubmit" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>

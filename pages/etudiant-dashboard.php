@@ -267,10 +267,10 @@ require_once "nav-etudiant.php";
                                                         <div class="row mt-2 d-flex justify-content-around ">
                                                             <div style="width: fit-content" class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center ">
                                                                 <img style="margin: auto; max-width: 64px" src="./../assets/img/comment-section/cv.png" alt="" />
-                                                                <label for="files" class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
+                                                                <label for="fileCv" class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
                                                                     Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                                                 </label>
-                                                                <input class="form-control d-none" name="cv"  accept="application/pdf" type="file" id="files">
+                                                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmit','pathStorageFile',2,'<?php echo $_SESSION['auth'] ?>')"  accept="application/pdf" type="file" id="fileCv">
 
                                                                 <!--                                                                      <a class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" href="">Importer  <i class="bi bi-file-arrow-up-fill"></i-->
                                                                 <!--                                                                          ></a>-->
@@ -295,7 +295,7 @@ require_once "nav-etudiant.php";
                                     </div>
                                     <div class="row ms-4">
                                         <div class="col-xl-6  mt-4">
-                                            <button type="submit" name="filesUploaed" disabled id="btnSubmit" value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
+                                            <button type="submit" name="filesUploaed"  id="btnSubmit" value="uploadCvPostuler"  class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
                                         </div>
                                     </div>
                                 </form>

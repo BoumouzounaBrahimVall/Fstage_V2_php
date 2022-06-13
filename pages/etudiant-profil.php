@@ -193,10 +193,10 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                             <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
                             <div  style="width: fit-content" class="mt-2   px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                 <img style="margin: auto; max-width: 75px" src="./../assets/img/comment-section/cv.png" alt="" />
-                                <label for="files" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
+                                <label for="fileCv" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
                                     Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                 </label>
-                                <input class="form-control d-none" name="cv"  accept="application/pdf" type="file" id="files">
+                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmit','pathStorageFile',2,'<?php echo $etudiant_info['CNE_ETU'];?>')" accept="application/pdf" type="file" id="fileCv">
                                <!-- <input class="form-control d-none" name="cv"  accept="application/pdf" type="file" id="files">-->
 
 

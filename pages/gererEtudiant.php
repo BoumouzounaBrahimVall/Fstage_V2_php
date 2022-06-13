@@ -1,6 +1,6 @@
 <?php
-    require( __DIR__.'../../phpQueries/respoRequiries.php'); 
-
+    require( __DIR__.'../../phpQueries/respoRequiries.php');
+require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
 
            if($_SERVER['REQUEST_METHOD']=='POST'){
             $pass=password_hash($_POST['password'],PASSWORD_DEFAULT);
@@ -28,7 +28,14 @@
               $req="INSERT INTO ETUDIER (CNE_ETU,NUM_NIV,DATE_NIV)
                VALUES ('$donnee[0]','$donnee[9]','$DT')";
               //execution de la requette
-              $bdd->exec($req); 
+              $bdd->exec($req);
+               if(isset($_POST['cvPath']))
+               {
+
+                   $file = $_POST['cvPath'];
+                   uploadImagesOrCVFirebase($donnee[0],$file,$bdd,1);
+               }
+
              header('location:../pages/gererEtudiant.php');
 
            }
@@ -37,20 +44,10 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <title>Gerer etudiants</title>
+      <?php
+      require_once "./meta-tag.php"
+      ?>
+      <title>Gerer etudiants</title>
 
 
   </head>
@@ -209,10 +206,7 @@
 
                             <div class="row overflow-auto">
                                 <table class="table"
-                                       id="table"
-                                       data-toggle="table"
-                                       data-height="100"
-                                       data-pagination="true">
+                                       >
                                 <thead>
                                     <tr>
                                     <th scope="col">CNE</th>
@@ -235,7 +229,9 @@
                                      $Smt=$bdd->query($req); 
                                      $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC 
                                      //afficher le tableau
-                                     foreach($rows as $V): 
+                                    $lastNum=0;
+                                     foreach($rows as $V):
+                                         $lastNum++;
                                       $cneEtudiant=$V['cne'];
                                       $req_nbr=" SELECT COUNT(POSTULER.CNE_ETU) nbr_post,COUNT(STAGE.CNE_ETU) nbr_stage 
                                       FROM `ETUDIANT`,`NIVEAU`,`ETUDIER`,`POSTULER`,`STAGE` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU 
@@ -256,8 +252,9 @@
                                         </td></tr>
                                         
                                     <tr>';
+
                                      endforeach;
-                                    
+                                    $lastNum++;
                                     ?>
 
                 
@@ -334,9 +331,15 @@
             
             <div >
               <div class="mt-4 p-2 border border-1 rounded-3">
-              <a  class="mt-2 btn btn-import-img" href="">Importer image <i class="bi bi-image-fill"></i></a>
+                  <label for="files" class="col-form-label mt-2 btn btn-import-img">
+                      Importer logo <i class="bi bi-image-fill"></i>
+                  </label>
+                  <input class="form-control d-none" onchange="uploadFileToFirebase('files','btnSubmit','pathStorageFile',1,'<?php echo $lastNum; ?>')" accept="image/*" type="file" id="files">
+
 
               <div>
+                  <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
+
                   <div class="row">
                   <div class="col-xl-6 col-sm-6">
                       <label for="inputNom2" class="col-form-label">Nom</label>
@@ -439,7 +442,7 @@
                 </div>
                 <div class="row">
                   <div class="col-xl-6 mt-4">
-                    <button type="submit" class="btn btn-filtre btn-primary w-100 mb-3">    Ajouter <i class="bi bi-plus-circle-fill"></i></button>
+                    <button type="submit" id="btnSubmit" class="btn btn-filtre btn-primary w-100 mb-3">    Ajouter <i class="bi bi-plus-circle-fill"></i></button>
                   </div>
                 </div>
                 
@@ -454,9 +457,12 @@
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/script.js"></script>
-
     <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
-  </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+    <script src="./../js/script-upload.js"></script>
+
+
+   </body>
 </html>
