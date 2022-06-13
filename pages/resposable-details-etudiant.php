@@ -212,13 +212,13 @@ if(isset($_GET['passOublier'])) {
                                 <form   action="" method="get" >
                                     <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
                                     <div class="row">
-                                        <div class="col">
+                                        <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputNOM" >Nom </label>
                                             <input id="inputNOM" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[0];?>" name="nom" >
 
                                         </div>
-                                        <div class="col">
+                                        <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputPRENOM" >Prenom </label>
                                             <input id="inputPRENOMN" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[1];?>" name="prenom" >
@@ -226,13 +226,13 @@ if(isset($_GET['passOublier'])) {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col">
+                                        <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputEMAIL" >E-mail </label>
                                             <input id="inputEMAIL" type="email"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[2];?>" name="email" >
 
                                         </div>
-                                        <div class="col">
+                                        <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputTEL" >TEL </label>
                                             <input id="inputTEL" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="tel" >
@@ -240,13 +240,13 @@ if(isset($_GET['passOublier'])) {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col">
+                                        <div class="col-xl-6 col-sm-12 ">
 
                                             <label  >Ville </label>
                                             <input type="text" class="form-control inputPERSONE" disabled value="<?php echo $donnee[4];?>" name="ville" >
 
                                         </div>
-                                        <div class="col">
+                                        <div class="col-xl-6 col-sm-12 ">
 
                                             <label >Pays </label>
                                             <input type="text" class="form-control inputPERSONE" disabled  value="<?php echo $donnee[5];?>" name="pays" >
@@ -254,11 +254,11 @@ if(isset($_GET['passOublier'])) {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col">
+                                        <div class="col-xl-6 col-sm-12 ">
                                             <label for="inputDatnais">Date Naissance</label>
                                             <input id="inputDatnais" type="date" class="form-control inputPERSONE" disabled value="<?php echo $donnee[6];?>" name="datenais" >
                                         </div>
-                                        <div class="col ">
+                                        <div class="col-xl-6 col-sm-12  ">
                                             <label class="mt-4 ms-5 ps-5">Modifier</label>
                                             <button type="submit" name="send" class="btn d-none"  id="subbtnPERSONNE" >
                                                 <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
@@ -270,10 +270,10 @@ if(isset($_GET['passOublier'])) {
 
 
                                 <div class="row  border rounded-3">
-                                    <div class="col d-flex align-items-center justify-content-center">
+                                    <div class="col-xl-6 col-sm-12 mt-sm-2   d-flex align-items-center justify-content-center">
                                         <a href="<?php echo $donnee[7];?>" target="_blank">visualiser CV?</a>
                                     </div>
-                                    <div class="col d-flex align-items-center justify-content-center">
+                                    <div class="col-xl-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-center">
                                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
                                             <input class="form-control d-none" name="cvPath" id="pathStorageFileCv" >
 
@@ -304,7 +304,7 @@ if(isset($_GET['passOublier'])) {
                        foreach ($niveauEtu as $nv):
                            $lb=$nv['LIBELLE_NIV'];
                             $dt=$nv['DATE_NIV'];
-                           echo "<div class='col mt-2'>
+                           echo "<div class='col-xl-6 col-sm-12 mt-2'>
                                     <form   action='' method='get' >
                                         <input type='text' class='d-none'  value='". $cne."' name='cne' >
                                         <input type='text' class='d-none'  value='". $nv['NUM_NIV']."' name='numniv' >
@@ -337,7 +337,7 @@ if(isset($_GET['passOublier'])) {
     $Smt3=$bdd->query($req3);
     $nivs=$Smt3->fetchAll(2);
     if(!empty($nivs)){
-        echo "<div class='row  border border-link rounded-3 p-2 mt-2'>
+        echo "<div class='col-xl-8 col-sm-12  border border-link rounded-3 p-2 mt-2'>
                                     <form   action='' method='get' >
                                         <input type='text' class='d-none'  value='". $cne."' name='cne' >
                                       
