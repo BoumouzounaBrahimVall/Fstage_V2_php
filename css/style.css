@@ -316,7 +316,7 @@ color: #772B00;
 }
 .addOffre-div{
   box-sizing: border-box;
-  width: 393px;
+  max-width: 393px;
   height: 195px;
   min-width: 234px; 
   min-height:174px;

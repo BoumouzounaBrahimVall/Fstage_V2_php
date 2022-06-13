@@ -185,49 +185,15 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
 
     <!-- Main Content Area -->
  
-  <!-- Pills content -->
-  <footer>
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col-12">
-          <div class="d-flex  justify-content-around align-items-center p-5">
 
-         
-          <div>
-            <img id="logo-light" src="../assets/icon/logo-light.png" alt="" />
-          </div>
-          <a href="#">
-            Contact
-          </a>
-          <a href="#">
-            A propos
-        </a>
-          <a href="#">
-            Espace Responsable
-          </a>
-          <a href="#">
-            Espace Etudiant
-          </a> </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="d-flex justify-content-center">
-
-        <div class="col-3.5">
-          <p class="copyright" >Copyright © Stage FSTM 2022. Tous droits réservés.</p>
-        </div>
-      </div>
-      </div>
-    </div>
-  </footer>
 
 
 
 
   <!-- Modal -->
 <div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="min-width: 500px;max-width: 800px">
-    <div class="modal-content d-flex justify-content-center "style="max-width: 800px;margin:auto;">
+  <div class="modal-dialog" style="min-width: 370px;max-width: 800px">
+    <div class="modal-content d-flex justify-content-center "style="max-width: 800px;min-width: 370px;margin:auto;">
       <div class="modal-header border-0">
       
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -269,12 +235,12 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
           
               <div class="row" >
        
-              <div class="col-2 col-sm-6">
+              <div class="col-xl-6 col-sm-12">
                   <label for="inputEntreprise" class="col-form-label">Selectionné une entreprise</label>
     
               </div>
               
-              <div class="col-3 col-sm-6">
+              <div class="col-xl-6 col-sm-12">
                 <?php
 
                     $req="SELECT * FROM ENTREPRISE";
