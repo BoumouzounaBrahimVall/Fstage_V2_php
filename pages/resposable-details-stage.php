@@ -4,11 +4,6 @@ require(  __DIR__.'../../phpQueries/uploads.php');
 $stage_num=$_GET['numStage'];
  if(!isset($stage_num)) header('location:gererStage.php');
 
-$req2=" SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
-                                                FROM juger ju ,`ENSEIGNANT` ens,`ENSEIGNER` ensg WHERE ensg.NUM_ENS=ens.NUM_ENS 
-                                                and ens.NUM_ENS=ju.NUM_ENS and  ju.NUM_STG='$stage_num' and ensg.NUM_FORM='$formation';";
-$Smt2=$bdd->query($req2);
-$ens=$Smt2->fetchAll(2);
 if(isset($_GET['send'])) {
     switch ($_GET['send']) {
         case 'modifystg1':
@@ -44,7 +39,41 @@ if(isset($_GET['send'])) {
 
 }
 
+if(isset($_GET['ajouter'])){
+    $idEnsNew=$_GET['juryAjou'];
+    if(!empty($_GET['NoteAjou'])){
+        $note=$_GET['NoteAjou'];
+        $reqajou="INSERT INTO juger (NUM_STG,NUM_ENS,NOTE,EST_ENCADRER)
+              VALUES ('$stage_num','$idEnsNew','$note','0');";
+        //execution de la requette
 
+    }else$reqajou="INSERT INTO juger (NUM_STG,NUM_ENS,EST_ENCADRER)VALUES ('$stage_num','$idEnsNew','0');";
+    $bdd->exec($reqajou);
+}
+if(isset($_GET['supprimer'])){
+        $jurysupp= $_GET['jury'];
+        echo $jurysupp;
+        if(isset($_GET['jury'])) {
+            //requette de suppression
+            $reqSup="DELETE FROM juger WHERE NUM_ENS='$jurysupp' and NUM_STG='$stage_num';";
+            //executer la requette de suppression
+            $bdd->exec($reqSup);
+        }
+}
+if(isset($_GET['modif'])){
+
+    $jurymodif= $_GET['jury'];
+    $note=$_GET['Note'];
+    echo $jurymodif;
+    $requpdate = "UPDATE juger set NOTE='$note' WHERE NUM_STG='$stage_num' and NUM_ENS='$jurymodif'";
+    $bdd->exec($requpdate);
+}
+
+$req2=" SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
+                                                FROM juger ju ,`ENSEIGNANT` ens,`ENSEIGNER` ensg WHERE ensg.NUM_ENS=ens.NUM_ENS 
+                                                and ens.NUM_ENS=ju.NUM_ENS and  ju.NUM_STG='$stage_num' and ensg.NUM_FORM='$formation';";
+$Smt2=$bdd->query($req2);
+$ens=$Smt2->fetchAll(2);
 $req1="SELECT offr.*,stg.*,ent.IMAGE_ENT,ent.LIBELLE_ENT FROM OFFREDESTAGE offr,ENTREPRISE ent,NIVEAU niv,stage stg 
                                                WHERE offr.NUM_ENT=ent.NUM_ENT and stg.NUM_OFFR=offr.NUM_OFFR and stg.NUM_STG='$stage_num';";
 $Smt1=$bdd->query($req1);
@@ -154,7 +183,7 @@ $donnee=array(
         <div class="col-xl-3   col-sm-12">
             <div class="sidebar ps-2 pe-2 pt-2 pb-2  mt-4">
                 <ul type="none">
-                    <li > <a href="homeRespo.php"><i class=" active  bi bi-house-fill"></i>Acceuil</a></li>
+                    <li > <a href="gererStage.php"><i class=" active  bi bi-briefcase-fill"></i>Gerer Stage</a></li>
                 </ul>
             </div>
         </div>
@@ -201,28 +230,28 @@ $donnee=array(
                     </div>
 
 
-                    <div class="row border rounded-3 mb-2 p-1 pb-2">
+                    <div class="row border rounded-3 mt-3 mb-2 p-1 pb-2">
                         <form   action="" method="get" >
                             <input type="text" class="d-none "  value="<?php echo $stage_num;?>" name="numStage" >
                             <input type="text" class="d-none "  value="<?php echo $donnee[1];?>" name="numOffre" >
                             <div class="row">
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12 ">
 
-                                    <label for="inputdatDeb" >Date Debut </label>
+                                    <label class="prop-name mt-2" for="inputdatDeb" >Date Debut </label>
                                     <input id="inputdatDeb" type="date"  class="form-control  inputstg1" disabled value="<?php echo $donnee[3];?>" name="dateDeb" >
 
                                 </div>
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputdatFin" >Date Fin </label>
+                                    <label class="prop-name mt-2" for="inputdatFin" >Date Fin </label>
                                     <input id="inputdatFin" type="date"  class="form-control  inputstg1" disabled value="<?php echo $donnee[4];?>" name="dateFin" >
 
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputEMAIL" >Encadrant </label>
+                                    <label class="prop-name mt-2" for="inputEMAIL" >Encadrant </label>
                                     <select id="inputEMAIL" class="form-select inputstg1" disabled name="encadrant" aria-label="Default select example">
                                         <?php
                                         foreach($ens as $V):
@@ -235,15 +264,15 @@ $donnee=array(
 
                                     </select>
                                 </div>
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputVille" >Ville </label>
+                                    <label class="prop-name mt-2" for="inputVille" >Ville </label>
                                     <input id="inputVille" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[7];?>" name="ville" >
                                 </div>
                             </div>
                             <div class="row ">
-                                <div class="col  ">
-                                    <label for="inputPays" >Pays </label>
+                                <div class="col-xl-6 col-sm-12  ">
+                                    <label class="prop-name mt-2" for="inputPays" >Pays </label>
                                     <input id="inputTEL" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[8];?>" name="pays" >
                                 </div>
                                 <div class="col-1 mt-4 ms-1">
@@ -251,8 +280,8 @@ $donnee=array(
                                         <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                     <a onclick="modifySubmitdate('inputstg1','modifystg1','subbtnstg1')" id="modifystg1" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
                                 </div>
-                                <div class="col">
-                                    <label for="inputTEL" >Lieu </label>
+                                <div class="col-xl-6 col-sm-12">
+                                    <label class="prop-name mt-2" for="inputTEL" >Lieu </label>
                                     <input id="inputTEL" type="text"  class="form-control  inputstg1" disabled value="<?php echo $donnee[9];?>" name="lieu" >
                                 </div>
 
@@ -264,9 +293,9 @@ $donnee=array(
                         <form   action="" method="get" >
                             <input type="text" class="d-none "  value="<?php echo $stage_num;?>" name="numStage" >
                             <div class="row">
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputdatNotext" >Note encadrant externe</label>
+                                    <label class="prop-name mt-2" for="inputdatNotext" >Note encadrant externe</label>
                                     <input id="inputdatNotext" type="number"  class="form-control  inputext" disabled value="<?php echo $donnee[5];?>" name="noteext" >
 
                                 </div>
@@ -275,9 +304,9 @@ $donnee=array(
                                         <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                     <a onclick="modifySubmitdate('inputext','modifyext','subbtnext')" id="modifyext" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
                                 </div>
-                                <div class="col">
+                                <div class="col-xl-6 col-sm-12">
 
-                                    <label for="inputSujet" >Sujet Stage </label>
+                                    <label class="prop-name mt-2" for="inputSujet" >Sujet Stage </label>
                                     <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[6];?>" name="Sujet" >
 
                                 </div>
@@ -286,9 +315,9 @@ $donnee=array(
                         </form>
                     </div>
                     <div class="row mt-4 m-0">
-                        <div class="col-xl-6 col-sm-12  mt-sm-2 d-flex ">
-                            <div class="row align-items-center  justify-content-start">
-                                <div class="col-auto m-0 p-0 prop-name ">
+                        <div class="col-xl-6 col-sm-12   d-flex ">
+                            <div class="row mt-3 align-items-center   justify-content-start">
+                                <div class="col-auto m-0 p-0 prop-name  ">
                                     <span>Rapport </span>
                                 </div>
                                 <div class="col-auto m-0 p-0 prop-value">
@@ -300,7 +329,7 @@ $donnee=array(
 
                             </div>
 
-                        </div> <div class="col-xl-6 col-sm-12  mt-sm-2 d-flex ">
+                        </div> <div class="col-xl-6 col-sm-12 mt-3  d-flex ">
                             <div class="row align-items-center  justify-content-start">
                                 <div class="col-auto m-0 p-0 prop-name ">
                                     <span>Contrat </span>
@@ -316,6 +345,7 @@ $donnee=array(
                         </div>
                     </div>
                     <div class="row mt-4 m-0" id="divMere">
+
                                         <?php
                                         foreach($ens as $V):
                                             $jur=$V["NUM_ENS"]; //les autre ens du formation
@@ -324,10 +354,11 @@ $donnee=array(
                                             $Smt3=$bdd->query($req3);
                                             $ens2=$Smt3->fetchAll(2);
 
-                                           echo'<div style="max-width: 220px; min-width: 220px" class="col p-1 m-1  border rounded-3" id="divFils"><!--Affecter jury de stage-->
-                                                <form> 
+                                           echo'<div style="max-width: 220px; min-width: 220px" class="col p-1 m-1  border rounded-3" id="divFils"><!--Affecter  <button type="submit" name="supprimer" class="btn bt "  > jury de stage-->
+                                                <form method="get"> 
+                                                    <input type="text" class="d-none "  value="'.$stage_num.'" name="numStage" >
                                                     <label for="inputJury" class="form-label">jury </label>
-                                                    <select id="inputJury"  class="form-control inputJury'.$V['NUM_ENS'].'" disabled name="jury" >
+                                                    <select id="inputJury'.$V['NUM_ENS'].'"  class="form-control " disabled name="jury" >
                                                     ';
                                                         foreach ($ens2 as $en):
                                                         echo'<option  value="'.$en['NUM_ENS'].'">'.$en['NOM_ENS'].' '.$en['PRENOM_ENS'].'</option>';
@@ -338,60 +369,22 @@ $donnee=array(
                                                     <label for="" class="form-label">Note</label>
                                                     <input id="inputJury" type="number" class="form-control inputJury'.$V['NUM_ENS'].'" value="'.$V['NOTE'].'" disabled name="Note" >
                                                     
-                                                        <a onclick="AddJury(\'#divFils\',\'#divMere\')" id="suprim" type="btn"><i id="ajouter" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-plus-square"></i></a>
-                                                        <button type="submit" name="modif" class="btn d-none"  id="subbtnJury'.$V['NUM_ENS'].'" >
+                                                    <a href="../pages/resposable-details-stage.php?numStage='.$stage_num.'&supprimer=1&jury='.$V['NUM_ENS'].'"><i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-x-square"></i></a>
+                                                    <button onclick="document.getElementById(\'inputJury'.$V['NUM_ENS'].'\').disabled=false;"  type="submit" name="modif" class="btn d-none"  id="subbtnJury'.$V['NUM_ENS'].'" >
                                                             <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
-                                                        <a onclick="modifySubmitdate(\'inputJury'.$V['NUM_ENS'].'\',\'modifyJury'.$V['NUM_ENS'].'\',\'subbtnJury'.$V['NUM_ENS'].'\')" id="modifyJury'.$V['NUM_ENS'].'" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
+                                                    <a  onclick="modifySubmitdate(\'inputJury'.$V['NUM_ENS'].'\',\'modifyJury'.$V['NUM_ENS'].'\',\'subbtnJury'.$V['NUM_ENS'].'\')" id="modifyJury'.$V['NUM_ENS'].'" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
                                                     
                                                 </form>
-                                             </div>
-                                          
-                                             '
+                                             </div>'
                                                 ;
                                        endforeach; ?>
 
-
+                        <div class="col-4 mt-5" align="center" id="ajoutJury">
+                            <a onclick="AddJury('#divMere','#ajoutJury')"  type="btn"><i id="ajouter" style="font-size: 50px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-plus-square"></i></a>
+                        </div>
                                     </div>
-                        <div class="col-4 mt-5" align="center">
-                            <a onclick="AddJury('#divFils','#divMere')" id="ajoutJury" type="btn"><i id="ajouter" style="font-size: 50px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-plus-square"></i></a>
-                        </div>
 
 
-                    <div class="row mt-4 m-0">
-                        <div class="col-xl-12 col-sm-12  mt-sm-2 ">
-
-
-
-                            <form id="formNoteJury" class="row align-items-center  justify-content-start" action="" method="get">
-                                <div class="col-3 m-0 p-0 prop-name ">
-                                    <label for="" class="form-label">Note Jury  </label>
-                                </div>
-                                <div class="col-2 m-0 p-0 prop-value">
-                                    <input id="inputNoteJury1" type="number" value="0" class="form-control " disabled name="jury" id="" aria-describedby="helpId" placeholder="">
-
-                                </div>
-                                <div class="col-1 ">
-                                    <a onclick="modifySubmitdate('inputNoteJury','modifyNoteJury','formNoteJury')" id="modifyNoteJury" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                </div>
-                                <div class="col-2 m-0 p-0 prop-value">
-                                    <input id="inputNoteJury" type="number" value="0" class="form-control " disabled name="jury" id="" aria-describedby="helpId" placeholder="">
-
-                                </div>
-                                <div class="col-1 ">
-                                    <a onclick="modifySubmitdate('inputNoteJury','modifyNoteJury','formNoteJury')" id="modifyNoteJury" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                </div>
-                                <div class="col-2 m-0 p-0 prop-value">
-                                    <input id="inputNoteJury" type="number" value="0" class="form-control " disabled name="jury"  aria-describedby="helpId" placeholder="">
-
-                                </div>
-                                <div class="col-1 ">
-                                    <a onclick="modifySubmitdate('inputNoteJury','modifyNoteJury','formNoteJury')" id="modifyNoteJury" type="btn"><i name="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
-                                </div>
-                            </form>
-
-                        </div>
-
-                    </div>
 
 
                     <div class="row mt-4">
@@ -448,7 +441,7 @@ $donnee=array(
                         <form class=" g-3">
                             <div class="mt-4">
                                 <div class="d-flex align-items-center ">
-                                    <img class="me-2" src="./../../assets/icon/step1.svg" alt="">
+                                    <img class="me-2" src="/assets/icon/step1.svg" alt="">
                                     <span class="subheadline-form">Action sur Rapport</span>
                                 </div>
 
@@ -658,12 +651,43 @@ $donnee=array(
 
     </div>
 </div>
+
+
+<?php
+
+$req4="SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS from `ENSEIGNANT` ens,`ENSEIGNER` ensg 
+                                              WHERE ensg.NUM_ENS=ens.NUM_ENS and ensg.NUM_FORM='$formation' 
+                                            and (ens.NUM_ENS not in ( SELECT ju.NUM_ENS FROM juger ju where ju.NUM_STG='$stage_num'));";
+$Smt4=$bdd->query($req4);
+$ens4=$Smt4->fetchAll(2);
+$ful=0;
+if (empty($ens4))  $ful=1;
+
+?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="/js/script2.js"></script>
 <script>
-   const AddJury=(divFils,divMere)=>{
-       $(divFils).clone().appendTo(divMere);
+   const AddJury=(divMere,divAjout)=>{
+       let num ='<?php echo $stage_num?>';
+       let plein='<?php echo $ful?>';
+       if(plein==='0'){
+           let nd='<div style="max-width: 220px; min-width: 220px" class="col p-1 m-1  border rounded-3">'+
+               '  <form><input type="text" class="d-none "  value="'+num+'" name="numStage" >'+
+               '    <label for="inputJury" class="form-label">jury </label>'+
+               '  <select id="inputJuryAdd"  class="form-control "  name="juryAjou" >\';'+
+               <?php foreach ($ens4 as $en3):
+                   echo '\'<option  value="'.$en3['NUM_ENS'].'">'.$en3['NOM_ENS'].' '.$en3['PRENOM_ENS'].'</option>\'+';
+               endforeach;?>
+               '</select><label for="" class="form-label">Note</label>'+
+               '<input  type="number" class="form-control "  name="NoteAjou" >'+
+               '<button type="submit" name="ajouter" class="btn bt"  id="btnAjouter" >'+
+               ' <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>'+
+               '</form></div>';
+           $(divMere).append(nd);
+       }
+       $(divAjout).hide();
    }
+
 </script>
 </body>
 

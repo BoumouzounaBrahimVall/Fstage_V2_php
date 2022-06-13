@@ -244,7 +244,7 @@ color: #000000;
 /*what I've add*/
 .btn-selector {
 box-sizing: border-box;
-max-width: 200px;
+width: 200px;
 height: 53.19px;
 color:#7B61FF;
 
@@ -280,7 +280,7 @@ margin-right: 10px;
 
 .statis-div-1{
   background: #E7E2FF;
-  width: 393px;
+  max-width: 393px;
 height: 195px;
 min-width: 234px; 
 min-height:174px;
@@ -293,7 +293,7 @@ min-height:174px;
 .statis-div-2{
   box-sizing: border-box;
 background: #E4FFE2;
-width: 393px;
+    max-width: 393px;
 height: 195px;
 min-width: 234px; 
 min-height:174px;
@@ -305,7 +305,7 @@ color:#0A7700;
 .statis-div-3{
 
 box-sizing: border-box;
-width: 393px;
+    max-width: 393px;
 height: 195px;
 min-width: 234px; 
 min-height:174px;
@@ -316,7 +316,7 @@ color: #772B00;
 }
 .addOffre-div{
   box-sizing: border-box;
-  width: 393px;
+  max-width: 393px;
   height: 195px;
   min-width: 234px; 
   min-height:174px;
@@ -325,7 +325,9 @@ color: #772B00;
   border-radius: 20px;
   }
 
-
+.prop-name{
+    font-weight: bold;
+}
 
 .btn-filtre{
 background: #7B61FF;

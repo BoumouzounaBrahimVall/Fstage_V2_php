@@ -3,7 +3,7 @@
 require(__DIR__ . './../phpQueries/etudiant/profil.php');
 require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
 $verification=0;//variable global pour la verification du mot de passe
-
+/*
 if($_SERVER['REQUEST_METHOD']=='POST')
 {
     if(isset($_POST['filesUploaed']))
@@ -11,6 +11,16 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 
         $file = $_FILES['cv'];
         uploadImagesOrCVEtudiant($etudiant_cne,$file,$bdd,2);
+    }
+
+}*/
+if($_SERVER['REQUEST_METHOD']=='POST')
+{
+    if(isset($_POST['filesUploaed']))
+    {
+
+        $file = $_POST['cvPath'];
+        uploadImagesOrCVFirebase($etudiant_cne,$file,$bdd,2);
     }
 
 }
@@ -57,7 +67,6 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
 <?php
   require_once "./meta-tag.php"
   ?>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 
     <title>Dashboard</title>
 </head>
@@ -181,19 +190,22 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                             Obligatoir d’importer votre Cv avant de postuler aux offres
                         </p>
                         <form enctype="multipart/form-data" method="post" action="">
+                            <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
                             <div  style="width: fit-content" class="mt-2   px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                 <img style="margin: auto; max-width: 75px" src="./../assets/img/comment-section/cv.png" alt="" />
-                                <label for="inputfile" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
+                                <label for="fileCv" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
                                     Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                 </label>
-                                <input class="form-control d-none" name="cv" accept="application/pdf" type="file" id="inputfile">
+                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmit','pathStorageFile',2,'<?php echo $etudiant_info['CNE_ETU'];?>')" accept="application/pdf" type="file" id="fileCv">
+                               <!-- <input class="form-control d-none" name="cv"  accept="application/pdf" type="file" id="files">-->
+
 
                                 <!--                                                                      <a class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" href="">Importer  <i class="bi bi-file-arrow-up-fill"></i-->
                                 <!--                                                                          ></a>-->
                             </div>
                             <div class="row ">
                                 <div class="col-xl-8  mt-5">
-                                    <button type="submit" name="filesUploaed"  value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
+                                    <button type="submit" id="btnSubmit" name="filesUploaed" disabled value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -310,6 +322,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
       ";
       }
       ?>
+      <script src="./../js/script-upload.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 

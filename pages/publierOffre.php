@@ -1,6 +1,6 @@
 <?php
- require( __DIR__.'../../phpQueries/respoRequiries.php'); 
-
+ require( __DIR__.'./../phpQueries/respoRequiries.php');
+require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
  if($_SERVER['REQUEST_METHOD']=='POST'){
 
  
@@ -35,12 +35,19 @@
    //execution de la requette
    $bdd->exec($req); 
    $donnee[0]=$donnee[17];
+
+    //add image entreprise
+      if(isset($_POST['cvPath']))
+      {
+
+          $file = $_POST['cvPath'];
+          uploadImagesOrCVFirebase($donnee[17],$file,$bdd,3);
+      }
   }
     $req2="INSERT INTO offredestage (NUM_OFFR,NUM_NIV,NUM_ENT,POSTE_OFFR,EFFECTIF_OFFRE,DETAILS_OFFR,DATEDEB_OFFR,DATEFIN_OFFR,VILLE_OFFR,ETATPUB_OFFR,PAYS_OFFR,DELAI_JOFFR)
     VALUES ('$donnee[16]','$donnee[14]','$donnee[0]','$donnee[7]','$donnee[12]','$donnee[15]','$donnee[8]','$donnee[9]','$donnee[10]','nouveau','$donnee[13]','$donnee[11]');";
     //execution de la requette
-    $bdd->exec($req2); 
-
+    $bdd->exec($req2);
   header('location:../pages/publierOffre.php');
 
  }
@@ -51,26 +58,10 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css">
-
-      <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <style>
-        
-    </style>
-     
+      <?php
+      require_once "./meta-tag.php"
+      ?>
     <title>Publier offre</title>
   </head>
 <body>
@@ -194,49 +185,15 @@
 
     <!-- Main Content Area -->
  
-  <!-- Pills content -->
-  <footer>
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col-12">
-          <div class="d-flex  justify-content-around align-items-center p-5">
 
-         
-          <div>
-            <img id="logo-light" src="../assets/icon/logo-light.png" alt="" />
-          </div>
-          <a href="#">
-            Contact
-          </a>
-          <a href="#">
-            A propos
-        </a>
-          <a href="#">
-            Espace Responsable
-          </a>
-          <a href="#">
-            Espace Etudiant
-          </a> </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="d-flex justify-content-center">
-
-        <div class="col-3.5">
-          <p class="copyright" >Copyright © Stage FSTM 2022. Tous droits réservés.</p>
-        </div>
-      </div>
-      </div>
-    </div>
-  </footer>
 
 
 
 
   <!-- Modal -->
 <div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="min-width: 500px;max-width: 800px">
-    <div class="modal-content d-flex justify-content-center "style="max-width: 800px;margin:auto;">
+  <div class="modal-dialog" style="min-width: 370px;max-width: 800px">
+    <div class="modal-content d-flex justify-content-center "style="max-width: 800px;min-width: 370px;margin:auto;">
       <div class="modal-header border-0">
       
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -278,13 +235,14 @@
           
               <div class="row" >
        
-              <div class="col-2 col-sm-6">
+              <div class="col-xl-6 col-sm-12">
                   <label for="inputEntreprise" class="col-form-label">Selectionné une entreprise</label>
     
               </div>
               
-              <div class="col-3 col-sm-6">
+              <div class="col-xl-6 col-sm-12">
                 <?php
+
                     $req="SELECT * FROM ENTREPRISE";
                     $Smt=$bdd->query($req);
                     $rows=$Smt->fetchAll(2);
@@ -293,7 +251,13 @@
                       
                     foreach($rows as $V):
                       echo '<option  value='.$V['NUM_ENT'].'>'.$V['LIBELLE_ENT'].' </option>';
-                    endforeach;  
+                        $lastNum=$V['NUM_ENT'];
+                    endforeach;
+
+                $lastNum++;
+
+
+
                 ?>
                  
                 </select></div>
@@ -311,12 +275,14 @@
                   <div class="mt-2 p-2 border border-1 rounded-3 " >
                     <div  >
                       <div class="">
-                      <label for="inputfile" class="col-form-label mt-2 btn btn-import-img">
+                      <label for="files" class="col-form-label mt-2 btn btn-import-img">
                       Importer logo <i class="bi bi-image-fill"></i>
                       </label>
-                      <input class="form-control d-none" accept="image/*" type="file" id="inputfile">
+                      <input class="form-control d-none" onchange="uploadFileToFirebase('files','btnSubmit','pathStorageFile',3,'<?php echo $lastNum; ?>')" accept="image/*" type="file" id="files">
       
                       <div>
+                          <input class="form-control d-none" name="cvPath" id="pathStorageFile" >
+
                           <div class="row mt-2 ">
                           <div class="col-xl-6 col-sm-12">
                               <label for="inputIntitule" class="col-form-label">Intitule</label>
@@ -513,7 +479,7 @@
                 </div>
                 <div class="row">
                   <div class="col-xl-6 mt-4">
-                    <button type="submit" class="btn btn-filtre btn-primary w-100 mb-3">    Ajouter <i class="bi bi-plus-circle-fill"></i></button>
+                    <button type="submit" id="btnSubmit" class="btn btn-filtre btn-primary w-100 mb-3">    Ajouter <i class="bi bi-plus-circle-fill"></i></button>
                   </div>       
                 </div>
                 
@@ -527,12 +493,11 @@
     </div>
   </div>
 </div>
-
-
+    <script src="./../js/script-upload.js"></script>
     <!-- JavaScript Bundle with Popper-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
-    <-- Import jQuery -->
+    <!-- Import jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 
@@ -540,7 +505,7 @@
     <!--Import Trumbowyg -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
 
-    <-!- Init Trumbowyg -->
+    <!-- Init Trumbowyg -->
     <script>
         // Doing this in a loaded JS file is better, I put this here for simplicity
         $('#detailoffre').trumbowyg();

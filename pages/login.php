@@ -141,7 +141,7 @@ if (isset($_GET['logout'])) {
             <button class="btn btn-selector  mx-auto btn-seconnecter" id="tab-etudiant">Espace Etudiant</button>
 
 
-            <button class="btn btn-selector mt-sm-2 mx-auto " id="tab-responsible">Espace Responsable</button>
+            <button class="btn btn-selector  mx-auto " id="tab-responsible">Espace Responsable</button>
         </div>
         <!-- Pills navs  fade show active-->
 
