@@ -81,6 +81,7 @@ $last_stg= $Smt_stg->fetch(PDO::FETCH_ASSOC);
 $visiblePostuler=" ";
 
 if($niv==@$last_stg['NUM_NIV']){
+
 $visiblePostuler="disabled";
 
 }
