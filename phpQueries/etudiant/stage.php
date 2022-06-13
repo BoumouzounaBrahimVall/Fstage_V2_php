@@ -18,7 +18,7 @@ $Smt_stage_info = $bdd->query($req_stage_actulle);
 $stage_actulle = $Smt_stage_info->fetch(PDO::FETCH_ASSOC);
 
 //liste de jury du stage
-$num_stage=$stage_actulle['NUM_STG'];
+$num_stage=@$stage_actulle['NUM_STG'];
 $req_jury= "SELECT * from STAGE st,JUGER jr,ENSEIGNANT ens
                         WHERE   st.NUM_STG=jr.NUM_STG
                         and ens.NUM_ENS = jr.NUM_ENS 

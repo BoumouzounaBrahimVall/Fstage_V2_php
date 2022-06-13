@@ -1,6 +1,15 @@
 
 <?php
 require(__DIR__ . './../phpQueries/etudiant/stage.php');
+require( __DIR__.'./../phpQueries/etudiant/dash.php');
+$div_stage_verification=0;
+
+$req_stg = "SELECT * from STAGE where CNE_ETU='$etudiant_cne';";
+$info_stg = $bdd->query($req_stg);
+$info_stg_etu=$info_stg->fetch();
+
+if(!empty($info_stg_etu)) {$div_stage_verification=1; }
+else {$div_stage_verification=0;}
 
 ?>
 <!DOCTYPE html>
@@ -10,6 +19,7 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
   require_once "./meta-tag.php"
   ?>
     <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   </head>
 
   <body>
@@ -34,7 +44,7 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
 
             </p> 
             </div>
-            <div style=""  class="row  border border-link rounded-3 p-4">
+            <div style=""  class="row  border border-link rounded-3 p-4" id="div_stgg">
               
                     <div class="col-xl-2 col-sm-12 me-4 " >
                         <img class="mx-auto mb-2" style="max-width: 150px;" src="<?php echo $stage_actulle['IMAGE_ENT'] ?>" alt="">
@@ -82,7 +92,7 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
                             
                             
                         </div>
-                        <div class="row mt-2 ">
+                        <div class="row mt-2" >
                             <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                                 <div class="col-auto prop-name me-3">Date fin :</div>
@@ -93,8 +103,12 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
                                 <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start align-items-center">
 
                                     <div class="col-auto prop-name me-3">Contrat :</div>
-                                    <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="<?php echo $stage_actulle['CONTRAT_STG'] ?>">voir plus</a></div>
-                                 
+                                    <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" target="_blank" href='../PDF/contrat.php'>voir plus</a></div>
+                                   
+
+                                  <a name="" id="" class="btn-postuler btn px-xl-4  border border-1 " href="../PDF/contrat.php" role="button"  download="Article_HTML5_download.pdf">Télechager</a>
+
+
                                
                                 </div>
                                 
@@ -297,7 +311,25 @@ require(__DIR__ . './../phpQueries/etudiant/stage.php');
       </div>
       
        
+       <?php
+       echo"
+       <script>
+
+ 
+       $(document).ready(function(){
        
+        if($div_stage_verification==0) {  
+         $('#div_stgg').hide();  
+        }
+     else  $('#div_stgg').show();  
+        
+       });
+     
+     </script>
+       
+       "
+       
+       ?>
         
         
         
