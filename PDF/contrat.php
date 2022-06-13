@@ -176,6 +176,11 @@ $pdf->SetY(220);
 $pdf->Cell(10);
 $pdf->Cell(45,50,"Signature de l'etudiant :");
 
+//$pdf->Output('F', '../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].'.pdf');
+$pdf->Output('F','../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].''.$etudiant_niveau['NUM_NIV'].''.$info_stg_etu['NUM_STG'].'.pdf');
 $pdf->Output();
 }
 ?>
+
+
+
