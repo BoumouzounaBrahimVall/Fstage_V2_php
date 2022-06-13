@@ -28,13 +28,14 @@ if(isset($_GET['send'])) {
             $requpdate = "UPDATE juger set EST_ENCADRER='1' WHERE NUM_STG='$stage_num' and NUM_ENS='$idEns'";
             $bdd->exec($requpdate);
             break;
-        case 'wallo':
-            $etat = $_GET['inputEtat'];
-            $req = "UPDATE OFFREDESTAGE set ETATPUB_OFFR='$etat' WHERE NUM_OFFR='$stage_num'";
+        case 'modifyext':
+            $noteext = $_GET['noteext'];
+            $sujet=$_GET['sujet'];
+            $req = "UPDATE stage set NOTE_ENEX='$noteext',SUJET_STG='$sujet' WHERE NUM_STG='$stage_num'";
+            $bdd->exec($req);
             break;
-
     }
-   // $bdd->exec($req);
+
     header('location:resposable-details-stage.php?numStage='.$stage_num);
 
 }
@@ -49,6 +50,7 @@ if(isset($_GET['ajouter'])){
 
     }else$reqajou="INSERT INTO juger (NUM_STG,NUM_ENS,EST_ENCADRER)VALUES ('$stage_num','$idEnsNew','0');";
     $bdd->exec($reqajou);
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
 if(isset($_GET['supprimer'])){
         $jurysupp= $_GET['jury'];
@@ -59,6 +61,7 @@ if(isset($_GET['supprimer'])){
             //executer la requette de suppression
             $bdd->exec($reqSup);
         }
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
 if(isset($_GET['modif'])){
 
@@ -67,6 +70,7 @@ if(isset($_GET['modif'])){
     echo $jurymodif;
     $requpdate = "UPDATE juger set NOTE='$note' WHERE NUM_STG='$stage_num' and NUM_ENS='$jurymodif'";
     $bdd->exec($requpdate);
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
 
 $req2=" SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
@@ -78,11 +82,26 @@ $req1="SELECT offr.*,stg.*,ent.IMAGE_ENT,ent.LIBELLE_ENT FROM OFFREDESTAGE offr,
                                                WHERE offr.NUM_ENT=ent.NUM_ENT and stg.NUM_OFFR=offr.NUM_OFFR and stg.NUM_STG='$stage_num';";
 $Smt1=$bdd->query($req1);
 $detaiOff=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
+//RAPPORT STAGE REQUETTE
+$reqRap="SELECT NUM_RAP nrp, INTITULE_RAP intirp, PATH_RAP pthrp FROM rapport rap WHERE rap.NUM_STG='$stage_num';";
+$Smtrap=$bdd->query($reqRap);
+$Rapport=$Smtrap->fetch(2);
+$action=' ';
+if(empty($Rapport)){
+    $Rapport['nrp']='vide';
+    $Rapport['intirp']='';
+    $Rapport['pthrp']='';
+    $action='disabled';
+}else if(!isset($Rapport['pthrp'])) $action='disabled';
+
+$reqMotCle="SELECT NUM_RAP nrp, INTITULE_RAP intirp, PATH_RAP pthrp FROM rapport rap WHERE rap.NUM_STG='$stage_num';";
+$Smtmcle=$bdd->query($reqMotCle);
+$MotCles=$Smtmcle->fetch(2);
 $donnee=array(
     $detaiOff['NUM_STG'],
     $detaiOff['NUM_OFFR'],
     $detaiOff['CNE_ETU'],
-    $detaiOff['DATEDEB_STG'],
+    $detaiOff['DATEDEB_STG'], //vall is stupido
     $detaiOff['DATEFIN_STG'],
     $detaiOff['NOTE_ENEX'],
     $detaiOff['SUJET_STG'],
@@ -307,7 +326,7 @@ $donnee=array(
                                 <div class="col-xl-6 col-sm-12">
 
                                     <label class="prop-name mt-2" for="inputSujet" >Sujet Stage </label>
-                                    <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[6];?>" name="Sujet" >
+                                    <input id="inputSujet" type="text"  class="form-control  inputext" disabled value="<?php echo $donnee[6];?>" name="sujet" >
 
                                 </div>
 
@@ -455,9 +474,8 @@ $donnee=array(
                                             </div>
                                             <div class="col-8 col-sm-6">
                                                 <select id="inputRapport" class="form-select" aria-label="Default select example">
-
                                                     <option selected value="1">importer</option>
-                                                    <option value="2">télecharger</option>
+                                                    <option value="2" >télecharger</option>
                                                 </select></div>
 
                                         </div>
@@ -467,14 +485,18 @@ $donnee=array(
                                 </div>
                             </div>
 
+                            <div class="ms-4 mt-2 row">
+                                <a href="<?php echo$Rapport['pthrp']?>" class="ms-4 btn btn-selector d-none <?php echo$action?>" id="btnDnL" download>Telecharger</a>
+                            </div>
 
-
-                            <div class="d-flex mt-4 align-items-center ">
+                            <div class="d-flex mt-4 align-items-center inforap" >
                                 <img class="me-2" src="./../../assets/icon/step2.svg" alt="">
                                 <span class="subheadline-form">Information sur Rapport</span>
                             </div>
-                            <div class="row">
+                            <div class="row inforap">
                                 <form action="" method="post">
+                                    <input type="text" class="d-none "  value="<?php echo$stage_num?>" name="numStage" >
+                                    <input class="d-none" type="text" value="<?php echo $Rapport['nrp']?>"  name="numRap">
                                     <div class="col-10 ms-5   align-items-start ">
 
                                         <div class="mt-2 p-2 border border-1 rounded-3 ">
@@ -486,24 +508,28 @@ $donnee=array(
                                                             <div class="col-xl-12 col-sm-12">
                                                                 <label for="inputIntitule" class="col-form-label">Intitule</label>
 
-                                                                <input class="form-control" type="text" id="inputIntitule" placeholder="Type to search...">
+                                                                <input class="form-control" type="text" id="inputIntitule" name="intituler" value="<?php echo $Rapport['intirp']?>">
                                                             </div>
-
-
                                                         </div>
 
                                                         <div class="row mt-2">
-                                                            <div class="col-xl-12 col-sm-12">
-                                                                <label for="inputMotCle" class="col-form-label">Mot clé</label>
-
-                                                                <input multiple id="inputMotCle" list="datalistMotcle" class="form-control" name="motclé" id="" aria-describedby="helpId" placeholder="">
-                                                                <datalist id="datalistMotcle">
-                                                                    <option value="Informatique">
-                                                                    <option value="Reseaux">
-                                                                    <option value="PHP">
-
-                                                                </datalist></div>
-
+                                                           <div class="row ms-1">  Mots clés</div>
+                                                            <div class="col">
+                                                                <select  class="form-control">
+                                                                    <option >ggg</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col">
+                                                                <select  class="form-control">
+                                                                    <option >ggg</option>
+                                                                    <option >ggg</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col">
+                                                                <select  class="form-control ">
+                                                                    <option >ggg</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
 
                                                         <div class="row mt-2 d-flex justify-content-around ">
@@ -652,7 +678,37 @@ $donnee=array(
     </div>
 </div>
 
+<script>
+    let activities = document.getElementById("inputRapport");
+    let infoRap=document.getElementsByClassName('inforap');
+    let btnDownload=document.getElementById('btnDnL');
+    activities.addEventListener("change", function() {
+        if(activities.value === "2")
+        {
+            for(let i = 0; i < infoRap.length; i++)
+                infoRap[i].classList.add('d-none');
 
+            btnDownload.classList.remove('d-none');
+        }
+        else{
+            for(let i = 0; i < infoRap.length; i++)
+                infoRap[i].classList.remove('d-none');
+            btnDownload.classList.add('d-none');
+        }
+    });
+
+    function addActivityItem() {
+        activities.addEventListener("click", function() {
+            let options = activities.querySelectorAll("option");
+            let count = options.length;
+
+            if(typeof(count) === "undefined" || count < 2)
+            {
+
+            }
+        });
+    }
+</script>
 <?php
 
 $req4="SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS from `ENSEIGNANT` ens,`ENSEIGNER` ensg 
