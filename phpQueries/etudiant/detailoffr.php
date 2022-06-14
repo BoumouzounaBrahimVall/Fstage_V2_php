@@ -1,4 +1,4 @@
-<?php
+ <?php
 require(__DIR__ . './../../phpQueries/conxnBDD.php');
 require(__DIR__ . './../../phpQueries/authen.php');
 
