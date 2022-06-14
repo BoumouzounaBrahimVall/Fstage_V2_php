@@ -1,7 +1,6 @@
 
 <?php
 require(__DIR__ . './../phpQueries/etudiant/stage.php');
-require( __DIR__.'./../phpQueries/etudiant/dash.php');
 $div_stage_verification=0;
 $etud_niv=$etudiant_niveau['NUM_NIV'];
 $req_stg = "SELECT * from STAGE,OFFREDESTAGE where STAGE.NUM_OFFR=OFFREDESTAGE.NUM_OFFR and CNE_ETU='$etudiant_cne' and OFFREDESTAGE.NUM_NIV=$etud_niv;";

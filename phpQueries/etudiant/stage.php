@@ -1,9 +1,6 @@
 <?php
-require(__DIR__ . './../../phpQueries/conxnBDD.php');
-require(__DIR__ . './../../phpQueries/authen.php');
 
-$etudiant_cne=$_SESSION['auth'];
-require(__DIR__ . './../../phpQueries/etudiant/etudiant-info.php');
+require(__DIR__ . './../../phpQueries/etudiant/dash.php');
 
 $date=date("Y-m-d");
 $req_stage_actulle= "SELECT * from STAGE st,OFFREDESTAGE offre,ENTREPRISE ent 
