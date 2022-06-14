@@ -10,6 +10,7 @@
       crossorigin="anonymous"
     />
  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css">
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
  <link
       rel="stylesheet"
@@ -22,3 +23,4 @@
  <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
     <link rel="stylesheet" href="./../css/style.css" />
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
