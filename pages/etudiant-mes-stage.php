@@ -3,8 +3,8 @@
 require(__DIR__ . './../phpQueries/etudiant/stage.php');
 require( __DIR__.'./../phpQueries/etudiant/dash.php');
 $div_stage_verification=0;
-
-$req_stg = "SELECT * from STAGE where CNE_ETU='$etudiant_cne';";
+$etud_niv=$etudiant_niveau['NUM_NIV'];
+$req_stg = "SELECT * from STAGE,OFFREDESTAGE where STAGE.NUM_OFFR=OFFREDESTAGE.NUM_OFFR and CNE_ETU='$etudiant_cne' and OFFREDESTAGE.NUM_NIV=$etud_niv;";
 $info_stg = $bdd->query($req_stg);
 $info_stg_etu=$info_stg->fetch();
 
@@ -126,8 +126,7 @@ else {$div_stage_verification=0;}
                                     
                                
                                 </div>
-                            
-                            
+
                         </div>
                         <div class="row mt-2 overflow-auto ">
                            
@@ -167,6 +166,9 @@ else {$div_stage_verification=0;}
 
            </p> 
            </div>
+
+
+
              <div class="mt-4">
                 <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     filtrer les données
