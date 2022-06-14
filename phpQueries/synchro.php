@@ -50,7 +50,35 @@ function Synchronisation_offre_effectif($bdd)
         }
     }
 }
+function update_etat_expire($bdd,$cne_etu_synch,$numOffre_synch)
+{
+    $req_update_etat_expire="UPDATE POSTULER set POSTULER.ETATS_POST='EXPIRER' where CNE_ETU='$cne_etu_synch' and NUM_OFFR='$numOffre_synch';";
+    $bdd->exec($req_update_etat_expire);
+}
 
+
+
+function Synchronisation_post_expirer($bdd)
+{
+    $req_etat_expirer= "SELECT pos.NUM_OFFR, offre.DELAI_JOFFR, pos.date_reponse ,pos.CNE_ETU FROM POSTULER pos,OFFREDESTAGE offre
+   
+            WHERE pos.NUM_OFFR = offre.NUM_OFFR AND pos.ETATS_POST= 'RETENU';
+                        ";
+    $Smt_etat_expirer = $bdd->query($req_etat_expirer);
+    $etat_expirer = $Smt_etat_expirer->fetchAll(PDO::FETCH_ASSOC);
+    foreach($etat_expirer as $V){
+        $jour_offr=$etat_expirer['DELAI_JOFFR'];
+        $date_rep=$etat_expirer['date_reponse'];
+        $date_expiration=date('Y-m-d',strtotime( $date_rep. ' + '.$jour_offr.' days'));
+        if($date_expiration<=date("Y-m-d"))
+        {
+            update_etat_expire($bdd,$V['CNE_ETU'],$V['NUM_OFFR']);
+        }
+
+    }
+
+
+}
 
 
 ?>

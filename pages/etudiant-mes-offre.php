@@ -1,6 +1,7 @@
 <?php
 require( __DIR__.'./../phpQueries/etudiant/dash.php');
-require( __DIR__.'./../phpQueries/etudiant/etudiant-niveau.php');
+
+
 $req_offre_postuler= "
                         SELECT * FROM POSTULER pos,OFFREDESTAGE offre,ENTREPRISE ent
                         WHERE pos.NUM_OFFR = offre.NUM_OFFR
@@ -43,25 +44,8 @@ if (isset($_POST['btnSelection']))
     $offre_response = $bdd->exec($req_offre_response);
     if ($response=='ACCEPTER')
     {
-        //calculer date d'expiration
-        /*
-                $req_etat_expirer= "
-                                SELECT offre.DELAI_JOFFR,pos.date_reponse FROM POSTULER pos,OFFREDESTAGE offre
-                                WHERE pos.NUM_OFFR = offre.NUM_OFFR
-                               AND pos.ETA
-                        ";
-                $Smt_etat_expirer = $bdd->query($req_etat_expirer);
-                $etat_expirer = $Smt_etat_expirer->fetch(PDO::FETCH_ASSOC);
-                echo "date  reponse :".$etat_expirer['date_reponse'];
-                //$transdate=date('Y-M-D', $etat_expirer);
-                $jour_offr=$etat_expirer['DELAI_JOFFR'];
-                $date_rep=$etat_expirer['date_reponse'];
-               // $transdate= strtotime( $date_rep,'+ '.intval($jour_offr).' days');
-                $date1 = date("Y-m-d", strtotime( $date_rep,'+ '.intval($jour_offr).' days'));
-                echo "date JOFFR :".$etat_expirer['DELAI_JOFFR'];
-                echo "date expiration :". $date1;
 
-        */
+
 
 
         //etablir un stage

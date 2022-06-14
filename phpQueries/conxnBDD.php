@@ -26,5 +26,6 @@ try {
 require( __DIR__.'./../phpQueries/synchro.php');
 Synchronisation_offre_date($bdd);
 Synchronisation_offre_effectif($bdd);
+Synchronisation_post_expirer($bdd);
 
 ?>
