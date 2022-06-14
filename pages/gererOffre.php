@@ -132,7 +132,7 @@
 
                   <!--------Filter bar ----->
 
-                  <div class="mt-2 border p-3 border-1 ">
+                  <div class="mt-2 border p-3 rounded-5 rounded border-1 ">
                       <table id="table_id"  style="width:100%" class=" nowrap display">
                           <thead>
                           <tr>

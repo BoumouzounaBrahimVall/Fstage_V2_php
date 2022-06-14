@@ -161,51 +161,11 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                filtrer les données <i class="bi bi-search"></i>
-                            </button>
-                           
-                            <div class="collapse " id="collapseExample">
-                                <div class="row">
-                                    <div class="filtre-bar ps-4  mt-5" >
-                                        <form class="row g-3">
-                                            <div class="col-xl-2 col-sm-6">
-                                                <label for="inputIntitule2" class="col-form-label">CNE</label>
-                                            </div>
-                                            <div class="col-xl-4 col-sm-6">
-                                                <input class="form-control" type="text" id="inputIntitule2" placeholder="CNE...">
-                                            </div>
-                                            <div class="col-xl-2 col-sm-6">
-                                                <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                                                </div>
-                                                <div class="col-xl-4 col-sm-6">
-                                                    <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                                        <option selected>Trier par </option>
-                                                        <option value="ILISI1">ILISI1</option>
-                                                        <option value="ILISI2">ILISI2</option>
-                                                        <option value="ILISI3">ILISI3</option>
-                                                    </select>
-                                                </div>
-                                                        <div class="col-xl-2 col-sm-6">
-                                                        <label for="inputTrier2" class="col-form-label">Trier</label>
-                                                        </div>
-                                                        <div class="col-xl-4 col-sm-6">
-                                                        <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                                            <option selected>Trier par </option>
-                                                            <option value="date">Date</option>
-                                                            <option value="Alpha">Ordre Alphabetique</option>
-                                                            </select></div>
-                                                <div class="col-xl-6 col-sm-10">
-                                                <button type="submit" class="btn btn-filtre  w-100 mb-3">    Chercher <i class="bi bi-search"></i></button>
-                                            </div>
-                                            </form>
-                                    </div>
-                                </div>
-                            </div>
 
 
-                            <div class="row overflow-auto">
-                                <table class="table"
+
+                            <div class="row  mt-2 border p-3 border-1 rounded  rounded-5  ">
+                                <table id="table_id2"  style="width:100%" class=" nowrap display"
                                        >
                                 <thead>
                                     <tr>
@@ -240,7 +200,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                                        $Smt_nbr=$bdd->query($req_nbr); 
                                        $nbr=$Smt_nbr->fetch(PDO::FETCH_ASSOC);
                                       echo' <tr>
-                                      <th scope="row">'.$V['cne'].'</th>
+                                      <td>'.$V['cne'].'</td>
                                     
                                             <td>'.$V['nom'].'</td>
                                             <td>'.$V['prenom'].'</td> 
@@ -249,9 +209,9 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                                             <td>'.$nbr['nbr_post'].'</td>
                                             <td>  
                                          <a class="ms-3" href="../pages/resposable-details-etudiant.php?cne='.$V['cne'].'"><i class=" active  bi bi-pencil-fill"></i></a>
-                                        </td></tr>
+                                        </td>
                                         
-                                    <tr>';
+                                    </tr>';
 
                                      endforeach;
                                     $lastNum++;
@@ -259,6 +219,9 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
 
                 
                                 </tbody>
+                                    <tfoot>
+
+                                    </tfoot>
                                 </table>
                             </div>
                             
@@ -273,40 +236,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
     <!-- Main Content Area -->
  
   <!-- Pills content -->
-  <footer>
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col-12">
-          <div class="d-flex  justify-content-around align-items-center p-5">
 
-         
-          <div>
-            <img id="logo-light" src="../assets/icon/logo-light.png" alt="" />
-          </div>
-          <a href="#">
-            Contact
-          </a>
-          <a href="#">
-            A propos
-        </a>
-          <a href="#">
-            Espace Responsable
-          </a>
-          <a href="#">
-            Espace Etudiant
-          </a> </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="d-flex justify-content-center">
-
-        <div class="col-3.5">
-          <p class="copyright" >Copyright © Stage FSTM 2022. Tous droits réservés.</p>
-        </div>
-      </div>
-      </div>
-    </div>
-  </footer>
   <!--MODEL FORM-->
 <!-- Modal -->
 <div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -457,9 +387,14 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
     </div>
   </div>
 </div>
-    <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+   <script>
+        $(document).ready( function () {
+            $('#table_id2').DataTable({
+                scrollY: 200,
+                scrollX: true,
+            });
+        } );
+    </script>
 <script type="text/javascript" src="/js/script.js"></script>
     <script src="./../js/script-upload.js"></script>
 
