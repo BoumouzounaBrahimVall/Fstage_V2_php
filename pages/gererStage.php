@@ -85,7 +85,7 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                     <div class="container-fluid d-flex justify-content-center align-items-center row mt-2">
                         <div class="col-lg-6 col-md-12 p-xl-4 mr-2 my-sm-2 ">
 
-                            <div class="row  pt-3 pb-3 statis-div-2">
+                            <div class="row  pt-3 pb-3 statis-div-2 mt-2">
 
                                 <div class="col-2 col-sm-5  p-4">
                                     <img  src="../assets/icon/bag_green.png" alt="stages">
@@ -108,7 +108,7 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                         <!-- the other one-->
                         <div class="col-lg-6 col-md-12 p-xl-4 mr-2 my-sm-2">
 
-                            <div class="row   pt-3 pb-3  statis-div-3">
+                            <div class="row   pt-3 pb-3  statis-div-3 mt-2">
 
                                 <div class="col-2 col-sm-5  p-4">
                                     <img  src="../assets/icon/bag_red.png" alt="offres">

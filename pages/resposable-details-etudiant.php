@@ -373,49 +373,9 @@ if(isset($_GET['passOublier'])) {
                 
              </div>
              <div class="mt-4">
-                <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    filtrer les données
-                </button>
-               
-                <div class="collapse " id="collapseExample">
-                    <div class="row">
-                        <div class="filtre-bar ps-4  mt-5" >
-                            <form class="row g-3">
-                                <div class="col-xl-2 col-sm-6">
-                                    <label for="inputIntitule2" class="col-form-label">CNE</label>
-                                </div>
-                                <div class="col-xl-4 col-sm-6">
-                                    <input class="form-control" type="text" id="inputIntitule2" placeholder="CNE...">
-                                </div>
-                                <div class="col-xl-2 col-sm-6">
-                                    <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                                    </div>
-                                    <div class="col-xl-4 col-sm-6">
-                                        <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                            <option selected>Trier par </option>
-                                            <option value="ILISI1">ILISI1</option>
-                                            <option value="ILISI2">ILISI2</option>
-                                            <option value="ILISI3">ILISI3</option>
-                                        </select>
-                                    </div>
-                                            <div class="col-xl-2 col-sm-6">
-                                            <label for="inputTrier2" class="col-form-label">Trier</label>
-                                            </div>
-                                            <div class="col-xl-4 col-sm-6">
-                                            <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="date">Date</option>
-                                                <option value="Alpha">Ordre Alphabetique</option>
-                                                </select></div>
-                                    <div class="col-xl-6">
-                                    <button type="submit" class="btn btn-filtre  w-100 mb-3">    Chercher <i class="bi bi-search"></i></button>
-                                </div>
-                                </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="row overflow-auto">
-                    <table class="table">
+
+                <div class="mt-2 border p-3 rounded-5 rounded border-1 ">
+                    <table id="table_id7"  style="width:100%" class=" nowrap display">
                       <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -457,7 +417,7 @@ if(isset($_GET['passOublier'])) {
                               if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
                               else $anul='--';
                               echo' <tr>
-                              <th scope="row"><a href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'">'.$V['NUM_OFFR'].'</a></th>
+                              <td ><a href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'">'.$V['NUM_OFFR'].'</a></td>
                               <td>'.$V['LIBELLE_ENT'].'</td>
                               <td>'.$V['POSTE_OFFR'].'</td>
                               <td>'.$V['DATE_POST'].'</td>
@@ -489,13 +449,16 @@ if(isset($_GET['passOublier'])) {
         
   </div>
     </div>
-    
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+     <script>
+         $(document).ready( function () {
+             $('#table_id7').DataTable({
+                 scrollY: 200,
+                 scrollX: true,
+             });
+         } );
+     </script>
+
      <script src="../js/script-upload.js"></script>
      <script>
          const modifySubmitdate = (inputId, btnId,subbtn) => {
