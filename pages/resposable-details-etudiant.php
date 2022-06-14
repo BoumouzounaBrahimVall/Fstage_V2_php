@@ -1,4 +1,3 @@
-
 <?php
 require(  __DIR__.'./../phpQueries/mail.php');
 require(  __DIR__.'./../phpQueries/uploads.php');
@@ -64,9 +63,8 @@ if(isset($_GET['send'])) {
     $bdd->exec($req);
 
 }
-
-$req1="SELECT * FROM ETUDIANT  where CNE_ETU='$cne';";
-
+echo $cne;
+$req1="SELECT * FROM ETUDIANT  where CNE_ETU='$cne' ";
 $Smt1=$bdd->query($req1);
 $detaiEtu=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
 if( empty($detaiEtu['IMG_ETU'])){
@@ -88,11 +86,11 @@ if(isset($_GET['passOublier'])) {
 
     $pass=generateRandomString();
     echo $pass;
-    passForgotten("$donnee[2]",$pass,$donnee[0],$donnee[1]);
+   // passForgotten("$donnee[2]",$pass,$donnee[0],$donnee[1]);
     $pass=password_hash($pass,PASSWORD_DEFAULT);
     $req = "  UPDATE `ETUDIANT` SET `MOTDEPASSE_ETU` = '$pass' WHERE `ETUDIANT`.`CNE_ETU` = '$cne';";
     $bdd->exec($req);
-    header("location:resposable-details-etudiant.php?cne='$cne'");
+    header("location:resposable-details-etudiant.php?cne=".$cne);
 }
 
 ?>
@@ -188,8 +186,6 @@ if(isset($_GET['passOublier'])) {
                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
                             <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
                             <input class="form-control d-none" name="cvPath" id="pathStorageImg" >
-
-
                             <label for="files" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
                             <input type="file" disabled class="d-none inputImg" onchange="uploadFileToFirebase('files','modifyphoto','pathStorageImg',1,'<?php echo $cne;?>')"  name="file" id="files">
                             <button type="submit" name="filesUploaed" class="btn d-none"  id="subbtnimg" >
@@ -199,7 +195,7 @@ if(isset($_GET['passOublier'])) {
                         </form>
                     </div>
                     <div class="row  mt-2 p-0 ">
-                        <form   action="" method="get">
+                        <form   action="" method="get" >
                             <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
                             <button type="submit" name="passOublier" class="btn btn-filtre m-0"  id="subbtn" ><small>Reinisialiser Mot de passe</small></button>
                         </form>
