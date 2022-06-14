@@ -48,8 +48,7 @@ if (isset($_POST['btnSelection']))
                 $req_etat_expirer= "
                                 SELECT offre.DELAI_JOFFR,pos.date_reponse FROM POSTULER pos,OFFREDESTAGE offre
                                 WHERE pos.NUM_OFFR = offre.NUM_OFFR
-                                AND offre.NUM_OFFR ='$noffr'
-                                AND pos.CNE_ETU='$etudiant_cne'
+                               AND pos.ETA
                         ";
                 $Smt_etat_expirer = $bdd->query($req_etat_expirer);
                 $etat_expirer = $Smt_etat_expirer->fetch(PDO::FETCH_ASSOC);

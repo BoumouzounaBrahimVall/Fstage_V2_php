@@ -1,10 +1,6 @@
 <?php
-require(__DIR__ . './../../phpQueries/conxnBDD.php');
-require(__DIR__ . './../../phpQueries/authen.php');
-$etudiant_cne=$_SESSION['auth'];
-require(__DIR__ . './../../phpQueries/etudiant/etudiant-info.php');
-require(__DIR__ . './../../phpQueries/etudiant/etudiant-niveau.php');
-$niveau =$etudiant_niveau['NUM_NIV'];
+require(__DIR__ . './../../phpQueries/etudiant/dash.php');
+
 $req_formation_niveau = "SELECT * from NIVEAU niv,FORMATION fo 
                 WHERE niv.NUM_FORM=fo.NUM_FORM
                 AND   niv.NUM_NIV ='$niveau'

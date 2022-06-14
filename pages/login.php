@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     if ($user != "" && $pass != "") {
-        require(__DIR__ . '/../phpQueries/conxnBDD.php');
+        require_once(__DIR__ . '/../phpQueries/conxnBDD.php');
         if ($who == 'responsable')
             $query = "SELECT RESPONSABLE.MOTDEPASSE_RES FROM RESPONSABLE where RESPONSABLE.USERNAME_RES='$user';";
         else

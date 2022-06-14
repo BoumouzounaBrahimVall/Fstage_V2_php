@@ -1,5 +1,5 @@
 <?php
-require( __DIR__.'./../phpQueries/etudiant/dash.php');
+
 $nbr_retenu = 0;//variable pour compter le nombre d offre postuler avec l etat retenu
 $etat_retenu= " SELECT POSTULER.ETATS_POST from POSTULER,ETUDIANT where ETUDIANT.CNE_ETU=POSTULER.CNE_ETU and POSTULER.ETATS_POST='RETENU' and ETUDIANT.CNE_ETU='$etudiant_cne' ;";
 $All_etats = $bdd->query($etat_retenu);
