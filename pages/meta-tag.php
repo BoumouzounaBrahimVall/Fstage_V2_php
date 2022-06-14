@@ -21,3 +21,4 @@
 
  <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
     <link rel="stylesheet" href="./../css/style.css" />
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -1,7 +1,7 @@
 
 <?php
-require(  __DIR__.'../../phpQueries/mail.php');
-require(  __DIR__.'../../phpQueries/uploads.php');
+require(  __DIR__.'./../phpQueries/mail.php');
+require(  __DIR__.'./../phpQueries/uploads.php');
 $cne=$_GET['cne'];
 
 //print_r($_GET);

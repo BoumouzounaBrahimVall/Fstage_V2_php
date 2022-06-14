@@ -17,11 +17,9 @@
     />
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <style>
-        
-    </style>
-     
-    <title>Gerer offres</title>
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+     <title>Gerer offres</title>
   </head>
 <body>
   
@@ -144,7 +142,7 @@
                 <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                  filtrer les données
                 </button>
-              </p>
+
               <div class="collapse " id="collapseExample">
                 
                   <div class="row">
@@ -196,34 +194,34 @@
                   </div>
               </div>
                   <!--------Filter bar ----->
-           
-            <div class="row overflow-auto">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Entreprise</th>
-                      <th scope="col">Poste</th>
-                      <th scope="col">Niveau</th>
-                      <th scope="col">Effectif</th>
-                      <th scope="col">Nbr candidats</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                      $req="SELECT ofr.*,ent.LIBELLE_ENT,niv.LIBELLE_NIV FROM `OFFREDESTAGE` ofr,NIVEAU niv ,ENTREPRISE ent 
+
+                  <div class="mt-5">
+                      <table id="table_id"  style="width:100%" class="nowrap display">
+                          <thead>
+                          <tr>
+                              <th scope="col">id</th>
+                              <th scope="col">Entreprise</th>
+                              <th scope="col">Poste</th>
+                              <th scope="col">Niveau</th>
+                              <th scope="col">Effectif</th>
+                              <th scope="col">Nbr candidats</th>
+                              <th scope="col">Action</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <?php
+                          $req="SELECT ofr.*,ent.LIBELLE_ENT,niv.LIBELLE_NIV FROM `OFFREDESTAGE` ofr,NIVEAU niv ,ENTREPRISE ent 
                       WHERE niv.NUM_NIV=ofr.NUM_NIV and ent.NUM_ENT=ofr.NUM_ENT and niv.NUM_FORM='$formation';";
-                      $Smt=$bdd->query($req); 
-                      $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC 
-                      //afficher le tableau
-                      foreach($rows as $V): 
-                        $postul=$V['NUM_OFFR'];
-                        $nbr="SELECT count(POSTULER.CNE_ETU) nbrpost FROM `POSTULER` WHERE POSTULER.NUM_OFFR='$postul';";
-                        $Smt2=$bdd->query($nbr); 
-                        $nbrCnd=$Smt2->fetch(PDO::FETCH_ASSOC);
-                      echo' <tr>
-                      <th scope="row">'.$V['NUM_OFFR'].'</th>
+                          $Smt=$bdd->query($req);
+                          $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
+                          //afficher le tableau
+                          foreach($rows as $V):
+                              $postul=$V['NUM_OFFR'];
+                              $nbr="SELECT count(POSTULER.CNE_ETU) nbrpost FROM `POSTULER` WHERE POSTULER.NUM_OFFR='$postul';";
+                              $Smt2=$bdd->query($nbr);
+                              $nbrCnd=$Smt2->fetch(PDO::FETCH_ASSOC);
+                              echo' <tr>
+                            <td>'.$V['NUM_OFFR'].'</td>
                     
                             <td>'.$V['LIBELLE_ENT'].'</td>
                             <td>'.$V['POSTE_OFFR'].'</td> 
@@ -231,19 +229,25 @@
                             <td>'.$V['EFFECTIF_OFFRE'].'</td>
                             <td>'.$nbrCnd['nbrpost'].'</td>
                             <td>  
-                          <a class="ms-3" href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'"><i class=" active  bi bi-pencil-fill"></i></a>
-                        </td></tr>
+                                <a class="ms-3" href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'"><i class=" active  bi bi-pencil-fill"></i></a>
+                                </td>
+                            </tr>
                         
-                    <tr>';
-                      endforeach;
-                    
-                    ?>
-                    
+                    ';
+                          endforeach;
 
-                  </tbody>
-                </table>
+                          ?>
+
+
+                          </tbody>
+                          <tfoot>
+
+                          </tfoot>
+                      </table>
+                  </div>
+
+
               </div>
-                   </div>
               </div>
             </div>
         </div>
@@ -259,7 +263,18 @@
   <!-- Pills content -->
 
   <!-- JavaScript Bundle with Popper-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready( function () {
+            $('#table_id').DataTable({
+                scrollY: 200,
+                scrollX: true,
+            });
+        } );
+    </script>
   </body>
 </html>
