@@ -370,49 +370,9 @@ $donnee=array(
                 
              </div>
              <div class="mt-4">
-                <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    filtrer les données
-                </button>
-               
-                <div class="collapse " id="collapseExample">
-                    <div class="row">
-                        <div class="filtre-bar ps-4  mt-5" >
-                            <form class="row g-3">
-                                <div class="col-xl-2 col-sm-6 ">
-                                    <label for="inputIntitule2" class="col-form-label ">CNE</label>
-                                </div>
-                                <div class="col-xl-4 col-sm-6 ">
-                                    <input class="form-control " type="text" id="inputIntitule2" placeholder="CNE...">
-                                </div>
-                                <div class="col-xl-2 col-sm-6">
-                                    <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                                    </div>
-                                    <div class="col-xl-4 col-sm-6">
-                                        <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                            <option selected>Trier par </option>
-                                            <option value="ILISI1">ILISI1</option>
-                                            <option value="ILISI2">ILISI2</option>
-                                            <option value="ILISI3">ILISI3</option>
-                                        </select>
-                                    </div>
-                                            <div class="col-xl-2 col-sm-6">
-                                            <label for="inputTrier2" class="col-form-label">Trier</label>
-                                            </div>
-                                            <div class="col-xl-4 col-sm-6">
-                                            <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="date">Date</option>
-                                                <option value="Alpha">Ordre Alphabetique</option>
-                                                </select></div>
-                                    <div class="col-xl-6">
-                                    <button type="submit" class="btn btn-filtre  w-100 mb-3">    Chercher <i class="bi bi-search"></i></button>
-                                </div>
-                                </form>
-                        </div>
-                    </div>
-                </div>
-               <div class="row overflow-auto">
-                    <table class="table">
+
+               <div class="mt-2 border p-3 rounded-5 rounded border-1 ">
+                    <table id="table_id"  style="width:100%" class=" nowrap display">
                       <thead>
                         <tr>
                           <th scope="col">CNE</th>
@@ -453,7 +413,7 @@ $donnee=array(
                               else $anul='--';
 
                               echo' <tr>
-                              <th scope="row"><a href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</a></th>
+                              <td ><a href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</a></td>
                               <td>'.$V['NOM_ETU'].'</td>
                               <td>'.$V['PRENOM_ETU'].'</td>
                               <td>'.$V['DATE_POST'].'</td>
@@ -514,17 +474,19 @@ $donnee=array(
     </div>
     </div>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+
    <script src="../js/script-upload.js"></script>
    <script src="../js/script2.js"></script>
-
+   <script>
+       $(document).ready( function () {
+           $('#table_id').DataTable({
+               scrollY: 200,
+               scrollX: true,
+           });
+       } );
+   </script>
    <!-- Import jQuery -->
-   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+ <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 
    <!--Import Trumbowyg -->
    <script src="//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
