@@ -4,22 +4,9 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-            crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <style>
-
-    </style>
+    <?php
+    require_once "./meta-tag.php"
+    ?>
 
     <title>Gerer Stages</title>
 </head>
@@ -139,64 +126,9 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-filtre" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            filtrer les données
-                        </button>
-                        </p>
-                        <div class="collapse " id="collapseExample">
 
-                            <div class="row">
-                                <div class="filtre-bar ps-4  mt-5" >
-                                    <form class="row g-3">
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputIntitule2" class="col-form-label">Entreprise</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <input class="form-control" type="text" id="inputIntitule2" placeholder="Type to search...">
-                                        </div>
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputMotcle" class="col-form-label">Ville</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <input class="form-control" list="datalistOptions" id="inputMotcle" placeholder="Type to search...">
-                                            <datalist id="datalistOptions">
-                                                <option value="Casablanca">
-                                                <option value="Rabat">
-                                                <option value="Mohammedia">
-                                            </datalist> </div>
-
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="ILISI1">ILISI1</option>
-                                                <option value="ILISI2">ILISI2</option>
-                                                <option value="ILISI3">ILISI3</option>
-                                            </select></div>
-
-                                        <div class="col-xl-2 col-sm-6">
-                                            <label for="inputTrier2" class="col-form-label">Trier</label>
-                                        </div>
-                                        <div class="col-xl-4 col-sm-6">
-                                            <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                                <option selected>Trier par </option>
-                                                <option value="date">Date</option>
-                                                <option value="2">Nombre effectif</option>
-                                                <option value="3">Nombre candidats</option>
-                                            </select></div>
-                                        <div class="col-xl-6">
-                                            <button type="submit" class="btn btn-filtre  w-100 mb-3">    Chercher <i class="bi bi-search"></i></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!--------Filter bar ----->
-
-                        <div class="row overflow-auto">
-                            <table class="table">
+                        <div class="mt-2 border p-3 rounded-5 rounded border-1 ">
+                            <table  id="table_id10"  style="width:100%" class="nowrap display">
                                 <thead>
                                 <tr>
                                     <th scope="col">№ stage</th>
@@ -221,17 +153,18 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
                                     $Smt2=$bdd->query($nbr);
                                     $nbrCnd=$Smt2->fetch(PDO::FETCH_ASSOC);
                                     echo' <tr>
-                      <th scope="row">'.$V['NUM_STG'].'</th>
-                            <td><a  href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'">'.$V['NUM_OFFR'].'</td>
-                            <td><a  href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</td> 
-                            <td>'.$V['LIBELLE_NIV'].'</td> 
-                            <td>'.$V['DATEDEB_STG'].'</td>
-                            <td>'.$V['DATEFIN_STG'].'</td>
-                            <td>  
-                          <a class="ms-3" href="../pages/resposable-details-stage.php?numStage='.$V['NUM_STG'].'"><i class=" active  bi bi-pencil-fill"></i></a>
-                        </td></tr>
+                                          <td >'.$V['NUM_STG'].'</td>
+                                            <td><a  href="../pages/resposable-details-offre.php?numOffre='.$V['NUM_OFFR'].'">'.$V['NUM_OFFR'].'</td>
+                                            <td><a  href="../pages/resposable-details-etudiant.php?cne='.$V['CNE_ETU'].'">'.$V['CNE_ETU'].'</td> 
+                                            <td>'.$V['LIBELLE_NIV'].'</td> 
+                                            <td>'.$V['DATEDEB_STG'].'</td>
+                                            <td>'.$V['DATEFIN_STG'].'</td>
+                                            <td>  
+                                          <a class="ms-3" href="../pages/resposable-details-stage.php?numStage='.$V['NUM_STG'].'"><i class=" active  bi bi-pencil-fill"></i></a>
+                                        </td>
+                                        </tr>
                         
-                    <tr>';
+                    <';
                                 endforeach;
 
                                 ?>
@@ -251,45 +184,17 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
 
 
 
-<!-- Main Content Area -->
 
-<!-- Pills content -->
-<footer>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex  justify-content-around align-items-center p-5">
-
-
-                    <div>
-                        <img id="logo-light" src="../assets/icon/logo-light.png" alt="" />
-                    </div>
-                    <a href="#">
-                        Contact
-                    </a>
-                    <a href="#">
-                        A propos
-                    </a>
-                    <a href="#">
-                        Espace Responsable
-                    </a>
-                    <a href="#">
-                        Espace Etudiant
-                    </a> </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="d-flex justify-content-center">
-
-                <div class="col-3.5">
-                    <p class="copyright" >Copyright © Stage FSTM 2022. Tous droits réservés.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 <!-- JavaScript Bundle with Popper-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready( function () {
+        $('#table_id10').DataTable({
+            scrollY: 200,
+            scrollX: true,
+        });
+    } );
+</script>
 <script type="text/javascript" src="/js/script.js"></script>
 </body>
 </html>
