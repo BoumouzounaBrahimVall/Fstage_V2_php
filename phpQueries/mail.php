@@ -23,9 +23,9 @@ function passForgotten($mal,$newPass,$nom,$prenom) {
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     // $mail->SMTPSecure='tls';
     $mail->Username   = 'fstmstage@gmail.com';                    // SMTP username
-    $mail->Password   = '0695480803Fstage';                                 // SMTP password
-    $mail->SMTPSecure = 'ssl';         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-    $mail->Port       = 465;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above  587
+    $mail->Password   = 'oaonendaffjffbmq';                                 // SMTP password
+    $mail->SMTPSecure = 'tls';         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+    $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above  587
 
 // Content
     $mail->isHTML(true);

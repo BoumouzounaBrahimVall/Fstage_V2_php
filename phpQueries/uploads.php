@@ -18,6 +18,7 @@ function uploadImagesOrCVFirebase($id,$fileDestination,$bdd,$typ){
                 $req = "  UPDATE `RESPONSABLE` SET `IMAGE_RESP`= '$fileDestination' WHERE `RESPONSABLE`.`USERNAME_RES` = '$id';";
                 break;
 
+
         }
 
         $bdd->exec($req);
@@ -59,8 +60,13 @@ function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
                         $fileDestination="../ressources/ResposablesPhoto/". $fileNameNew;
                         $req = "  UPDATE `RESPONSABLE` SET `IMAGE_RESP`= '$fileDestination' WHERE `RESPONSABLE`.`USERNAME_RES` = '$id';";
                         break;
-
+                    case 5: // Rapport stage id=numStage
+                        $fileNameNew="Stage".$id."Rapport.". $fileActualExt;
+                        $fileDestination="../ressources/RapportStage/". $fileNameNew;
+                        $req = "  UPDATE `rapport` SET `PATH_RAP`= '$fileDestination' WHERE `NUM_STG` = '$id';";
+                        break;
                 }
+
 
                 $bdd->exec($req);
                 move_uploaded_file($fileTmpName, $fileDestination);
@@ -76,3 +82,5 @@ function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
         "You cannot upload files of this type!";
     }
 }
+
+

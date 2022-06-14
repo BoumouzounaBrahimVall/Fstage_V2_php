@@ -1,9 +1,44 @@
-
 <?php
 require(  __DIR__.'../../phpQueries/uploads.php');
 $stage_num=$_GET['numStage'];
- if(!isset($stage_num)) header('location:gererStage.php');
 
+if(isset($_POST['filesUpload'])) $stage_num=$_POST['numStage'];
+if(!isset($stage_num)) header('location:gererStage.php');
+
+
+//RAPPORT STAGE REQUETTE
+$reqRap="SELECT NUM_RAP nrp, INTITULE_RAP intirp, PATH_RAP pthrp FROM rapport rap WHERE rap.NUM_STG='$stage_num';";
+$Smtrap=$bdd->query($reqRap);
+$Rapport=$Smtrap->fetch(2);
+$action=' ';
+if(empty($Rapport)){
+    $Rapport['nrp']='vide';
+    $Rapport['intirp']='';
+    $Rapport['pthrp']='';
+    $action='disabled';
+}else{ if(!isset($Rapport['pthrp'])) $action='disabled';}
+$numRapp= $Rapport['nrp'];
+//REQUETTE DES MOTS CLES DE CE RAP
+$reqMotCleRAP="SELECT NUM_CLE numCle FROM contenirmotrap where NUM_RAP='$numRapp';";
+$SmtmcleRAP=$bdd->query($reqMotCleRAP);
+$MotClesRAP=$SmtmcleRAP->fetchAll(2);
+//if(empty($MotClesRAP)){
+
+
+if(isset($_POST['filesUpload'])){
+    echo 'ouui';
+    $intit=$_POST['intituler'];
+    $file = $_FILES['file'];
+    if( $Rapport['nrp']=='vide'){//creer rapport
+        $reqrapadd = "  insert into `rapport`(num_stg, intitule_rap)values ('$stage_num','$intit');";
+        $bdd->exec($reqrapadd);
+    }else {
+        $reqrapadd = "UPDATE `rapport` SET `intitule_rap`= '$intit' WHERE `NUM_STG` = '$id';";
+        $bdd->exec($reqrapadd);
+    }
+    if(isset($file))  uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
+    header('location:resposable-details-stage.php?numStage='.$offre_num);
+}
 if(isset($_GET['send'])) {
     switch ($_GET['send']) {
         case 'modifystg1':
@@ -72,7 +107,7 @@ if(isset($_GET['modif'])){
     $bdd->exec($requpdate);
     header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
-
+//l'affichage
 $req2=" SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
                                                 FROM juger ju ,`ENSEIGNANT` ens,`ENSEIGNER` ensg WHERE ensg.NUM_ENS=ens.NUM_ENS 
                                                 and ens.NUM_ENS=ju.NUM_ENS and  ju.NUM_STG='$stage_num' and ensg.NUM_FORM='$formation';";
@@ -82,26 +117,16 @@ $req1="SELECT offr.*,stg.*,ent.IMAGE_ENT,ent.LIBELLE_ENT FROM OFFREDESTAGE offr,
                                                WHERE offr.NUM_ENT=ent.NUM_ENT and stg.NUM_OFFR=offr.NUM_OFFR and stg.NUM_STG='$stage_num';";
 $Smt1=$bdd->query($req1);
 $detaiOff=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
-//RAPPORT STAGE REQUETTE
-$reqRap="SELECT NUM_RAP nrp, INTITULE_RAP intirp, PATH_RAP pthrp FROM rapport rap WHERE rap.NUM_STG='$stage_num';";
-$Smtrap=$bdd->query($reqRap);
-$Rapport=$Smtrap->fetch(2);
-$action=' ';
-if(empty($Rapport)){
-    $Rapport['nrp']='vide';
-    $Rapport['intirp']='';
-    $Rapport['pthrp']='';
-    $action='disabled';
-}else if(!isset($Rapport['pthrp'])) $action='disabled';
 
-$reqMotCle="SELECT NUM_RAP nrp, INTITULE_RAP intirp, PATH_RAP pthrp FROM rapport rap WHERE rap.NUM_STG='$stage_num';";
+//REQUETE DE TOUS MOTS CLES
+$reqMotCle="SELECT NUM_CLE numCle, LIBELLE_CLE libCle FROM motcle";
 $Smtmcle=$bdd->query($reqMotCle);
-$MotCles=$Smtmcle->fetch(2);
+$MotCles=$Smtmcle->fetchAll(2);
 $donnee=array(
     $detaiOff['NUM_STG'],
     $detaiOff['NUM_OFFR'],
     $detaiOff['CNE_ETU'],
-    $detaiOff['DATEDEB_STG'], //vall is stupido
+    $detaiOff['DATEDEB_STG'],
     $detaiOff['DATEFIN_STG'],
     $detaiOff['NOTE_ENEX'],
     $detaiOff['SUJET_STG'],
@@ -123,19 +148,27 @@ $donnee=array(
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous"
-    />
+<!--    <link-->
+<!--        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
+<!--        rel="stylesheet"-->
+<!--        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"-->
+<!--        crossorigin="anonymous"-->
+<!--    />-->
     <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+
+
 
 
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
+
     <link rel="stylesheet" href="../css/style.css" />
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <title>Details Stage</title>
@@ -457,12 +490,13 @@ $donnee=array(
 
                     </div>
                     <div class="row">
-                        <form class=" g-3">
+
                             <div class="mt-4">
                                 <div class="d-flex align-items-center ">
                                     <img class="me-2" src="/assets/icon/step1.svg" alt="">
                                     <span class="subheadline-form">Action sur Rapport</span>
                                 </div>
+
 
                                 <div class="row mt-4 ms-5   py-2 border border-1 rounded-3" style="width: 50%;">
 
@@ -494,9 +528,8 @@ $donnee=array(
                                 <span class="subheadline-form">Information sur Rapport</span>
                             </div>
                             <div class="row inforap">
-                                <form action="" method="post">
-                                    <input type="text" class="d-none "  value="<?php echo$stage_num?>" name="numStage" >
-                                    <input class="d-none" type="text" value="<?php echo $Rapport['nrp']?>"  name="numRap">
+                                <form  method="POST" enctype="multipart/form-data">
+                                    <input type="text" class="d-none"  value="<?php echo$stage_num?>" name="numStage" >
                                     <div class="col-10 ms-5   align-items-start ">
 
                                         <div class="mt-2 p-2 border border-1 rounded-3 ">
@@ -508,35 +541,32 @@ $donnee=array(
                                                             <div class="col-xl-12 col-sm-12">
                                                                 <label for="inputIntitule" class="col-form-label">Intitule</label>
 
-                                                                <input class="form-control" type="text" id="inputIntitule" name="intituler" value="<?php echo $Rapport['intirp']?>">
+                                                                <input class="form-control" type="text" id="inputIntitule"  value="<?php echo $Rapport['intirp']?>" name="intituler">
                                                             </div>
                                                         </div>
 
                                                         <div class="row mt-2">
                                                            <div class="row ms-1">  Mots clés</div>
                                                             <div class="col">
-                                                                <select  class="form-control">
-                                                                    <option >ggg</option>
+                                                                <select class="selectpicker" id="mote" multiple aria-label="size 3 select example" data-live-search="true">
+                                                                    <?php
+                                                                    //numCle libCle $MotCles
+                                                                    foreach ($MotCles as $mot):
+                                                                        echo '<option value="'.$mot['numCle'].'">'.$mot['libCle'].'</option>';
+                                                                    endforeach;
+                                                                    ?>
                                                                 </select>
                                                             </div>
-                                                            <div class="col">
-                                                                <select  class="form-control">
-                                                                    <option >ggg</option>
-                                                                    <option >ggg</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col">
-                                                                <select  class="form-control ">
-                                                                    <option >ggg</option>
-                                                                </select>
-                                                            </div>
+
                                                         </div>
 
                                                         <div class="row mt-2 d-flex justify-content-around ">
                                                             <div style="width: fit-content" class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                                 <img style="margin: auto; max-width: 64px" src="./../../assets/icon/rapport-icon.svg" alt="" />
-                                                                <a class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" href="">Importer  <i class="bi bi-file-arrow-up-fill"></i
-                                                                    ></a>
+                                                                <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
+                                                                <input type="file"  class="d-none" name="file" id="rap">
+                                                                <label class="mt-3 btn-voir-plus py-2 px-4" style="width: fit-content; font-size: 16px" for="rap">Importer  <i class="bi bi-file-arrow-up-fill"></i
+                                                                    ></label>
                                                             </div>
 
 
@@ -558,7 +588,7 @@ $donnee=array(
                                     </div>
                                     <div class="row ms-4">
                                         <div class="col-xl-6 mt-4">
-                                            <button type="submit" class="btn btn-filtre btn-primary w-100 mb-3">    Ajouter <i class="bi bi-plus-circle-fill"></i></button>
+                                            <button type="submit" name="filesUpload" class="btn btn-filtre btn-primary w-100 mb-3">    Ajouter <i class="bi bi-plus-circle-fill"></i></button>
                                         </div>
                                     </div>
                                 </form>
@@ -574,6 +604,11 @@ $donnee=array(
 
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <!-- Modal Contrat-->
 <div class="modal fade" id="ModalContrat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="min-width: 500px;max-width: 800px">
@@ -679,6 +714,7 @@ $donnee=array(
 </div>
 
 <script>
+    $('#mote').selectpicker();
     let activities = document.getElementById("inputRapport");
     let infoRap=document.getElementsByClassName('inforap');
     let btnDownload=document.getElementById('btnDnL');
@@ -720,7 +756,7 @@ $ful=0;
 if (empty($ens4))  $ful=1;
 
 ?>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
 <script src="/js/script2.js"></script>
 <script>
    const AddJury=(divMere,divAjout)=>{
