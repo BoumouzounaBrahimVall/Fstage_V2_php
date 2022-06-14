@@ -2,7 +2,10 @@
 require(  __DIR__.'../../phpQueries/uploads.php');
 $stage_num=$_GET['numStage'];
 
-if(isset($_POST['filesUpload'])) $stage_num=$_POST['numStage'];
+if(isset($_POST['filesUpload'])){
+    $stage_num=$_POST['numStage'];
+    print_r($_POST);
+}
 if(!isset($stage_num)) header('location:gererStage.php');
 
 
@@ -14,7 +17,7 @@ $action=' ';
 if(empty($Rapport)){
     $Rapport['nrp']='vide';
     $Rapport['intirp']='';
-    $Rapport['pthrp']='';
+    $Rapport['pthrp']='vide';
     $action='disabled';
 }else{ if(!isset($Rapport['pthrp'])) $action='disabled';}
 $numRapp= $Rapport['nrp'];
@@ -22,7 +25,9 @@ $numRapp= $Rapport['nrp'];
 $reqMotCleRAP="SELECT NUM_CLE numCle FROM contenirmotrap where NUM_RAP='$numRapp';";
 $SmtmcleRAP=$bdd->query($reqMotCleRAP);
 $MotClesRAP=$SmtmcleRAP->fetchAll(2);
-//if(empty($MotClesRAP)){
+if(empty($MotClesRAP)){
+
+}
 
 
 if(isset($_POST['filesUpload'])){
@@ -33,11 +38,11 @@ if(isset($_POST['filesUpload'])){
         $reqrapadd = "  insert into `rapport`(num_stg, intitule_rap)values ('$stage_num','$intit');";
         $bdd->exec($reqrapadd);
     }else {
-        $reqrapadd = "UPDATE `rapport` SET `intitule_rap`= '$intit' WHERE `NUM_STG` = '$id';";
+        $reqrapadd = "UPDATE `rapport` SET `intitule_rap`= '$intit' WHERE `NUM_STG` = '$stage_num';";
         $bdd->exec($reqrapadd);
     }
-    if(isset($file))  uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
-    header('location:resposable-details-stage.php?numStage='.$offre_num);
+    if( !empty($file['name']))  uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
+   // header('location:resposable-details-stage.php?numStage='.$offre_num);
 }
 if(isset($_GET['send'])) {
     switch ($_GET['send']) {
@@ -548,7 +553,7 @@ $donnee=array(
                                                     <div class="row mt-2">
                                                         <div class="row ms-1">  Mots clés</div>
                                                         <div class="col">
-                                                            <select class="selectpicker" id="mote" multiple aria-label="size 3 select example" data-live-search="true">
+                                                            <select class="selectpicker" id="mote" multiple aria-label="size 3 select example" data-live-search="true" name="mcl[]">
                                                                 <?php
                                                                 //numCle libCle $MotCles
                                                                 foreach ($MotCles as $mot):
@@ -559,7 +564,41 @@ $donnee=array(
                                                         </div>
 
                                                     </div>
+                                                    <script>
 
+                                                        $(document).ready(function () {
+
+                                                                var count = $(".selected").length;
+                                                                var i;
+                                                                var option;
+                                                                if (count >= 3) {
+                                                                    for (i = 0; i < this.options.length; i++) {
+                                                                         option = this.options[i];
+                                                                        if (option.selected) {
+
+                                                                            //msg.html("Please select only two options.");
+                                                                        } else {
+                                                                            option.selected = false;
+                                                                            option.disabled = true;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    for ( i = 0; i < this.options.length; i++) {
+                                                                         option = this.options[i];
+                                                                        if (option.selected) {
+                                                                            //msg.html("Please select only two options.");
+                                                                        } else {
+                                                                            //option.selected = true;
+                                                                            option.disabled = false
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+
+
+                                                    </script>
                                                     <div class="row mt-2 d-flex justify-content-around ">
                                                         <div style="width: fit-content" class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                             <img style="margin: auto; max-width: 64px" src="./../../assets/icon/rapport-icon.svg" alt="" />
@@ -604,10 +643,6 @@ $donnee=array(
 
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!-- Modal Contrat-->
 <div class="modal fade" id="ModalContrat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -714,7 +749,6 @@ $donnee=array(
 </div>
 
 <script>
-    $('#mote').selectpicker();
     let activities = document.getElementById("inputRapport");
     let infoRap=document.getElementsByClassName('inforap');
     let btnDownload=document.getElementById('btnDnL');
@@ -756,6 +790,11 @@ $ful=0;
 if (empty($ens4))  $ful=1;
 
 ?>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
 <script src="/js/script2.js"></script>
 <script>
