@@ -291,6 +291,9 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
 
       </div>
     </div>
+      <div id="modal-progress-upload">
+
+      </div>
     <div class="container offre-section-user">
       <div class="row">
 
