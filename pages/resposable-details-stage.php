@@ -27,24 +27,40 @@ $numRapp = $Rapport['nrp'];
 $reqMotCleRAP = "SELECT NUM_CLE numCle FROM contenirmotrap where NUM_RAP='$numRapp';";
 $SmtmcleRAP = $bdd->query($reqMotCleRAP);
 $MotClesRAP = $SmtmcleRAP->fetchAll(2);
-if (empty($MotClesRAP)) {
-
-}
-
-
+if(!empty($MotClesRAP)){
+    foreach ($MotClesRAP as $mclRap){
+       $listMotCleRap[]=$mclRap['numCle'];
+    }
+}else $listMotCleRap[]='-1';
+print_r($MotClesRAP);
 if (isset($_POST['filesUpload'])) {
     echo 'ouui';
-    $intit = $_POST['intituler'];
+    $intit = addslashes($_POST['intituler']);
     $file = $_FILES['file'];
     if ($Rapport['nrp'] == 'vide') {//creer rapport
         $reqrapadd = "  insert into `rapport`(num_stg, intitule_rap)values ('$stage_num','$intit');";
         $bdd->exec($reqrapadd);
+        //recuperer le cle du nouveau rapport just crée
+        $reqRap = "SELECT NUM_RAP nrp, INTITULE_RAP intirp, PATH_RAP pthrp FROM rapport rap WHERE rap.NUM_STG='$stage_num';";
+        $Smtrap = $bdd->query($reqRap);
+        $Rapport = $Smtrap->fetch(2);
+        $numRapp = $Rapport['nrp'];
     } else {
         $reqrapadd = "UPDATE `rapport` SET `intitule_rap`= '$intit' WHERE `NUM_STG` = '$stage_num';";
         $bdd->exec($reqrapadd);
     }
     if (!empty($file['name'])) uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
-    // header('location:resposable-details-stage.php?numStage='.$offre_num);
+    if(isset($_POST["mcl"]))
+    {
+        $reqmcldel = "DELETE FROM contenirmotrap WHERE NUM_RAP='$numRapp';";
+        $bdd->exec($reqmcldel);
+        foreach ($_POST["mcl"] as $newMotCle) {
+            $reqmcldel = "insert into `contenirmotrap`(NUM_RAP, NUM_CLE)values ('$numRapp','$newMotCle');";
+            $bdd->exec($reqmcldel);
+        }
+
+    }
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
 if (isset($_GET['send'])) {
     switch ($_GET['send']) {
@@ -53,9 +69,9 @@ if (isset($_GET['send'])) {
             $numoff = $_GET['numOffre'];
             $datDeb = $_GET['dateDeb'];
             $datFin = $_GET['dateFin'];
-            $ville = $_GET['ville'];
-            $pays = $_GET['pays'];
-            $lieu = $_GET['lieu'];
+            $ville = addslashes($_GET['ville']);
+            $pays =addslashes($_GET['pays']);
+            $lieu =addslashes( $_GET['lieu']);
 
             $requpdate = "UPDATE OFFREDESTAGE set VILLE_OFFR='$ville',PAYS_OFFR='$pays',LIEUX_OFFR='$lieu' WHERE NUM_OFFR='$numoff'";
             $bdd->exec($requpdate);
@@ -72,16 +88,16 @@ if (isset($_GET['send'])) {
             break;
         case 'modifyext':
             $noteext = $_GET['noteext'];
-            $sujet = $_GET['sujet'];
+            $sujet = addslashes($_GET['sujet']);
             $req = "UPDATE stage set NOTE_ENEX='$noteext',SUJET_STG='$sujet' WHERE NUM_STG='$stage_num'";
             $bdd->exec($req);
             break;
     }
 
-    header('location:resposable-details-stage.php?numStage=' . $stage_num);
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 
 }
-
+//ajouter jurie
 if (isset($_GET['ajouter'])) {
     $idEnsNew = $_GET['juryAjou'];
     if (!empty($_GET['NoteAjou'])) {
@@ -92,8 +108,9 @@ if (isset($_GET['ajouter'])) {
 
     } else$reqajou = "INSERT INTO juger (NUM_STG,NUM_ENS,EST_ENCADRER)VALUES ('$stage_num','$idEnsNew','0');";
     $bdd->exec($reqajou);
-    header('location:resposable-details-stage.php?numStage=' . $stage_num);
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
+//supprimer jurie
 if (isset($_GET['supprimer'])) {
     $jurysupp = $_GET['jury'];
     echo $jurysupp;
@@ -103,8 +120,9 @@ if (isset($_GET['supprimer'])) {
         //executer la requette de suppression
         $bdd->exec($reqSup);
     }
-    header('location:resposable-details-stage.php?numStage=' . $stage_num);
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
+//modifier jurie et leurs notes
 if (isset($_GET['modif'])) {
 
     $jurymodif = $_GET['jury'];
@@ -112,7 +130,7 @@ if (isset($_GET['modif'])) {
     echo $jurymodif;
     $requpdate = "UPDATE juger set NOTE='$note' WHERE NUM_STG='$stage_num' and NUM_ENS='$jurymodif'";
     $bdd->exec($requpdate);
-    header('location:resposable-details-stage.php?numStage=' . $stage_num);
+    header('location:resposable-details-stage.php?numStage='.$stage_num);
 }
 //l'affichage
 $req2 = " SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
@@ -153,14 +171,6 @@ $donnee = array(
     <!-- Required meta tags -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <!-- Bootstrap CSS -->
-    <!--    <link-->
-    <!--        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
-    <!--        rel="stylesheet"-->
-    <!--        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"-->
-    <!--        crossorigin="anonymous"-->
-    <!--    />-->
     <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
 
@@ -332,14 +342,14 @@ $donnee = array(
 
                                     <label class="prop-name mt-2" for="inputVille">Ville </label>
                                     <input id="inputVille" type="text" class="form-control  inputstg1" disabled
-                                           value="<?php echo $donnee[7]; ?>" name="ville">
+                                           value="<?php echo $donnee[7]; ?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux" name="ville">
                                 </div>
                             </div>
                             <div class="row ">
                                 <div class="col-xl-6 col-sm-12  ">
                                     <label class="prop-name mt-2" for="inputPays">Pays </label>
                                     <input id="inputTEL" type="text" class="form-control  inputstg1" disabled
-                                           value="<?php echo $donnee[8]; ?>" name="pays">
+                                           value="<?php echo $donnee[8]; ?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="pays ne contient pas des caractères speciaux" name="pays">
                                 </div>
                                 <div class="col-1 mt-4 ms-1">
                                     <button type="submit" name="send" class="btn d-none" id="subbtnstg1">
@@ -367,8 +377,8 @@ $donnee = array(
                                 <div class="col-xl-6 col-sm-12">
 
                                     <label class="prop-name mt-2" for="inputdatNotext">Note encadrant externe</label>
-                                    <input id="inputdatNotext" type="number" class="form-control  inputext" disabled
-                                           value="<?php echo $donnee[5]; ?>" name="noteext">
+                                    <input id="inputdatNotext" type="number" class="form-control  inputext" disabled pattern="[0-9]+([\.][0-9]+)?" step="0.01"
+                                           title="un reel, ex: 2.3" value="<?php echo $donnee[5]; ?>" name="noteext">
 
                                 </div>
                                 <div class="col-1 mt-4">
@@ -449,7 +459,7 @@ $donnee = array(
                             echo '<option selected value="' . $V['NUM_ENS'] . '">' . $V['NOM_ENS'] . ' ' . $V['PRENOM_ENS'] . '</option>';
                             echo '</select>
                                                     <label for="" class="form-label">Note</label>
-                                                    <input id="inputJury" type="number" class="form-control inputJury' . $V['NUM_ENS'] . '" value="' . $V['NOTE'] . '" disabled name="Note" >
+                                                    <input id="inputJury" type="number" pattern="[0-9]+([\.][0-9]+)?" step="0.01" title="un reel, ex: 2.3"  class="form-control inputJury' . $V['NUM_ENS'] . '" value="' . $V['NOTE'] . '" disabled name="Note" >
                                                     
                                                     <a href="../pages/resposable-details-stage.php?numStage=' . $stage_num . '&supprimer=1&jury=' . $V['NUM_ENS'] . '"><i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-x-square"></i></a>
                                                     <button onclick="document.getElementById(\'inputJury' . $V['NUM_ENS'] . '\').disabled=false;"  type="submit" name="modif" class="btn d-none"  id="subbtnJury' . $V['NUM_ENS'] . '" >
@@ -580,52 +590,23 @@ $donnee = array(
                                                     <div class="row mt-2">
                                                         <div class="row ms-1"> Mots clés</div>
                                                         <div class="col">
-                                                            <select class="selectpicker" id="mote" multiple
-                                                                    aria-label="size 3 select example"
-                                                                    data-live-search="true" name="mcl[]">
+                                                            <select class="selectpicker form-control" id="mote" multiple title="max 3 mots"
+                                                                    data-live-search="true" name="mcl[]" data-max-options="3">
                                                                 <?php
                                                                 //numCle libCle $MotCles
+
                                                                 foreach ($MotCles as $mot):
-                                                                    echo '<option value="' . $mot['numCle'] . '">' . $mot['libCle'] . '</option>';
+                                                                    if(in_array($mot["numCle"],$listMotCleRap)){
+                                                                        echo '<option value="'. $mot['numCle'].'" selected>' . $mot['libCle'] . '</option>';
+                                                                    }
+                                                                   else  echo '<option value="' . $mot['numCle'] . '">' . $mot['libCle'] . '</option>';
+
                                                                 endforeach;
                                                                 ?>
                                                             </select>
                                                         </div>
 
                                                     </div>
-                                                    <script>
-
-                                                        $(document).ready(function () {
-
-                                                            var count = $(".selected").length;
-                                                            var i;
-                                                            var option;
-                                                            if (count >= 3) {
-                                                                for (i = 0; i < this.options.length; i++) {
-                                                                    option = this.options[i];
-                                                                    if (option.selected) {
-
-                                                                        //msg.html("Please select only two options.");
-                                                                    } else {
-                                                                        option.selected = false;
-                                                                        option.disabled = true;
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                for (i = 0; i < this.options.length; i++) {
-                                                                    option = this.options[i];
-                                                                    if (option.selected) {
-                                                                        //msg.html("Please select only two options.");
-                                                                    } else {
-                                                                        //option.selected = true;
-                                                                        option.disabled = false
-                                                                    }
-                                                                }
-                                                            }
-                                                        });
-
-
-                                                    </script>
                                                     <div class="row mt-2 d-flex justify-content-around ">
                                                         <div style="width: fit-content"
                                                              class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
@@ -849,7 +830,8 @@ if (empty($ens4)) $ful = 1;
                     echo '\'<option  value="' . $en3['NUM_ENS'] . '">' . $en3['NOM_ENS'] . ' ' . $en3['PRENOM_ENS'] . '</option>\'+';
                 endforeach;?>
                 '</select><label for="" class="form-label">Note</label>' +
-                '<input  type="number" class="form-control "  name="NoteAjou" >' +
+                '<input  type="number" pattern="[0-9]+([\.][0-9]+)?" step="0.01"'+
+                'title="un reel, ex: 2.3"  class="form-control "  name="NoteAjou" >' +
                 '<button type="submit" name="ajouter" class="btn bt"  id="btnAjouter" >' +
                 ' <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>' +
                 '</form></div>';

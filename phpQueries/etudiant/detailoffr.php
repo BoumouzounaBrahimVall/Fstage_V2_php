@@ -1,6 +1,5 @@
+
 <?php
-//require(__DIR__ . './../../phpQueries/conxnBDD.php');
-//require(__DIR__ . './../../phpQueries/authen.php');
 require(__DIR__ . './../../phpQueries/etudiant/dash.php');
 
 $numOffre=$_GET['noffr'];

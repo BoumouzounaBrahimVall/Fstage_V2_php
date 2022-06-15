@@ -1,4 +1,3 @@
-
 <?php
 require(  __DIR__.'./../phpQueries/mail.php');
 require(  __DIR__.'./../phpQueries/uploads.php');
@@ -64,9 +63,8 @@ if(isset($_GET['send'])) {
     $bdd->exec($req);
 
 }
-
-$req1="SELECT * FROM ETUDIANT  where CNE_ETU='$cne';";
-
+echo $cne;
+$req1="SELECT * FROM ETUDIANT  where CNE_ETU='$cne' ";
 $Smt1=$bdd->query($req1);
 $detaiEtu=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
 if( empty($detaiEtu['IMG_ETU'])){
@@ -88,11 +86,11 @@ if(isset($_GET['passOublier'])) {
 
     $pass=generateRandomString();
     echo $pass;
-    passForgotten("$donnee[2]",$pass,$donnee[0],$donnee[1]);
+   // passForgotten("$donnee[2]",$pass,$donnee[0],$donnee[1]);
     $pass=password_hash($pass,PASSWORD_DEFAULT);
     $req = "  UPDATE `ETUDIANT` SET `MOTDEPASSE_ETU` = '$pass' WHERE `ETUDIANT`.`CNE_ETU` = '$cne';";
     $bdd->exec($req);
-    header("location:resposable-details-etudiant.php?cne='$cne'");
+    header("location:resposable-details-etudiant.php?cne=".$cne);
 }
 
 ?>
@@ -169,13 +167,13 @@ if(isset($_GET['passOublier'])) {
                     </div>
         <div class="p-4 col-xl-9 col-sm-12">
             <div class="intro  mt-3">
-                <h3> <b>Détails étudiant</b>  </h3> 
+                <h3> <b>Détails étudiant </b>  </h3>
     
             </div>
             <div class="intro ">
                <p>
-                Consulter l'ensemble des information sur l'etudiant
-            </p> 
+                Consulter l'ensemble des information sur l'etudiant.<br> CNE:<?php echo $cne;?>
+               </p>
             </div>
 
 
@@ -188,8 +186,6 @@ if(isset($_GET['passOublier'])) {
                         <form   action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
                             <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
                             <input class="form-control d-none" name="cvPath" id="pathStorageImg" >
-
-
                             <label for="files" class="p-1 btn-import-img" ><i class="bi bi-image-fill"></i> import</label>
                             <input type="file" disabled class="d-none inputImg" onchange="uploadFileToFirebase('files','modifyphoto','pathStorageImg',1,'<?php echo $cne;?>')"  name="file" id="files">
                             <button type="submit" name="filesUploaed" class="btn d-none"  id="subbtnimg" >
@@ -199,7 +195,7 @@ if(isset($_GET['passOublier'])) {
                         </form>
                     </div>
                     <div class="row  mt-2 p-0 ">
-                        <form   action="" method="get">
+                        <form   action="" method="get" >
                             <input type="text" class="d-none "  value="<?php echo $cne;?>" name="cne" >
                             <button type="submit" name="passOublier" class="btn btn-filtre m-0"  id="subbtn" ><small>Reinisialiser Mot de passe</small></button>
                         </form>
@@ -229,13 +225,13 @@ if(isset($_GET['passOublier'])) {
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputEMAIL" >E-mail </label>
-                                            <input id="inputEMAIL" type="email"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[2];?>" name="email" >
+                                            <input id="inputEMAIL" type="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" title="email invalide"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[2];?>" name="email" >
 
                                         </div>
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputTEL" >TEL </label>
-                                            <input id="inputTEL" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="tel" >
+                                            <input id="inputTEL" type="text"  pattern="^(([+][0-9]{7,16})|(0[5-7][0-9]{8}))$" title="num tel soit +2126XXXXXXXX ou 06XXXXXXXX" class="form-control inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="tel" >
 
                                         </div>
                                     </div>
@@ -243,13 +239,13 @@ if(isset($_GET['passOublier'])) {
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label  >Ville </label>
-                                            <input type="text" class="form-control inputPERSONE" disabled value="<?php echo $donnee[4];?>" name="ville" >
+                                            <input type="text" class="form-control inputPERSONE" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux" disabled value="<?php echo $donnee[4];?>" name="ville" >
 
                                         </div>
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label >Pays </label>
-                                            <input type="text" class="form-control inputPERSONE" disabled  value="<?php echo $donnee[5];?>" name="pays" >
+                                            <input type="text" class="form-control inputPERSONE" disabled  value="<?php echo $donnee[5];?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="pays ne contient pas des caractères speciaux" name="pays" >
 
                                         </div>
                                     </div>

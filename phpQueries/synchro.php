@@ -38,7 +38,7 @@ function update_offre_complete($numOffre,$bdd)
 //COMPLETER
 function Synchronisation_offre_effectif($bdd)
 {
-    $req_synchOffre="SELECT * from OFFREDESTAGE ";
+    $req_synchOffre="SELECT * from OFFREDESTAGE where ETATPUB_OFFR!='CLOSE'";
     $Smt_synchOffre = $bdd->query($req_synchOffre);
     $fitch_synchro =$Smt_synchOffre->fetchAll(2);
 
@@ -67,8 +67,8 @@ function Synchronisation_post_expirer($bdd)
     $Smt_etat_expirer = $bdd->query($req_etat_expirer);
     $etat_expirer = $Smt_etat_expirer->fetchAll(PDO::FETCH_ASSOC);
     foreach($etat_expirer as $V){
-        $jour_offr=$etat_expirer['DELAI_JOFFR'];
-        $date_rep=$etat_expirer['date_reponse'];
+        $jour_offr=$V['DELAI_JOFFR'];
+        $date_rep=$V['date_reponse'];
         $date_expiration=date('Y-m-d',strtotime( $date_rep. ' + '.$jour_offr.' days'));
         if($date_expiration<=date("Y-m-d"))
         {

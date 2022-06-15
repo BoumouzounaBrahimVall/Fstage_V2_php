@@ -5,9 +5,9 @@
 try {
 
 
-    //$bdd= new PDO("mysql:host=localhost;dbname=fstage","root","root");
+    $bdd= new PDO("mysql:host=localhost;dbname=fstage","root","root");
 
-    $bdd = new PDO("mysql:host=localhost;port=3307;dbname=fstage", "root", "");
+   // $bdd = new PDO("mysql:host=localhost;port=3307;dbname=fstage", "root", "");
     /*
         $host = 'us-cdbr-east-05.cleardb.net';
         $dbname = 'heroku_93aab640ed42c57';
