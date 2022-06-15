@@ -147,10 +147,10 @@ require_once "./nav-ens.php"
                                 foreach ($rows as $V):
                                     $lastNum++;
                                     $cneEtudiant = $V['cne'];
-                                    $req_nbr = " SELECT COUNT(POSTULER.CNE_ETU) nbr_post,COUNT(STAGE.CNE_ETU) nbr_stage 
-                                      FROM `ETUDIANT`,`NIVEAU`,`ETUDIER`,`POSTULER`,`STAGE` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU 
-                                      and ETUDIANT.CNE_ETU=POSTULER.CNE_ETU and ETUDIANT.CNE_ETU=STAGE.CNE_ETU and
-                                       NIVEAU.NUM_NIV=ETUDIER.NUM_NIV and NIVEAU.NUM_FORM='$formation' and ETUDIANT.CNE_ETU=' $cneEtudiant';";
+                                    $req_nbrpst = " SELECT COUNT(POSTULER.CNE_ETU) nbr_post FROM `POSTULER` WHERE POSTULER.CNE_ETU='$cneEtudiant';";
+                                    $Smt_nbrpst = $bdd->query($req_nbrpst);
+                                    $nbrpst = $Smt_nbrpst->fetch(PDO::FETCH_ASSOC);
+                                    $req_nbr = " SELECT COUNT(stage.CNE_ETU) nbr_stg FROM `stage` WHERE stage.CNE_ETU='$cneEtudiant';";
                                     $Smt_nbr = $bdd->query($req_nbr);
                                     $nbr = $Smt_nbr->fetch(PDO::FETCH_ASSOC);
                                     echo ' <tr>
@@ -159,8 +159,8 @@ require_once "./nav-ens.php"
                                             <td>' . $V['nom'] . '</td>
                                             <td>' . $V['prenom'] . '</td> 
                                             <td>' . $V['niv'] . '</td>
-                                            <td>' . $nbr['nbr_stage'] . '</td>
-                                            <td>' . $nbr['nbr_post'] . '</td>
+                                            <td>' . $nbr['nbr_stg'] . '</td>
+                                            <td>' . $nbrpst['nbr_post'] . '</td>
                                             <td>  
                                          <a class="ms-3" href="../pages/resposable-details-etudiant.php?cne=' . $V['cne'] . '"><i class=" active  bi bi-pencil-fill"></i></a>
                                         </td>

@@ -3,8 +3,6 @@
 require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
  if($_SERVER['REQUEST_METHOD']=='POST'){
 
- 
-
     $donnee=array(
       $_POST['inputEntreprise'], //ent existe
       $_POST['inputIntitule'], // ent intit crée
@@ -23,18 +21,26 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
       $_POST['inputpaysoffre'], //offre  pays
       $_POST['inputNiveaux'], //offre  niveau
       $_POST['detailoffre'],  //offre  detais
-      $_POST['numoffre'],     //offre  num
 
-      $_POST['inputnument']  //// ent num crée
+      $_POST['CNE'], //stage CNE 16
+      $_POST['inputSujet'], //stage sujet 17
+      $_POST['dtDebStg'], //stage debut 18
+      $_POST['dtFinStg'], //stage fin 19
+
      );
   if(!empty($donnee[1]))//entreprise n'existe pas. on l'ajoute
   {
 
-    $req="INSERT INTO entreprise (NUM_ENT,LIBELLE_ENT,ADRESSE_ENT,EMAIL_ENT,TEL_ENT,VILLE_ENT,PAYS_ENT)
-    VALUES ('$donnee[17]','$donnee[1]','$donnee[3]','$donnee[2]','$donnee[4]','$donnee[5]','$donnee[6]');";
+    $req="INSERT INTO entreprise (LIBELLE_ENT,ADRESSE_ENT,EMAIL_ENT,TEL_ENT,VILLE_ENT,PAYS_ENT)
+    VALUES ('$donnee[1]','$donnee[3]','$donnee[2]','$donnee[4]','$donnee[5]','$donnee[6]');";
    //execution de la requette
-   $bdd->exec($req); 
-   $donnee[0]=$donnee[17];
+   $bdd->exec($req);
+   //recuperer l'entreprise
+   $reqEntlast="select entreprise.NUM_ENT from entreprise where entreprise.NUM_ENT>=ALL(select ent.NUM_ENT from entreprise ent);";
+    $smtentlast=$bdd->query($reqEntlast);
+    $lastent=$smtentlast->fetch(2);
+
+    $donnee[0]=$lastent['NUM_ENT'];
 
     //add image entreprise
       if(isset($_POST['cvPath']))
@@ -44,12 +50,44 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
           uploadImagesOrCVFirebase($donnee[17],$file,$bdd,3);
       }
   }
-    $req2="INSERT INTO offredestage (NUM_OFFR,NUM_NIV,NUM_ENT,POSTE_OFFR,EFFECTIF_OFFRE,DETAILS_OFFR,DATEDEB_OFFR,DATEFIN_OFFR,VILLE_OFFR,ETATPUB_OFFR,PAYS_OFFR,DELAI_JOFFR)
-    VALUES ('$donnee[16]','$donnee[14]','$donnee[0]','$donnee[7]','$donnee[12]','$donnee[15]','$donnee[8]','$donnee[9]','$donnee[10]','nouveau','$donnee[13]','$donnee[11]');";
+if(!empty($donnee[17]))//stage ext
+{
+    $req_etudiant_niveau = "SELECT NUM_NIV from ETUDIER WHERE CNE_ETU='$donnee[16]'ORDER BY DATE_NIV DESC";
+    $Smt_etudiant_niveau = $bdd->query($req_etudiant_niveau);
+    $etudiant_niveaux = $Smt_etudiant_niveau->fetchAll(PDO::FETCH_ASSOC);
+    $etudiant_niveau =$etudiant_niveaux[0]['NUM_NIV'];
+    $dt=date("Y-m-d");
+    //inserer offre
+    $req2 = "INSERT INTO offredestage (NUM_NIV,NUM_ENT,POSTE_OFFR,EFFECTIF_OFFRE,DETAILS_OFFR,DATEDEB_OFFR,DATEFIN_OFFR,VILLE_OFFR,ETATPUB_OFFR,PAYS_OFFR,TYPE_OFFR)
+    VALUES ('$etudiant_niveau','$donnee[0]','$donnee[7]','1','$donnee[15]','$dt','$dt','$donnee[10]','CLOSE','$donnee[13]','2');";
     //execution de la requette
     $bdd->exec($req2);
-  header('location:../pages/publierOffre.php');
 
+    //recuperer l'offre
+    $reqOfflast="select offredestage.NUM_OFFR from offredestage where offredestage.NUM_OFFR>=ALL(select offr.NUM_OFFR from offredestage offr);";
+    $smtOfflast=$bdd->query($reqOfflast);
+    $lastOff=$smtOfflast->fetch(2);
+    $numOffre=$lastOff['NUM_OFFR'];
+
+    //inserer postulation
+    $req2 = "INSERT INTO postuler (NUM_OFFR, CNE_ETU, DATE_POST, ETATS_POST, date_reponse)
+    VALUES ('$numOffre','$donnee[16]','$dt','ACCEPTER','$dt');";
+    //execution de la requette
+    $bdd->exec($req2);
+    //inserer le stage
+    $req2 = "INSERT INTO stage (NUM_OFFR, CNE_ETU, DATEDEB_STG, DATEFIN_STG, SUJET_STG, ACTIVE_STG)
+    VALUES ('$numOffre','$donnee[16]','$donnee[18]','$donnee[19]','$donnee[17]','1');";
+    //execution de la requette
+    $bdd->exec($req2);
+
+}
+else {// offre publique
+    $req2 = "INSERT INTO offredestage (NUM_NIV,NUM_ENT,POSTE_OFFR,EFFECTIF_OFFRE,DETAILS_OFFR,DATEDEB_OFFR,DATEFIN_OFFR,VILLE_OFFR,ETATPUB_OFFR,PAYS_OFFR,DELAI_JOFFR,TYPE_OFFR)
+    VALUES ('$donnee[14]','$donnee[0]','$donnee[7]','$donnee[12]','$donnee[15]','$donnee[8]','$donnee[9]','$donnee[10]','NOUVEAU','$donnee[13]','$donnee[11]','1');";
+    //execution de la requette
+    $bdd->exec($req2);
+}
+     header('location:../pages/publierOffre.php');
  }
 
 ?>
@@ -62,6 +100,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
       <?php
       require_once "./meta-tag.php"
       ?>
+
     <title>Publier offre</title>
   </head>
 <body>
@@ -213,7 +252,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
           <span class="subheadline-form" >information sur l'entreprise</span>
         </div>
       <div class="mt-4 p-2 border border-1 rounded-3">  
-  <form class="row g-3" action="" method="post">      
+    <form class="row g-3" action="" method="post">
         <div class="form-check ms-3">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="1" checked>
             <label class="form-check-label" for="flexRadioDefault1">
@@ -229,7 +268,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
         </div> 
        </div> 
         
-          <div class="mt-4 p-2 border border-1 rounded-3"id="IDdiv_selectionner_entr">
+          <div class="mt-4 p-2 border border-1 rounded-3" id="IDdiv_selectionner_entr">
           
           <div >
           
@@ -324,11 +363,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                   
                       <input class="form-control" type="tel" id="inputPays" name="inputPays" placeholder="Type to search...">
                   </div>
-                  <div class="col-xl-6 col-sm-12">
-                              <label for="inputnument" class="col-form-label">Numero de l'entreprise</label>
-                          
-                              <input class="form-control" type="number" id="inputnument" name="inputnument" placeholder="Type to search...">
-                          </div>
+
                   
       
                 </div>
@@ -353,47 +388,6 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
 
 
 
-  <?php
-  echo "
-
-  <script>
-
- 
-  $(document).ready(function(){
-    
-         
-    $('#div_nouvel_entre').hide();  
-
-    $('#flexRadioDefault1').click(function(){
-      $('#IDdiv_selectionner_entr').show(1000);   
-      $('#div_nouvel_entre').hide(1000);    
-      $('#inputIntitule').val('');
-      
-    });
-    $('#flexRadioDefault2').click(function(){
-      $('#IDdiv_selectionner_entr').hide(400);  
-      $('#div_nouvel_entre').show(1000); 
-      
-      
-    });
-  });
-
-</script>
-  "
-  
-  
-  
-  
-  ?>
-
-
-
-
-
-
-
-
-
 
                 <div class="mt-4">
                   <div class="d-flex align-items-center ">
@@ -401,71 +395,149 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                     <span class="subheadline-form">information sur l'offre de stage</span>
                   </div>
                   <div >
+                      <div class="mt-4 p-2 border border-1 rounded-3">
+                          <div class="form-check ms-3">
+                              <input class="form-check-input" type="radio" name="typeOffre" id="flexRadioDefault3" value="1" checked>
+                              <label class="form-check-label" for="flexRadioDefault3">
+                                 Offre publique
+                              </label>
+                          </div>
+
+                          <div class="form-check ms-3">
+                              <input class="form-check-input" type="radio" name="typeOffre" id="flexRadioDefault4" value="0" >
+                              <label class="form-check-label" for="flexRadioDefault4">
+                                  Offre de stage pour un etudiant (stage hors du platform)
+                              </label>
+                          </div>
+
+                              <div class="col-12" id="div_nouvel_stg" >
+                                  <div class="mt-2 p-2 border border-1 rounded-3 " >
+                                          <div class="">
+
+                                              <div>
+                                                  <div class="row mt-2 ">
+                                                      <div class="row d-flex align-items-center justify-content-center" >
+                                                          <div align="center" class="subheadline-form"><b> Information Stage</b></div>
+                                                          <HR class="ms-3">
+                                                      </div>
+                                                      <div class="col-xl-6 col-sm-12">
+                                                          <label for="inputIntitule" class="col-form-label">Etudiant</label>
+                                                          <select class="form-select" id="inputIntitule" title="Etudiant" name="CNE" >
+                                                              <?php
+                                                              //requette de selection
+                                                              $reqet="SELECT distinct etudiant.CNE_ETU FROM etudiant,etudier,niveau where 
+                                                                    etudier.CNE_ETU=etudiant.CNE_ETU and etudier.NUM_NIV=niveau.NUM_NIV 
+                                                                    and niveau.NUM_FORM='$formation' and etudiant.ACTIVE_ETU='0';";
+                                                              $Smtet=$bdd->query($reqet);
+                                                              $ets=$Smtet->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
+
+                                                              echo "<option selected>CNE </option>";
+                                                              foreach($ets as $V):
+                                                                  echo" <option value=\"".$V['CNE_ETU']."\">".$V['CNE_ETU']."</option>";
+                                                              endforeach;
+                                                              ?>
+                                                          </select>
+                                                      </div>
+                                                      <div class="col-xl-6 col-sm-12">
+                                                          <label for="inputSujet" class="col-form-label">Sujet Stage</label>
+                                                          <input class="form-control" type="text" id="inputSujet" name="inputSujet" placeholder="sujet..">
+                                                      </div>
+
+                                                  </div>
+
+                                                  <div class="row">
+                                                      <div class="col-xl-6 col-sm-12">
+                                                          <label for="inputdtDebStg" class="col-form-label">Date debut stage</label>
+                                                          <input class="form-control"  type="date" id="inputdtDebStg" name="dtDebStg">
+
+                                                      </div>
+                                                      <div class="col-xl-6 col-sm-12">
+                                                          <label for="inputdtFinStg" class="col-form-label">Date Fin stage</label>
+                                                          <input class="form-control"  type="date" id="inputdtFinStg" name="dtFinStg">
+                                                      </div>
+
+
+
+                                                  </div>
+                                              </div>
+                                          </div>
+
+
+                                  </div>
+
+                              </div>
+
+                  </div>
                     <div class="mt-4 p-2 border border-1 rounded-3">
                       <div class="row">
-
-                      
+                          <div class="row d-flex align-items-center justify-content-center" >
+                              <div align="center" class="subheadline-form"><b> Information offre</b></div>
+                              <HR class="ms-3">
+                          </div>
                             <div class="col-xl-4 col-sm-12">
                                 <label for="inputpost" class="col-form-label">Intitulé poste</label>
                                 <input class="form-control" type="text" id="inputpost" name="inputpost" placeholder="intitulé...">
                             </div>
-                            <div class="col-xl-4 col-sm-12">
-                              <label for="dateDeb" class="col-form-label">Date debut du stage</label>
-                              <input class="form-control" type="date" id="dateDeb" name="dateDeb">
-                          </div>
                           <div class="col-xl-4 col-sm-12">
-                            <label for="dateFin" class="col-form-label">Date fin du stage</label>
-                            <input class="form-control" type="date" id="dateFin" name="dateFin">
+                              <label for="inputville" class="col-form-label">Ville</label>
+                              <input class="form-control" type="text" id="inputvilleoffre" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux"
+                                     name="inputvilleoffre" placeholder="Ville...">
                           </div>
-                            
+
+                          <div class="col-xl-4 col-sm-12">
+                              <label for="inputpays" class="col-form-label">Pays</label>
+                              <input class="form-control" type="text" id="inputpaysoffre" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="pays ne contient pas des caractères speciaux" name="inputpaysoffre" placeholder="Maroc...">
+                          </div>
                           
                       </div>
-                      <div class="row">
-                        <div class="col-xl-4 col-sm-12">
-                            <label for="inputville" class="col-form-label">Ville</label>
-                            <input class="form-control" type="text" id="inputvilleoffre" name="inputvilleoffre" placeholder="Ville...">
+                        <div id="stgExtr">
+                            <div class="row">
+                                <div class="col-xl-4 col-sm-12 ">
+                                    <label for="dateDeb " class="col-form-label">Date debut Offre</label>
+                                    <input class="form-control dis init1" required type="date" id="dateDeb" name="dateDeb">
+                                </div>
+                                <div class="col-xl-4 col-sm-12 ">
+                                    <label for="delai" class="col-form-label">delai</label>
+                                    <input class="form-control dis" required type="number" id="delai" pattern="([0-9]+)?"  title="Delai doit etre un entier" name="delai">
+                                </div>
+                                <div class="col-xl-4 col-sm-12 ">
+                                    <label for="inputeffectif" class="col-form-label" >Effectife demandé</label>
+                                    <input class="form-control dis" required type="number" id="inputeffectif" pattern="([0-9]+)?"  title="effectif doit etre un entier" name="inputeffectif">
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-xl-4 col-sm-12 ">
+                                    <label for="dateFin" class="col-form-label">Date fin Offre</label>
+                                    <input class="form-control dis init1" required type="date" id="dateFin" name="dateFin">
+                                </div>
+                                <div class="col-xl-4 col-sm-12 ">
+                                    <label for="inputNiveaux" class="col-form-label">Niveaux</label>
+
+                                    <select id="inputNiveaux" class="form-select dis" name="inputNiveaux" required aria-label="Default select example">
+                                        <?php
+                                        //requette de selection
+                                        $req="SELECT NIVEAU.NUM_NIV,NIVEAU.LIBELLE_NIV FROM `Responsable`, `niveau` WHERE Responsable.NUM_FORM=niveau.NUM_FORM and Responsable.USERNAME_RES='$respon_username';";
+                                        $Smt=$bdd->query($req);
+                                        $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
+                                        //afficher le tableau
+                                        echo "<option selected>Niveaux </option>";
+                                        foreach($rows as $V):
+
+                                            echo" <option value=\"".$V['NUM_NIV']."\">".$V['LIBELLE_NIV']."</option>";
+
+                                        endforeach;
+
+                                        ?>
+
+                                    </select></div>
+
+
+
+                            </div>
                         </div>
-                        <div class="col-xl-4 col-sm-12">
-                          <label for="delai" class="col-form-label">delai</label>
-                          <input class="form-control" type="number" id="delai" name="delai">
-                        </div>
-                        <div class="col-xl-4 col-sm-12">
-                          <label for="inputeffectif" class="col-form-label">Effectife demandé</label>
-                          <input class="form-control" type="number" id="inputeffectif" name="inputeffectif">
-                      </div>  
-                  </div>
-                  <div class="row">
-                    <div class="col-xl-4 col-sm-12">
-                        <label for="inputpays" class="col-form-label">Pays</label>
-                        <input class="form-control" type="text" id="inputpaysoffre" name="inputpaysoffre" placeholder="Maroc...">
-                    </div>
-                    <div class="col-xl-4 col-sm-12">
-                                <label for="inputNiveaux" class="col-form-label">Niveaux</label>
-                              
-                                <select id="inputNiveaux" class="form-select" name="inputNiveaux" aria-label="Default select example">
-                                <?php
-                                    //requette de selection 
-                                    $req="SELECT NIVEAU.NUM_NIV,NIVEAU.LIBELLE_NIV FROM `Responsable`, `niveau` WHERE Responsable.NUM_FORM=niveau.NUM_FORM and Responsable.USERNAME_RES='$respon_username';";
-                                    $Smt=$bdd->query($req); 
-                                    $rows=$Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC 
-                                    //afficher le tableau
-                                    echo "<option selected>Niveaux </option>";
-                                    foreach($rows as $V): 
-                                    
-                                      echo" <option value=\"".$V['NUM_NIV']."\">".$V['LIBELLE_NIV']."</option>";
-                                        
-                                    endforeach;
-                                   
-                                ?>
-                                    
-                                  </select></div>
-                    <div class="col-xl-4 col-sm-12">
-                        <label for="inputpays" class="col-form-label">numero de l'offre</label>
-                        <input class="form-control" type="number" id="numoffre" name="numoffre" placeholder="...">
-                    </div>
-                   
-                    
-                  </div>
+
+
                   <div class="row mt-3">
                    
                       <div class="col-xl-12 ">
@@ -482,9 +554,7 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
                     <button type="submit" id="btnSubmit" class="btn btn-filtre btn-primary w-100 mb-3">    Ajouter <i class="bi bi-plus-circle-fill"></i></button>
                   </div>       
                 </div>
-                
-              
-            
+
           </form>
           </div>
         </div>
@@ -493,6 +563,45 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
     </div>
   </div>
 </div>
+    <script>
+
+
+        $(document).ready(function(){
+
+
+            $('#div_nouvel_entre').hide();//entreprise
+            $('#div_nouvel_stg').hide();//stage
+
+            $('#flexRadioDefault3').click(function(){
+                $('#div_nouvel_stg').hide(1000);
+
+                $('.dis').prop('disabled', false);
+                $('#inputSujet').val('');
+                $('#stgExtr').show(1000);
+
+            });
+            $('#flexRadioDefault4').click(function(){
+                $('#div_nouvel_stg').show(1000);
+                $('.dis').prop('disabled', true);
+                $('#stgExtr').hide(1000);
+            });
+
+            ///////////////
+            $('#flexRadioDefault1').click(function(){
+                $('#IDdiv_selectionner_entr').show(1000);
+                $('#div_nouvel_entre').hide(1000);
+                $('#inputIntitule').val('');
+
+            });
+            $('#flexRadioDefault2').click(function(){
+                $('#IDdiv_selectionner_entr').hide(400);
+                $('#div_nouvel_entre').show(1000);
+
+
+            });
+        });
+
+    </script>
     <script src="./../js/script-upload.js"></script>
     <!-- JavaScript Bundle with Popper-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
