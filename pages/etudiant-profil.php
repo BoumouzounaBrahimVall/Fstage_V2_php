@@ -21,6 +21,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 
         $file = $_POST['cvPath'];
         uploadImagesOrCVFirebase($etudiant_cne,$file,$bdd,2);
+        header('Location:etudiant-profil.php');
     }
 
 }

@@ -42,9 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnOffre'])) {
     ?>
 
     <title>Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -79,57 +77,60 @@ require_once "nav-etudiant.php";
             </div>
             <div class="row">
                 <div class="col-xl-6 col-sm-12">
-                    <button class="ms-4 mb-3 btn btn-filtre" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="ms-4 mb-3 btn btn-filtre"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         filtrer les données <i class=" ms-5 bi bi-filter-right"></i>
                     </button>
-                </div>
-            </div>
 
-            <div class="collapse " id="collapseExample">
-                <div class="row">
-                    <div class="filtre-bar ps-4  mt-5">
-                        <form method="get" class="row g-3">
+                     </div>
+                <div class="collapse " id="collapseExample">
+                    <div class="row">
+                        <div class="filtre-bar ps-4  mt-5">
+                            <form method="get" class="row g-3">
 
-                            <div class="col-xl-auto col-sm-4">
-                                <label for="inputVille2" class="col-form-label">Ville</label>
-                            </div>
-                            <div class="col-xl-auto col-sm-7">
-                                <input class="form-control" value="All" name="ville" list="datalistVilles"
-                                       id="inputVille2" placeholder="Type to search...">
-                                <datalist id="datalistVilles">
-                                    <option value="All" selected>All</option>
-                                    <?php
-                                    foreach ($villes as $ville) {
-                                        echo '
+                                <div class="col-xl-auto col-sm-4">
+                                    <label for="inputVille2" class="col-form-label">Ville</label>
+                                </div>
+                                <div class="col-xl-auto col-sm-7">
+                                    <input class="form-control" value="All" name="ville" list="datalistVilles"
+                                           id="inputVille2" placeholder="Type to search...">
+                                    <datalist id="datalistVilles">
+                                        <option value="All" selected>All</option>
+                                        <?php
+                                        foreach ($villes as $ville) {
+                                            echo '
                             <option value="' . $ville . '">' . $ville . '</option>
                             ';
-                                    }
+                                        }
 
-                                    ?>
-                                </datalist>
-                            </div>
+                                        ?>
+                                    </datalist>
+                                </div>
 
-                            <div class="col-xl-auto col-sm-4">
-                                <label for="inputTrier2" class="col-form-label">Trier</label>
-                            </div>
-                            <div class="col-xl-auto col-sm-7">
-                                <select id="inputTrier2" name="order" class="form-select"
-                                        aria-label="Default select example">
+                                <div class="col-xl-auto col-sm-4">
+                                    <label for="inputTrier2" class="col-form-label">Trier</label>
+                                </div>
+                                <div class="col-xl-auto col-sm-7">
+                                    <select id="inputTrier2" name="order" class="form-select"
+                                            aria-label="Default select example">
 
-                                    <option value="none" selected>Trier par</option>
-                                    <option value="1">Ascendant</option>
-                                    <option value="2">Descendant</option>
-                                </select>
-                            </div>
-                            <div class="col-xl-auto col-sm-12 ">
-                                <button type="submit" class="btn filterSubmit btn-filtre btn-primary mb-3"> Chercher <i
-                                            class=" ms-5 bi bi-search"></i></button>
-                            </div>
-                        </form>
+                                        <option value="none" selected>Trier par</option>
+                                        <option value="1">Ascendant</option>
+                                        <option value="2">Descendant</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-auto col-sm-12 ">
+                                    <button type="submit" class="btn filterSubmit btn-filtre btn-primary mb-3"> Chercher <i
+                                                class=" ms-5 bi bi-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+
             </div>
+
+
 
 
             <div class="cv" hidden>
