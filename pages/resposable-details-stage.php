@@ -27,11 +27,11 @@ $numRapp = $Rapport['nrp'];
 $reqMotCleRAP = "SELECT NUM_CLE numCle FROM contenirmotrap where NUM_RAP='$numRapp';";
 $SmtmcleRAP = $bdd->query($reqMotCleRAP);
 $MotClesRAP = $SmtmcleRAP->fetchAll(2);
-if(!empty($MotClesRAP)){
-    foreach ($MotClesRAP as $mclRap){
-       $listMotCleRap[]=$mclRap['numCle'];
+if (!empty($MotClesRAP)) {
+    foreach ($MotClesRAP as $mclRap) {
+        $listMotCleRap[] = $mclRap['numCle'];
     }
-}else $listMotCleRap[]='-1';
+} else $listMotCleRap[] = '-1';
 print_r($MotClesRAP);
 if (isset($_POST['filesUpload'])) {
     echo 'ouui';
@@ -49,18 +49,16 @@ if (isset($_POST['filesUpload'])) {
         $reqrapadd = "UPDATE `rapport` SET `intitule_rap`= '$intit' WHERE `NUM_STG` = '$stage_num';";
         $bdd->exec($reqrapadd);
     }
-    if (!empty($file['name']))
-    {
+    if (!empty($file['name'])) {
         //importer le fichier au firebase stockage a distance
         $file = $_POST['rapportPath'];
-        uploadImagesOrCVFirebase($stage_num,$file,$bdd,5);
+        uploadImagesOrCVFirebase($stage_num, $file, $bdd, 5);
         //importer local
         //uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
     }
 
 
-    if(isset($_POST["mcl"]))
-    {
+    if (isset($_POST["mcl"])) {
         $reqmcldel = "DELETE FROM contenirmotrap WHERE NUM_RAP='$numRapp';";
         $bdd->exec($reqmcldel);
         foreach ($_POST["mcl"] as $newMotCle) {
@@ -69,7 +67,7 @@ if (isset($_POST['filesUpload'])) {
         }
 
     }
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
 if (isset($_GET['send'])) {
     switch ($_GET['send']) {
@@ -79,8 +77,8 @@ if (isset($_GET['send'])) {
             $datDeb = $_GET['dateDeb'];
             $datFin = $_GET['dateFin'];
             $ville = addslashes($_GET['ville']);
-            $pays =addslashes($_GET['pays']);
-            $lieu =addslashes( $_GET['lieu']);
+            $pays = addslashes($_GET['pays']);
+            $lieu = addslashes($_GET['lieu']);
 
             $requpdate = "UPDATE OFFREDESTAGE set VILLE_OFFR='$ville',PAYS_OFFR='$pays',LIEUX_OFFR='$lieu' WHERE NUM_OFFR='$numoff'";
             $bdd->exec($requpdate);
@@ -103,7 +101,7 @@ if (isset($_GET['send'])) {
             break;
     }
 
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 
 }
 //ajouter jurie
@@ -117,7 +115,7 @@ if (isset($_GET['ajouter'])) {
 
     } else$reqajou = "INSERT INTO juger (NUM_STG,NUM_ENS,EST_ENCADRER)VALUES ('$stage_num','$idEnsNew','0');";
     $bdd->exec($reqajou);
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
 //supprimer jurie
 if (isset($_GET['supprimer'])) {
@@ -129,7 +127,7 @@ if (isset($_GET['supprimer'])) {
         //executer la requette de suppression
         $bdd->exec($reqSup);
     }
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
 //modifier jurie et leurs notes
 if (isset($_GET['modif'])) {
@@ -139,7 +137,7 @@ if (isset($_GET['modif'])) {
     echo $jurymodif;
     $requpdate = "UPDATE juger set NOTE='$note' WHERE NUM_STG='$stage_num' and NUM_ENS='$jurymodif'";
     $bdd->exec($requpdate);
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
 //l'affichage
 $req2 = " SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
@@ -307,14 +305,18 @@ require_once "./nav-ens.php"
 
                                     <label class="prop-name mt-2" for="inputVille">Ville </label>
                                     <input id="inputVille" type="text" class="form-control  inputstg1" disabled
-                                           value="<?php echo $donnee[7]; ?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux" name="ville">
+                                           value="<?php echo $donnee[7]; ?>"
+                                           pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"
+                                           title="ville ne contient pas des caractères speciaux" name="ville">
                                 </div>
                             </div>
                             <div class="row ">
                                 <div class="col-xl-6 col-sm-12  ">
                                     <label class="prop-name mt-2" for="inputPays">Pays </label>
                                     <input id="inputTEL" type="text" class="form-control  inputstg1" disabled
-                                           value="<?php echo $donnee[8]; ?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="pays ne contient pas des caractères speciaux" name="pays">
+                                           value="<?php echo $donnee[8]; ?>"
+                                           pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"
+                                           title="pays ne contient pas des caractères speciaux" name="pays">
                                 </div>
                                 <div class="col-1 mt-4 ms-1">
                                     <button type="submit" name="send" class="btn d-none" id="subbtnstg1">
@@ -342,7 +344,8 @@ require_once "./nav-ens.php"
                                 <div class="col-xl-6 col-sm-12">
 
                                     <label class="prop-name mt-2" for="inputdatNotext">Note encadrant externe</label>
-                                    <input id="inputdatNotext" type="number" class="form-control  inputext" disabled pattern="[0-9]+([\.][0-9]+)?" step="0.01"
+                                    <input id="inputdatNotext" type="number" class="form-control  inputext" disabled
+                                           pattern="[0-9]+([\.][0-9]+)?" step="0.01"
                                            title="un reel, ex: 2.3" value="<?php echo $donnee[5]; ?>" name="noteext">
 
                                 </div>
@@ -555,16 +558,17 @@ require_once "./nav-ens.php"
                                                     <div class="row mt-2">
                                                         <div class="row ms-1"> Mots clés</div>
                                                         <div class="col">
-                                                            <select class="selectpicker form-control" id="mote" multiple title="max 3 mots"
-                                                                    data-live-search="true" name="mcl[]" data-max-options="3">
+                                                            <select class="selectpicker form-control" id="mote" multiple
+                                                                    title="max 3 mots"
+                                                                    data-live-search="true" name="mcl[]"
+                                                                    data-max-options="3">
                                                                 <?php
                                                                 //numCle libCle $MotCles
 
                                                                 foreach ($MotCles as $mot):
-                                                                    if(in_array($mot["numCle"],$listMotCleRap)){
-                                                                        echo '<option value="'. $mot['numCle'].'" selected>' . $mot['libCle'] . '</option>';
-                                                                    }
-                                                                   else  echo '<option value="' . $mot['numCle'] . '">' . $mot['libCle'] . '</option>';
+                                                                    if (in_array($mot["numCle"], $listMotCleRap)) {
+                                                                        echo '<option value="' . $mot['numCle'] . '" selected>' . $mot['libCle'] . '</option>';
+                                                                    } else  echo '<option value="' . $mot['numCle'] . '">' . $mot['libCle'] . '</option>';
 
                                                                 endforeach;
                                                                 ?>
@@ -577,9 +581,11 @@ require_once "./nav-ens.php"
                                                              class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                             <img style="margin: auto; max-width: 64px"
                                                                  src="./../assets/icon/rapport-icon.svg" alt=""/>
-                                                            <input class="form-control d-none" name="rapportPath" id="rapportPath" >
+                                                            <input class="form-control d-none" name="rapportPath"
+                                                                   id="rapportPath">
                                                             <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
-                                                            <input type="file" class="d-none" name="file" id="rap"  onchange="uploadFileToFirebase('rap','btnSubmit','rapportPath',5,'<?php echo $stage_num; ?>')">
+                                                            <input type="file" class="d-none" name="file" id="rap"
+                                                                   onchange="uploadFileToFirebase('rap','btnSubmit','rapportPath',5,'<?php echo $stage_num; ?>')">
                                                             <label class="mt-3 btn-voir-plus py-2 px-4"
                                                                    style="width: fit-content; font-size: 16px"
                                                                    for="rap">Importer <i
@@ -689,11 +695,16 @@ require_once "./nav-ens.php"
                                                             <div style="width: fit-content"
                                                                  class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                                 <img style="margin: auto; max-width: 64px"
-                                                                     src="./../../assets/icon/contrat-icon.svg" alt=""/>
-                                                                <a class="mt-3 btn-voir-plus py-2 px-4"
-                                                                   style="width: fit-content; font-size: 16px" href="">Importer
-                                                                    <i class="bi bi-file-arrow-up-fill"></i
-                                                                    ></a>
+                                                                     src="./../assets/icon/contrat-icon.svg" alt=""/>
+
+                                                                <label for="fileContrat"
+                                                                       class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
+                                                                    Importer <i class="bi bi-file-arrow-up-fill"></i>
+                                                                </label>
+                                                                <input class="form-control d-none" name="contrat"
+                                                                       onchange="uploadFileToFirebase('fileContrat','btnSubmit','pathStorageFile',2,'<?php echo $_SESSION['auth'] ?>')"
+                                                                       accept="application/pdf" type="file" id="fileContrat">
+
                                                             </div>
 
 
@@ -801,7 +812,7 @@ if (empty($ens4)) $ful = 1;
                     echo '\'<option  value="' . $en3['NUM_ENS'] . '">' . $en3['NOM_ENS'] . ' ' . $en3['PRENOM_ENS'] . '</option>\'+';
                 endforeach;?>
                 '</select><label for="" class="form-label">Note</label>' +
-                '<input  type="number" pattern="[0-9]+([\.][0-9]+)?" step="0.01"'+
+                '<input  type="number" pattern="[0-9]+([\.][0-9]+)?" step="0.01"' +
                 'title="un reel, ex: 2.3"  class="form-control "  name="NoteAjou" >' +
                 '<button type="submit" name="ajouter" class="btn bt"  id="btnAjouter" >' +
                 ' <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>' +
