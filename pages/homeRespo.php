@@ -155,13 +155,13 @@ require_once "./nav-ens.php"
                     switch (dataX.option) {
                         case '1': {
                             chartRep.backgroundColor = [
-                                "#DC143C",
-                                "#2E8B57",
-                                "#2e3a8b"
+                                "#E7E2FF",
+                                "#E4FFE2",
+                                "#FFECE2"
                             ], chartRep.borderColor = [
-                                "#CB252B",
-                                "#1D7A46",
-                                "#2e3a8b"
+                                "#7B61FF",
+                                "#61FF84",
+                                "#f3a58f"
                             ],
                                 chartRep.borderWidth = [1, 1, 1],
                                 chartRep.column = ["Offres", "Etudiants", "Enseignant"];
@@ -169,27 +169,27 @@ require_once "./nav-ens.php"
                         }
                         case '2': {
                             chartRep.backgroundColor = [
-
-                                "#2E8B57",
-                                "#2e3a8b"
+                                "#E7E2FF",
+                                "#E4FFE2",
+                                "#FFECE2"
                             ], chartRep.borderColor = [
-
-                                "#1D7A46",
-                                "#2e3a8b"
+                                "#7B61FF",
+                                "#61FF84",
+                                "#f3a58f"
                             ],
-                                chartRep.borderWidth = [1, 1],
-                                chartRep.column = ["Nouveaux", "Complété"];
+                                chartRep.borderWidth = [1, 1,1],
+                                chartRep.column = ["Nouveaux", "Complété","Fermé"];
                             break;
                         }
                         case '3': {
                             chartRep.backgroundColor = [
 
-                                "#2E8B57",
-                                "#2e3a8b"
+                                "#E4FFE2",
+                                "#FFECE2"
                             ], chartRep.borderColor = [
 
-                                "#1D7A46",
-                                "#2e3a8b"
+                                "#61FF84",
+                                "#f3a58f"
                             ],
                                 chartRep.borderWidth = [1, 1],
                                 chartRep.column = ["Compte Activé", "Compte Desactivé"];
@@ -198,12 +198,12 @@ require_once "./nav-ens.php"
                         case '4': {
                             chartRep.backgroundColor = [
 
-                                "#2E8B57",
-                                "#2e3a8b"
+                                "#E4FFE2",
+                                "#FFECE2"
                             ], chartRep.borderColor = [
 
-                                "#1D7A46",
-                                "#2e3a8b"
+                                "#61FF84",
+                                "#f3a58f"
                             ],
                                 chartRep.borderWidth = [1, 1],
                                 chartRep.column = ["Compte Activé", "Compte Desactivé"];
