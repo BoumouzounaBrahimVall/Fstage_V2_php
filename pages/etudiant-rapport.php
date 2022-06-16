@@ -5,15 +5,15 @@
     <?php
     require_once "./meta-tag.php"
     ?>
-    <title>Dashboard</title>
+    <title>Historique</title>
 </head>
 
 <body>
 
 
 <?php
-require_once "nav-etudiant.php";
 require(__DIR__ . './../phpQueries/etudiant/dash.php');
+require_once "nav-etudiant.php";
 ?>
 
 <div class="container ">
@@ -23,7 +23,7 @@ require(__DIR__ . './../phpQueries/etudiant/dash.php');
             require_once "./etudiant-sidebar-rapport.php";
 
 
-            function info_etu($rap, $etu, $bdd)
+            function info_etu($rap, $bdd)
             {
                 $student = "SELECT ETUDIANT.NOM_ETU,ETUDIANT.PRENOM_ETU,ETUDIANT.CV_ETU,ETUDIANT.IMG_ETU,niveau.NUM_NIV,niveau.LIBELLE_NIV from STAGE,ETUDIANT,etudier,niveau,RAPPORT
                               where STAGE.CNE_ETU=ETUDIANT.CNE_ETU and etudiant.CNE_ETU=etudier.CNE_ETU and etudier.NUM_NIV=niveau.NUM_NIV and RAPPORT.NUM_STG=STAGE.NUM_STG
@@ -35,7 +35,7 @@ require(__DIR__ . './../phpQueries/etudiant/dash.php');
 
             }
 
-            function mot_clets($rap, $motcl, $bdd)
+            function mot_clets($rap, $bdd)
             {
                 $student = "SELECT MOTCLE.LIBELLE_CLE from MOTCLE,CONTENIRMOTRAP 
                               where MOTCLE.NUM_CLE=CONTENIRMOTRAP.NUM_CLE and 
@@ -148,16 +148,22 @@ require(__DIR__ . './../phpQueries/etudiant/dash.php');
                                 <h4><b><?php echo($V['INTITULE_RAP']); ?></b></h4>
 
                                 <div class="badges d-flex justify-content-start">
-                                    <?php @$keyword = mot_clets($V['NUM_RAP'], $keyword, $bdd); ?>
+                                    <?php @$keyword = mot_clets($V['NUM_RAP'], $bdd); ?>
+                                    <?php if(isset($keyword[0])){?>
                                     <div class="mt-3">
                                         <span class="badge   p-2 badge-key rounded-pill bg-primary"><?php echo($keyword[0]['LIBELLE_CLE']); ?></span>
                                     </div>
+                                    <?php }?>
+                                    <?php if(isset($keyword[1])){?>
                                     <div class="mt-3">
                                         <span class="badge  ms-3 p-2 badge-key rounded-pill bg-success"><?php echo($keyword[1]['LIBELLE_CLE']); ?></span>
                                     </div>
+                                    <?php }?>
+                                    <?php if(isset($keyword[2])){?>
                                     <div class="mt-3">
                                         <span class="badge ms-3 p-2 badge-key rounded-pill bg-danger"><?php echo($keyword[2]['LIBELLE_CLE']); ?></span>
                                     </div>
+                                    <?php }?>
                                 </div>
                                 <div class="mt-3">
                                     <div class="headline">
@@ -167,13 +173,13 @@ require(__DIR__ . './../phpQueries/etudiant/dash.php');
                                     <div class="row   mt-3 justify-content-start align-items-center border-top-0">
                                             <div class="col-xl-5 col-sm-10 mt-2">
                                                 <a  id="" style="width: 100%"  class="btn-postuler btn px-xl-4  border border-1 "
-                                                    href="<?php echo($stud[0]['CV_ETU']); ?>" role="button"
-                                                    download="Article_HTML5_download.pdf">Télechager</a>
+                                                    href="<?php echo $V['PATH_RAP']; ?>" role="button"
+                                                    download>Télechager</a>
 
                                             </div>
                                         <div class="col-xl-5 col-sm-10 mt-2">
                                             <a style="width: 100%"  id="" class="btn-voir-plus  btn px-xl-4  ms-xl-3   border border-1"
-                                               href="<?php echo($stud[0]['CV_ETU']); ?>" role="button" target="_blank">Voir
+                                               href="<?php echo$V['PATH_RAP']; ?>" role="button" target="_blank">Voir
                                                 plus</a>
                                         </div>
 
@@ -184,7 +190,7 @@ require(__DIR__ . './../phpQueries/etudiant/dash.php');
                             </div>
                             <div class="ms-xl-5 ms-sm-2 mt-2 d-flex flex-xl-column flex-sm-row  justify-content-center flex-wrap align-items-center ">
                                 <?php
-                                @$stud = info_etu($V['NUM_RAP'], $stud, $bdd);
+                                @$stud = info_etu($V['NUM_RAP'], $bdd);
                                 ?>
                                 <img style="width: 75px;height: 75px;" class="mx-auto mb-2 ms-4 rounded-circle border-1 border" src="<?php echo($stud[0]['IMG_ETU']); ?>" alt="">
                                 <p style="font-size: 14px; margin-top: 10px; text-align: center;"><?php
