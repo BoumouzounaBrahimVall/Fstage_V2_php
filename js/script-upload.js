@@ -144,11 +144,18 @@ const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId,pathType,id)=>
                 function complete() {
                     getFileUrl(getPathToTpload(files[i],pathType,id),btnSubmit,pathStorageId);
                     myModal.toggle();
+
+
                 }
             );
         }
     } else {
         alert("File is not selected.");
+    }
+    if (parentModel.length>0)
+    {
+
+        $('#myModalParent').modal('hide');
     }
 }
 

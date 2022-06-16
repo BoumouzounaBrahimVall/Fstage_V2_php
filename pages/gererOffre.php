@@ -149,6 +149,9 @@ require_once "./nav-ens.php"
 
 <script>
     $(document).ready(function () {
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json'
+        },
         $('#table_id').DataTable({
             scrollY: 200,
             scrollX: true,

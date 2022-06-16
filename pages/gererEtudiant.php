@@ -383,9 +383,15 @@ require_once "./nav-ens.php"
         </div>
     </div>
 </div>
+<div id="modal-progress-upload">
+
+</div>
 <script>
     $(document).ready(function () {
         $('#table_id2').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json'
+            },
             scrollY: 200,
             scrollX: true,
         });

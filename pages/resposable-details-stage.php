@@ -169,84 +169,24 @@ $donnee = array(
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <?php
+    require_once "./meta-tag.php"
+    ?>
 
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
           integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer"/>
-
-
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
-    />
-
-    <link rel="stylesheet" href="../css/style.css"/>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <title>Details Stage</title>
 </head>
 
 <body>
 
 <!-- Navbar  -->
-<nav class="navbar navbar-expand-lg navbar-light m-0">
-    <div class="container-fluid px-5">
-        <a class="navbar-brand" href="#">
-            <img id="logo" src="../assets/icon/logo.png" alt="logo"/>
-        </a>
-
-        <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link " aria-current="page" href="homeRespo.php">Acceuil</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="gererOffre.php">Gérer les offres</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/gererEtudiant.php">Gérer les comptes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Gérer stage</a>
-                </li>
-            </ul>
-            <div class="d-flex">
-                <a href="../pages/respoProfil.php">
-                    <img class="profile_icon rounded-circle border" src="<?php echo $respon_img; ?>" alt="">
-                </a>
-                <a
-                        name=""
-                        id="seDeconnecter"
-                        class="btn btn-outline-primary  btn-selector pt-3"
-                        href="login.php"
-                        role="button"
-                >Se deconnecter
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
-
+<?php
+require_once "./nav-ens.php"
+?>
 
 <div class="container ">
     <div class="row">
@@ -611,7 +551,7 @@ $donnee = array(
                                                         <div style="width: fit-content"
                                                              class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                             <img style="margin: auto; max-width: 64px"
-                                                                 src="./../../assets/icon/rapport-icon.svg" alt=""/>
+                                                                 src="./../assets/icon/rapport-icon.svg" alt=""/>
                                                             <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
                                                             <input type="file" class="d-none" name="file" id="rap">
                                                             <label class="mt-3 btn-voir-plus py-2 px-4"

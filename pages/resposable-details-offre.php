@@ -505,6 +505,9 @@ $donnee=array(
         
 
     </div>
+        <div id="modal-progress-upload">
+
+        </div>
     </div>
 
 
