@@ -36,6 +36,11 @@ const getPathToTpload = (file,pathType,id) => {
             break;
         case 4:/// photo responsable
             fileDestination=img_upload_path+ "ResposablesPhoto/"+id;
+        case 5:/// document rapport
+            fileDestination=doc_upload_path+ "RapportStage/"+id;
+            break;
+        case 5:/// document contrat
+            fileDestination=doc_upload_path+ "ContratStage/"+id;
             break;
     }
 

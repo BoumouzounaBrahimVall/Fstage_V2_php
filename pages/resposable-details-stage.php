@@ -49,7 +49,16 @@ if (isset($_POST['filesUpload'])) {
         $reqrapadd = "UPDATE `rapport` SET `intitule_rap`= '$intit' WHERE `NUM_STG` = '$stage_num';";
         $bdd->exec($reqrapadd);
     }
-    if (!empty($file['name'])) uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
+    if (!empty($file['name']))
+    {
+        //importer le fichier au firebase stockage a distance
+        $file = $_POST['rapportPath'];
+        uploadImagesOrCVFirebase($stage_num,$file,$bdd,5);
+        //importer local
+        //uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
+    }
+
+
     if(isset($_POST["mcl"]))
     {
         $reqmcldel = "DELETE FROM contenirmotrap WHERE NUM_RAP='$numRapp';";
@@ -169,15 +178,31 @@ $donnee = array(
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <?php
-    require_once "./meta-tag.php"
-    ?>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
           integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer"/>
+
+
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <link rel="stylesheet" href="../css/style.css"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
+
     <title>Details Stage</title>
 </head>
 
@@ -552,8 +577,9 @@ require_once "./nav-ens.php"
                                                              class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                             <img style="margin: auto; max-width: 64px"
                                                                  src="./../assets/icon/rapport-icon.svg" alt=""/>
+                                                            <input class="form-control d-none" name="rapportPath" id="rapportPath" >
                                                             <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
-                                                            <input type="file" class="d-none" name="file" id="rap">
+                                                            <input type="file" class="d-none" name="file" id="rap"  onchange="uploadFileToFirebase('rap','btnSubmit','rapportPath',5,'<?php echo $stage_num; ?>')">
                                                             <label class="mt-3 btn-voir-plus py-2 px-4"
                                                                    style="width: fit-content; font-size: 16px"
                                                                    for="rap">Importer <i
@@ -579,7 +605,7 @@ require_once "./nav-ens.php"
                                 </div>
                                 <div class="row ms-4">
                                     <div class="col-xl-6 mt-4">
-                                        <button type="submit" name="filesUpload"
+                                        <button type="submit" name="filesUpload" id="btnSubmit"
                                                 class="btn btn-filtre btn-primary w-100 mb-3"> Ajouter <i
                                                     class="bi bi-plus-circle-fill"></i></button>
                                     </div>
@@ -705,6 +731,9 @@ require_once "./nav-ens.php"
 
     </div>
 </div>
+<div id="modal-progress-upload">
+
+</div>
 
 <script>
     let activities = document.getElementById("inputRapport");
@@ -745,6 +774,8 @@ $ful = 0;
 if (empty($ens4)) $ful = 1;
 
 ?>
+<script src="/js/script2.js"></script>
+<script src="./../js/script-upload.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -756,7 +787,7 @@ if (empty($ens4)) $ful = 1;
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
-<script src="/js/script2.js"></script>
+
 <script>
     const AddJury = (divMere, divAjout) => {
         let num = '<?php echo $stage_num?>';
