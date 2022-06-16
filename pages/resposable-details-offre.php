@@ -390,22 +390,69 @@ $donnee=array(
                       $reqEt=" SELECT pst.*,etu.* FROM `postuler` pst ,etudiant etu WHERE etu.CNE_ETU=pst.CNE_ETU and pst.NUM_OFFR='$offre_num'";
                       $Smt_nbr=$bdd->query($reqEt);
                       $etud=$Smt_nbr->fetchAll(PDO::FETCH_ASSOC);
-                      
+                      $reqconuts="SELECT postuler.ETATS_POST, COUNT(postuler.ETATS_POST)  FROM `postuler`  
+                                    WHERE NUM_OFFR='$offre_num' and ETATS_POST not in ('REFUSER','ANNULER')
+                                    GROUP BY ETATS_POST;";
+                      $Smt_counts=$bdd->query($reqconuts);
+                      $counts=$Smt_counts->fetchAll(PDO::FETCH_ASSOC);
+                      $countsAll=array(0,0,0,0,0);
+                      foreach ($counts as $etatcnt){
+                          if($etatcnt['ETATS_POST']=='ACCEPTER') $countsAll[0]+=$etatcnt['COUNT(postuler.ETATS_POST)'];
+                          else $countsAll[0]+=0;
+                          //attente 1 jusqu'a 3
+                          if($etatcnt['ETATS_POST']=='1') $countsAll[1]+=$etatcnt['COUNT(postuler.ETATS_POST)'];
+                          else $countsAll[1]+=0;
+                          if($etatcnt['ETATS_POST']=='2') $countsAll[2]+=$etatcnt['COUNT(postuler.ETATS_POST)'];
+                          else $countsAll[2]+=0;
+                          if($etatcnt['ETATS_POST']=='3') $countsAll[3]+=$etatcnt['COUNT(postuler.ETATS_POST)'];
+                          else $countsAll[3]+=0;
+                          if($etatcnt['ETATS_POST']=='RETENU') $countsAll[4]+=$etatcnt['COUNT(postuler.ETATS_POST)'];
+                          else $countsAll[4]+=0;
+                      }
+
                       //afficher le tableau
                       if(!empty($etud))
                       {
                           foreach($etud as $V):
 
-                              if( strcmp($V['ETATS_POST'],'RETENU')==0)  $retenu='oui';
-                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='non';
-                              else $retenu='-';
-                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
-                                  $retenu='oui';
-                                  $accpt='Oui';
+                              if( strcmp($V['ETATS_POST'],'RETENU')==0){
+                                  $retenu='<p>oui</p>';
                               }
-                              else if(strcmp($V['ETATS_POST'],'NO ACCEPTER')==0){
-                                  $accpt="Non";
-                                  $retenu='Oui';
+                              else if(strcmp($V['ETATS_POST'],'REFUSER')==0) $retenu='<p>non</p>';
+                              else{
+                                  if( $countsAll[4]==$donnee[4]){ //effectif saturee
+                                      if($countsAll[1]!='1')// 1er liste att kayen
+                                      $retenu=' <select name="responseEnt" disabled required class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">
+                                                 <option value="nothing">--</option>
+                                                <option value="REFUSER">Non</option>
+                                                <option value="1" selected>1eme attante</option>
+                                                </select>';
+                                      else if($countsAll[2]!='1')//2eme liste att kayen
+                                          $retenu=' <select name="responseEnt" disabled required class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">
+                                                <option value="nothing">--</option>
+                                                <option value="REFUSER">Non</option>
+                                                <option value="2" >2eme attante</option></select>';
+                                      else if($countsAll[3]!='1')
+                                          $retenu=' <select name="responseEnt" disabled required class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">
+                                                <option value="nothing">--</option>
+                                                <option value="REFUSER">Non</option>
+                                                <option value="3" >3eme attante</option>
+                                                </select>';
+                                      else $retenu=' <select name="responseEnt" disabled required class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">
+                                               <option value="nothing">--</option>
+                                                <option value="REFUSER">Non</option></select>';
+                                  }else $retenu=' <select name="responseEnt" disabled required class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">
+                                                 <option value="nothing">--</option>
+                                                 <option value="RETENU">oui</option>
+                                                <option value="REFUSER">Non</option></select>';
+                              }
+                              if(strcmp($V['ETATS_POST'],'ACCEPTER')==0){
+                                  $retenu='<p>oui</p>';
+                                  $accpt='<p>Oui</p>';
+                              }
+                              else if(strcmp($V['ETATS_POST'],'NO_ACCEPTER')==0){
+                                  $retenu='<p>oui</p>';
+                                  $accpt='<p>Non</p>';
                               }
                               else $accpt='--';
                               if(strcmp($V['ETATS_POST'],'ANNULER')==0) $anul='Oui';
@@ -423,21 +470,8 @@ $donnee=array(
                                 <div class="col-10"><input type="date" required disabled class="form-control '."input".$V['CNE_ETU'].'"  value="'.$V['date_reponse'].'" name="dateRep" >
                                 </div>
                                 <div class="col-10">';
-                              if($accpt=='--'){
-                                  echo ' <select name="responseEnt" disabled required class="form-select  form-select-sm '."input".$V['CNE_ETU'].'" aria-label=".form-select-sm example">';
-                                  if($retenu=='oui')
-                                      echo '    <option value="RETENU" selected>Oui</option>
-                                          <option value="REFUSER">Non</option>';
-                                  else if($retenu=='non')
-                                      echo '    <option value="RETENU">Oui</option>
-                                          <option value="REFUSER" selected>Non</option>';
-                                  else echo '
-                                           <option value="nothing" selected>--</option>
-                                           <option value="RETENU">Oui</option>
-                                            <option value="REFUSER" >Non</option> ';
-                                  echo ' </select></div>';
-                              }
-                              echo'
+                              echo $retenu;
+                              echo'</div>
                                     </td>
                                    <td>'.$accpt.'</td>
                                   <td>'.$anul.'</td>

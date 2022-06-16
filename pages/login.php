@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user != "" && $pass != "") {
         require_once(__DIR__ . '/../phpQueries/conxnBDD.php');
         if ($who == 'responsable')
-            $query = "SELECT RESPONSABLE.MOTDEPASSE_RES FROM RESPONSABLE where RESPONSABLE.USERNAME_RES='$user';";
+            $query = "SELECT RESPONSABLE.MOTDEPASSE_RES,responsable.ACTIVE_RES FROM RESPONSABLE where RESPONSABLE.USERNAME_RES='$user';";
         else
             $query = "SELECT * FROM ETUDIANT where `CNE_ETU`='$user';";
         try {
@@ -26,31 +26,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (!empty($row)) {
             if ($who === 'responsable') {
-                if (password_verify($pass, $row['MOTDEPASSE_RES'])) {
-
-                    $_SESSION['auth'] = $user;
-                    if (!isset($_SESSION['vers']))
-                        header("Location:./../pages/homeRespo.php");
-                    else header('Location:' . $_SESSION['vers']);
-                } else {
-                    $_SESSION['error'] = 'login ou mot de passe incorrect';
-
+                if($row['ACTIVE_RES']=='0'){
+                    if (password_verify($pass, $row['MOTDEPASSE_RES'])) {
+                        $_SESSION['error']='';
+                        $_SESSION['auth'] = $user;
+                        if (!isset($_SESSION['vers']))
+                            header("Location:./../pages/homeRespo.php");
+                        else header('Location:' . $_SESSION['vers']);
+                    } else {
+                        $_SESSION['error'] = 'login ou mot de passe incorrect';
+                        header("Location:../pages/login.php");
+                    }
+                }else {
+                    $_SESSION['error'] = 'Votre compte est desactivé';
+                    header("Location:../pages/login.php");
                 }
             } else {
-                if (password_verify($pass, $row['MOTDEPASSE_ETU'])) {//
-                    $_SESSION['auth'] = $row['CNE_ETU'];
-                    echo $row['CNE_ETU'];
-                    if (!isset($_SESSION['vers']))
-                        header("Location:./../pages/etudiant-dashboard.php");
-                    else header('Location:' . $_SESSION['vers']);
-                } else {
-                    $_SESSION['error'] = 'login ou mot de passe incorrect';
-
+                if($row['ACTIVE_ETU']=='0') {
+                    if (password_verify($pass, $row['MOTDEPASSE_ETU'])) {//
+                        $_SESSION['error'] = '';
+                        $_SESSION['auth'] = $row['CNE_ETU'];
+                        echo $row['CNE_ETU'];
+                        if (!isset($_SESSION['vers']))
+                            header("Location:./../pages/etudiant-dashboard.php");
+                        else header('Location:' . $_SESSION['vers']);
+                    } else {
+                        $_SESSION['error'] = 'login ou mot de passe incorrect';
+                        header("Location:../pages/login.php");
+                    }
+                }else {
+                    $_SESSION['error'] = 'Votre compte est desactivé';
+                    header("Location:../pages/login.php");
                 }
 
             }
         } else {
             $_SESSION['error'] = 'login ou mot de passe incorrect';
+            header("Location:../pages/login.php");
         }
     } else {
         $_SESSION['error'] = 'login ou mot de passe incorrect';
@@ -149,16 +161,27 @@ if (isset($_GET['logout'])) {
         <div class="tab-content">
             <div class="tab-pane  active" id="pills-etudiant" role="tabpanel" aria-labelledby="tab-login">
                 <form class="col-md-auto mb-3" method="post">
+                    <?php
+                    if(!empty($_SESSION['error'])){
+                        ?>
+                        <div class="alert alert-danger text-center">
+                            <?php
+                            echo $_SESSION['error'];
+                            ?>
+                        </div>
+                        <?php
+                    }
+                    ?>
                     <!-- username input -->
                     <div class="mb-3">
                         <label for="username" class="form-label">Nom d'utilisateur</label>
-                        <input type="text" class="form-control" id="loginName" name="username" placeholder="username">
+                        <input type="text" class="form-control" required id="loginName" name="username" placeholder="username">
                     </div>
                     <div class=""></div>
                     <!-- Password input -->
                     <div class="mb-3">
                         <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" id="loginPassword" name="password"
+                        <input type="password" required class="form-control" id="loginPassword" name="password"
                                placeholder="Mot de passe">
                     </div>
                     <!-- used to check who is the user input -->
@@ -177,7 +200,7 @@ if (isset($_GET['logout'])) {
 
                         <div class="col-md-6 d-flex justify-content-center">
                             <!-- Simple link -->
-                            <a href="#!">Forgot password?</a>
+                            <a href="password-forgotten.php">Forgot password?</a>
                         </div>
                     </div>
                     <!-- Submit button -->

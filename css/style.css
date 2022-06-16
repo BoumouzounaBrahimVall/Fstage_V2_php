@@ -360,3 +360,8 @@ td.details-control {
 tr.shown td.details-control {
     background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
 }
+
+.close{
+  color: rgb(249, 218, 160);
+  opacity: 10;
+}
