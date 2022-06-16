@@ -314,6 +314,7 @@ border: 1px solid #C02E00;
 border-radius: 20px;
 color: #772B00;
 }
+
 .addOffre-div{
   box-sizing: border-box;
   max-width: 393px;
@@ -351,6 +352,13 @@ color: white;
 
 .bt{
     margin: 0 !important;padding: 0 !important;
+}
+td.details-control {
+    background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
 }
 
 .close{

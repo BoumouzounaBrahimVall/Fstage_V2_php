@@ -4,11 +4,12 @@ const verifyCvOnLoad = () =>
 
     let cvInput=document.getElementById('cv');
     console.log( `cvInput : ${cvInput.value}`);
+    console.log(cvInput.value.length)
     var myModal1 = new bootstrap.Modal(document.getElementById('myModal'), {
         keyboard: false
     });
 
-    if ( cvInput.value==2){
+    if ( cvInput.value.length==0){
         myModal1.show();
     }
 
@@ -30,7 +31,7 @@ const verifyCvUploaded = (num) =>
     let offre=document.getElementById('noffrePos');
     offre.setAttribute('value',num);
     console.log(`cv : ${cvInput.value}`);
-    if ( cvInput.value==2){
+    if ( cvInput.value.length>0){
         myModal.show();
     }else
         myModalPostuler.show();

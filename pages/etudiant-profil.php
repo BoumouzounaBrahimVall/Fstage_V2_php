@@ -21,6 +21,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 
         $file = $_POST['cvPath'];
         uploadImagesOrCVFirebase($etudiant_cne,$file,$bdd,2);
+        header('Location:etudiant-profil.php');
     }
 
 }
@@ -291,6 +292,9 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
 
       </div>
     </div>
+      <div id="modal-progress-upload">
+
+      </div>
     <div class="container offre-section-user">
       <div class="row">
 
