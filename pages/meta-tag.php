@@ -26,4 +26,7 @@
  <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
     <link rel="stylesheet" href="./../css/style.css" />
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+

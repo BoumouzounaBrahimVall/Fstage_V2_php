@@ -20,7 +20,6 @@ if (!empty($info_stg_etu)) {
     require_once "./meta-tag.php"
     ?>
     <title>Dashboard</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 </head>
 
 <body>
@@ -175,16 +174,20 @@ require_once "nav-etudiant.php";
                     <table id="table_id" style="width:100%" class=" nowrap display">
                         <thead>
                         <tr>
-                            <th scope="col">N° Stage</th>
-                            <th scope="col">Entreprise</th>
-                            <th scope="col">Date Debut</th>
+                            <th> </th>
+                            <th >N° Stage</th>
+                            <th >Entreprise</th>
+                            <th >Date Debut</th>
 
-                            <th scope="col">Date Fin</th>
-                            <th scope="col">Note général</th>
+                            <th >Date Fin</th>
+                            <th >Note général</th>
+                            <th>Long Text</th>
 
-                            <th scope="col">Action</th>
+
+
                         </tr>
                         </thead>
+
                         <tbody>
                         <?php
                         foreach ($stage_preced as $stage) {
@@ -192,13 +195,13 @@ require_once "nav-etudiant.php";
                             $req_jury2 = "SELECT * from STAGE st,JUGER jr,ENSEIGNANT ens
                         WHERE   st.NUM_STG=jr.NUM_STG
                         and ens.NUM_ENS = jr.NUM_ENS 
-                        and st.NUM_STG='$num_stage1' ";
-
+                        and st.NUM_STG='$num_stage1'   ";
                             $Smt_jury_info2 = $bdd->query($req_jury2);
                             $stage_jury2 = $Smt_jury_info2->fetchAll(PDO::FETCH_ASSOC);
 
+
                             $req_rapp_stage = "SELECT * from RAPPORT 
-                        WHERE   NUM_STG='$num_stage1'  ";
+                        WHERE   NUM_STG='$num_stage1'   ";
                             $Smt_rapp_stage = $bdd->query($req_rapp_stage);
                             $rapp_stage = $Smt_rapp_stage->fetch(PDO::FETCH_ASSOC);
                             if (isset($rapp_stage['PATH_RAP']))
@@ -206,30 +209,41 @@ require_once "nav-etudiant.php";
                             else
                                 $path = "#";
 
+                            $jurylist='';
+                            foreach ($stage_jury2 as $jury2):
+                                $jurylist.='  <span class="me-2"> ' . $jury2['PRENOM_ENS'] . ' ' . $jury2['NOM_ENS'] . '</span>';
+                            endforeach;
 
                             echo '
-                                 <tr> 
+                             <tr>
+                                   <td> </td>   
                                    <td >' . $stage['NUM_STG'] . '</td>    
                                    <td >' . $stage['LIBELLE_ENT'] . '</td>
                                    <td >' . $stage['DATEDEB_STG'] . '</td> 
                                    <td >' . $stage['DATEFIN_STG'] . '</td>   
                                    <td >' . $stage['NOTE_ENEX'] . '</td>  
-                                   <td>  
-                          <a  class="me-3" data-bs-toggle="collapse" href="#collapseExample' . $stage['NUM_STG'] . '" role="button" aria-expanded="false" aria-controls="collapseExample1"><i class=" active  bi bi-info-circle-fill" ></i></a>
-                          
-                         </td>
-                      </tr> 
-                      <tr data-child-name="' . $stage['NUM_STG'] . '" data-child-value="' . $stage['NUM_STG'] . '">
-                            <td>
-                                 Liste Jury  
-                            </td>
-                            <td >
-                                 ';foreach ($stage_jury2 as $jury2) {
+                                   
+                              
+                                    <td >
+                                      <div>
+                                        <div class="row mt-2">
+                                             <span class="col-auto prop-name  me-3">Liste Jury :</span>
+                                               <div class="col-auto prop-value">'.$jurylist.'
+                                               </div>
+                                        </div>
+                                        <div class="row align-items-center">
+                                                  <span class="col-auto prop-name  me-3">Rapport</span>
+                                               <span class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="' . $path . '" target="_blank">voir plus</a></span>
+                                                  <span class="col-auto prop-name  me-3">Contrat</span>
+                                                <span class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="' . $stage['CONTRAT_STG'] . '" target="_blank">voir plus</a></span>
 
-                                        echo '  <span class="me-2"> ' . $jury2['PRENOM_ENS'] . ' ' . $jury2['NOM_ENS'] . '</span>';
-                                    }' 
-                                 </td>
-                            </tr>';
+                                         </div>
+                                         </div>
+                                                       
+                                    </td>
+                                    
+                             </tr>    
+                                      ';
                         }
                         ?>
 
@@ -243,29 +257,8 @@ require_once "nav-etudiant.php";
         </div>
 
 
-<!--        </tr>-->
-<!--        <tr data-child-name="' . $stage['NUM_STG'] . '" data-child-value="10">-->
-<!--            <td colspan="7" class="p-0">-->
-<!---->
-<!--                <div class="col-auto prop-name  me-3">Liste Jury :</div>-->
-<!--                <div class="col-auto prop-value">';-->
-<!--                    foreach ($stage_jury2 as $jury2) {-->
-<!---->
-<!--                    echo '  <span class="me-2"> ' . $jury2['PRENOM_ENS'] . ' ' . $jury2['NOM_ENS'] . '</span>';-->
-<!--                    }-->
-<!--                    echo '-->
-<!--                </div>-->
-<!---->
-<!--    </div>-->
-<!--    <div class="row align-items-center">-->
-<!--        <div class="col-auto prop-name  me-3">Rapport</div>-->
-<!--        <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="' . $path . '">voir plus</a></div>-->
-<!--        <div class="col-auto prop-name  me-3">Contrat</div>-->
-<!--        <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="' . $stage['CONTRAT_STG'] . '">voir plus</a></div>-->
-<!---->
-<!---->
-<!--        </td>-->
-<!--        </tr>-->
+
+
 
         <?php
         echo "
@@ -292,40 +285,53 @@ require_once "nav-etudiant.php";
 </div>
 
 <script>
-    function format (name, value) {
-        return '<div>Name: ' + name + '<br />Value: ' + value + '</div>';
-    }
+
     $(document).ready(function () {
-        $('#table_id').DataTable(
+        function format (d) {
+
+            return '<div style="width:100%">'+
+                '<span>Détails</span>' + d[6] +
+                '</div>';
+        }
+        var table =$('#table_id').DataTable(
             {
-                select: {
-                    selector: 'td:not(:first-child)',
-                    style: 'os'
-                },
+                "columnDefs": [
+                    // hide the needed column
+                    { "visible": false, "targets": 6 },
+                    {
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "data":           null,
+                        "defaultContent": '',
+                        "targets": 0
+                    },
+                ],
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json'
                 },
                 scrollY: 200,
                 scrollX: true,
+
             });
 
 
+    // Add event listener for opening and closing details
+    $('#table_id tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    });
 
-        $('#table_id tbody').on('click', 'td.dt-control', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row(tr);
-
-            if (row.child.isShown()) {
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown');
-            } else {
-                // Open this row
-                row.child(format(tr.data('child-name'), tr.data('child-value'))).show();
-                tr.addClass('shown');
-            }
-        });
 
     });
 </script>
