@@ -285,7 +285,7 @@ require_once "./nav-etudiant.php"
                                 <th scope="col">Poste</th>
 
                                 <th scope="col">Date Postuler</th>
-                                <th scope="col">Duree</th>
+                                
                                 <th scope="col">Accepter</th>
                             </tr>
                             </thead>
@@ -303,7 +303,7 @@ require_once "./nav-etudiant.php"
                                         <td>'.$offre['LIBELLE_ENT'].'</td>
                                         <td>'.$offre['POSTE_OFFR'].'</td>
                                         <td>'.$offre['DATE_POST'].'</td>
-                                        <td>'.$offre['DURE_OFFR'].' mois</td>
+                                        
                                         <td>
                                         <form action="" method="post">
                                                         <div class="col-auto">
