@@ -167,13 +167,13 @@ if(isset($_GET['passOublier'])) {
                     </div>
         <div class="p-4 col-xl-9 col-sm-12">
             <div class="intro  mt-3">
-                <h3> <b>Détails étudiant</b>  </h3> 
+                <h3> <b>Détails étudiant </b>  </h3>
     
             </div>
             <div class="intro ">
                <p>
-                Consulter l'ensemble des information sur l'etudiant
-            </p> 
+                Consulter l'ensemble des information sur l'etudiant.<br> CNE:<?php echo $cne;?>
+               </p>
             </div>
 
 
@@ -225,13 +225,13 @@ if(isset($_GET['passOublier'])) {
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputEMAIL" >E-mail </label>
-                                            <input id="inputEMAIL" type="email"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[2];?>" name="email" >
+                                            <input id="inputEMAIL" type="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" title="email invalide"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[2];?>" name="email" >
 
                                         </div>
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label for="inputTEL" >TEL </label>
-                                            <input id="inputTEL" type="text"  class="form-control  inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="tel" >
+                                            <input id="inputTEL" type="text"  pattern="^(([+][0-9]{7,16})|(0[5-7][0-9]{8}))$" title="num tel soit +2126XXXXXXXX ou 06XXXXXXXX" class="form-control inputPERSONE" disabled value="<?php echo $donnee[3];?>" name="tel" >
 
                                         </div>
                                     </div>
@@ -239,13 +239,13 @@ if(isset($_GET['passOublier'])) {
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label  >Ville </label>
-                                            <input type="text" class="form-control inputPERSONE" disabled value="<?php echo $donnee[4];?>" name="ville" >
+                                            <input type="text" class="form-control inputPERSONE" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux" disabled value="<?php echo $donnee[4];?>" name="ville" >
 
                                         </div>
                                         <div class="col-xl-6 col-sm-12 ">
 
                                             <label >Pays </label>
-                                            <input type="text" class="form-control inputPERSONE" disabled  value="<?php echo $donnee[5];?>" name="pays" >
+                                            <input type="text" class="form-control inputPERSONE" disabled  value="<?php echo $donnee[5];?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="pays ne contient pas des caractères speciaux" name="pays" >
 
                                         </div>
                                     </div>

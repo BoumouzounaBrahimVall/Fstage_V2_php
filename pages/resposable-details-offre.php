@@ -25,7 +25,6 @@ if(isset($_POST['filesUpload']))
 if (empty($offre_num)) header('location:gererOffre.php');
 
 if(isset($_GET['modifpost'])){
-        echo 'yes';
         $cneEtu=$_GET['cne'];
         $datReponse=$_GET['dateRep'];
       //reponse entreprise
@@ -67,15 +66,15 @@ if(isset($_GET['send'])) {
             $req = "UPDATE OFFREDESTAGE set EFFECTIF_OFFRE='$Effectif',DELAI_JOFFR='$delai' WHERE NUM_OFFR='$offre_num'";
             break;
         case 'modifyAdr':// villeOffre paysOffre lieuOffre
-            $ville=$_GET['villeOffre'];
-            $pays=$_GET['paysOffre'];
-            $lieu=$_GET['lieuOffre'];
+            $ville=addslashes($_GET['villeOffre']);
+            $pays=addslashes($_GET['paysOffre']);
+            $lieu=addslashes($_GET['lieuOffre']);
             $req = "UPDATE OFFREDESTAGE set VILLE_OFFR='$ville',LIEUX_OFFR='$lieu',PAYS_OFFR='$pays' WHERE NUM_OFFR='$offre_num'";
             break;
         case 'modifyDetail':// Poste sujet detail
-            $poste=$_GET['Poste'];
-            $sujet=$_GET['sujet'];
-            $detail=$_GET['detail'];
+            $poste=addslashes($_GET['Poste']);
+            $sujet=addslashes($_GET['sujet']);
+            $detail=addslashes($_GET['detail']);
             $req = "UPDATE OFFREDESTAGE set POSTE_OFFR='$poste',SUJET_OFFR='$sujet',DETAILS_OFFR='$detail' WHERE NUM_OFFR='$offre_num'";
             break;
     }
@@ -240,7 +239,7 @@ $donnee=array(
 
                                 <form   action="" method="get" class="col border rounded p-1">
                                     <label for="inputEtat">Etat</label>
-                                    <input id="inputEtat" type="text" class="form-control inputEtat" disabled value="<?php echo $donnee[1];?>" name="inputEtat">
+                                    <input id="inputEtat" type="text" pattern="(NOUVEAU|CLOSE|COMPLETER)"  title="L'etat soit :NOUVEAU,CLOSE ou COMPLETER" class="form-control inputEtat" disabled value="<?php echo $donnee[1];?>" name="inputEtat">
                                     <input type="text" class="d-none"  value="<?php echo $offre_num;?>" name="numOffre" >
                                     <button type="submit" name="send" class="btn d-none"  id="subbtnEtat" >
                                         <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
@@ -277,12 +276,12 @@ $donnee=array(
                                     <div class="col">
 
                                             <label for="inputEff" >Effectif </label>
-                                            <input id="inputEff" type="number" class="form-control  inputEffDl" disabled value="<?php echo $donnee[4];?>" name="Effectif" >
+                                            <input id="inputEff" type="text" class="form-control  inputEffDl" pattern="([0-9]+)?"  title="effectif doit etre un entier" disabled value="<?php echo $donnee[4];?>" name="Effectif" >
 
                                     </div>
                                     <div class="col">
                                             <label for="inputEtat">Delai (jours)</label>
-                                            <input id="inputEtat" type="number" class="form-control inputEffDl" disabled value="<?php echo $donnee[5];?>" name="delai">
+                                            <input id="inputEtat" type="text" class="form-control inputEffDl" pattern="([0-9]+)?"  title="Delai doit etre un entier" disabled value="<?php echo $donnee[5];?>" name="delai">
                                         <button type="submit" name="send" class="btn d-none"  id="subbtnEffDl" >
                                             <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
                                         <a onclick="modifySubmitdate('inputEffDl','modifyEffDl','subbtnEffDl')" id="modifyEffDl" type="btn"><i id="modifier" style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="bi bi-pencil-square"></i></a>
@@ -301,14 +300,14 @@ $donnee=array(
                                    <div class="row">
                                        <div class="col">
 
-                                           <label  >Ville </label>
-                                           <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[6];?>" name="villeOffre" >
+                                           <label  >Ville </label><!--^[a-zA-Z\u0080-\u024F]+(?:. |-| |')*([1-9a-zA-Z\u0080-\u024F]+(?:. |-| |'))[a-zA-Z\u0080-\u024F]*$ -->
+                                           <input type="text" class="form-control inputAdr" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux" disabled value="<?php echo $donnee[6];?>" name="villeOffre" >
 
                                        </div>
                                        <div class="col">
 
                                            <label >Pays </label>
-                                           <input type="text" class="form-control inputAdr" disabled value="<?php echo $donnee[7];?>" name="paysOffre" >
+                                           <input type="text" class="form-control inputAdr" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux" disabled value="<?php echo $donnee[7];?>" name="paysOffre" >
 
                                        </div>
                                    </div>

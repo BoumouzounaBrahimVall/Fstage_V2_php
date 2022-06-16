@@ -48,7 +48,7 @@ require_once "./nav-ens.php"
                                 <div class="col p-4">
                                     <h1 class=" text-center">
                                         <?php
-                                        $req1 = "SELECT COUNT(off.NUM_OFFR) nbr_nv_off FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='nouveau' and niv.NUM_FORM='$formation';";
+                                        $req1 = "SELECT COUNT(off.NUM_OFFR) nbr_nv_off FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='NOUVEAU' and niv.NUM_FORM='$formation';";
                                         $Smt1 = $bdd->query($req1);
                                         $nbr = $Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
 
@@ -70,7 +70,7 @@ require_once "./nav-ens.php"
                                 </div>
                                 <div class="col p-4">
                                     <h1 class=" text-center"><?php
-                                        $req1 = "SELECT COUNT(off.NUM_OFFR) nbr_off_cmp FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='complete' and niv.NUM_FORM='$formation';";
+                                        $req1 = "SELECT COUNT(off.NUM_OFFR) nbr_off_cmp FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='COMPLETER' and niv.NUM_FORM='$formation';";
                                         $Smt1 = $bdd->query($req1);
                                         $nbr = $Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
 
