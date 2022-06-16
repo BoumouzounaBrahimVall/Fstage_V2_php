@@ -2,6 +2,32 @@
 require(__DIR__ . '../../phpQueries/respoRequiries.php');
 require(__DIR__ . './../phpQueries/etudiant/uploadfile.php');
 
+@$cne_courant= $_GET['cnee'];
+if(!is_null($cne_courant)){
+    //selectionner dernier niveau
+$req_lastNiv = "SELECT ETUDIER.NUM_NIV from ETUDIER where ETUDIER.CNE_ETU='$cne_courant' and ETUDIER.NUM_NIV>=All(SELECT NUM_NIV from NIVEAU where CNE_ETU='$cne_courant');";
+$smt_lastNiv=$bdd->query($req_lastNiv);
+$lastNiv=$smt_lastNiv->fetch(2);
+$dernierNv= $lastNiv['NUM_NIV'];
+
+//desactiver l etudiant
+$req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='1'where ETUDIANT.CNE_ETU='$cne_courant'; ";
+$bdd->exec($req_annulerEtud);
+
+//annuler le stage le stage actuel de l etudiant
+$req_annulerstg_Etud = "UPDATE stage set stage.ACTIVE_STG='1' where  stage.CNE_ETU='$cne_courant' and stage.NUM_OFFR in (SELECT offredestage.NUM_OFFR from offredestage where   offredestage.NUM_NIV='$dernierNv'); ";
+$bdd->exec($req_annulerstg_Etud);
+//supprimer le stage actuel de l etudiant
+// $req_annulerpost_Etud = "DELETE postuler.* from postuler,offredestage where postuler.NUM_OFFR=offredestage.NUM_OFFR and postuler.CNE_ETU='$cne_courant' and offredestage.NUM_NIV='$dernierNv'; ";
+// $bdd->exec($req_annulerpost_Etud);
+
+
+
+
+} 
+
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $donnee = array(
@@ -162,7 +188,8 @@ require_once "./nav-ens.php"
                                             <td>' . $nbr['nbr_stage'] . '</td>
                                             <td>' . $nbr['nbr_post'] . '</td>
                                             <td>  
-                                         <a class="ms-3" href="../pages/resposable-details-etudiant.php?cne=' . $V['cne'] . '"><i class=" active  bi bi-pencil-fill"></i></a>
+                                                            <a class="ms-3" href="../pages/resposable-details-etudiant.php?cne='.$V['cne'].'"><i class=" active  bi bi-pencil-fill"></i></a>
+                                                            <a class="ms-3"   href="../pages/gererEtudiant.php?cnee='.$V['cne'].'"><i class="bi bi-person-x"></i></i></a>
                                         </td>
                                         
                                     </tr>';

@@ -89,6 +89,12 @@ else
 $visiblePostuler=" ";
 
 
+// function verifier_close($numOffre,$etat_pub,$visiblePostuler)
+// {
+// if(strcmp($etat_pub,"CLOSE")==0){ $visiblePostuler="disabled";}
+// else 
+// $visiblePostuler=" ";
+// }
 
 
 ?>

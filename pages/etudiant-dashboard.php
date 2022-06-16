@@ -45,6 +45,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'&& isset($_POST['btnOffre'])) {
     <?php
     require_once "./meta-tag.php"
     ?>
+    <link rel="stylesheet" href="../../../css/style.css" />
 
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -143,13 +144,14 @@ require_once "nav-etudiant.php";
                 <div  class="container-card d-flex flex-row flex-wrap">
                     <?php foreach ($etudiant_offres as $offre_stage):
                         if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
-
+                         if(strcmp($offre_stage['ETATPUB_OFFR'],"CLOSE")==0) {$visiblePostuler2="disabled";$close='close';}
+                         else{ $visiblePostuler2=" ";$close=" ";};
                         echo '
                   <div class="m-xl-3 ">
               <div class="card border-link rounded-5 " style="min-width: 365px;min-height: 420px;">
                 <div class="row">
                   <div class="col">
-                    <span class="  m-3 badge-status  w-25  p-2  "> '.$offre_stage["ETATPUB_OFFR"] .'</span>
+                    <span class="  m-3 badge-status  w-25  p-2 '.$close.' "> '.$offre_stage["ETATPUB_OFFR"] .'</span>
 
                   </div>
                 </div>
@@ -207,9 +209,9 @@ require_once "nav-etudiant.php";
                 </div>
                 
       
-                <div class=" p-3  d-flex justify-content-around border-top-0">
+                <div class=" p-3  d-flex justify-content-around border-top-0"> 
 
-                  <button  id=""  class="btn ps-5 pe-5  me-2 btn-postuler" '.$visiblePostuler.'  onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
+                  <button  id=""  class="btn ps-5 pe-5  me-2 btn-postuler " '.$visiblePostuler.' '.$visiblePostuler2.' onclick="verifyCvUploaded('. $offre_stage["NUM_OFFR"] .')" role="button">Postuler</button>
                   <a  id="" class="btn ps-5 pe-5 btn-voir-plus" target="_blank" href="offre-details.php?noffr='. $offre_stage["NUM_OFFR"] .'&niv='. $offre_stage["NUM_NIV"] .'" role="button">Détails</a>
 
                 </div>

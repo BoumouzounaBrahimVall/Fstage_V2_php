@@ -352,3 +352,8 @@ color: white;
 .bt{
     margin: 0 !important;padding: 0 !important;
 }
+
+.close{
+  color: rgb(249, 218, 160);
+  opacity: 10;
+}
