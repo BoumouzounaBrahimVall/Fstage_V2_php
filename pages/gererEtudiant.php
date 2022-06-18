@@ -4,22 +4,30 @@ require(__DIR__ . './../phpQueries/etudiant/uploadfile.php');
 
 @$cne_courant= $_GET['cnee'];
 if(!is_null($cne_courant)){
+$req_infoEtud="SELECT * from ETUDIANT where ETUDIANT.CNE_ETU='$cne_courant';";
+$smt_infoEtud=$bdd->query($req_infoEtud);
+$infoEtud=$smt_infoEtud->fetch(2);
+
     //selectionner dernier niveau
 $req_lastNiv = "SELECT ETUDIER.NUM_NIV from ETUDIER where ETUDIER.CNE_ETU='$cne_courant' and ETUDIER.NUM_NIV>=All(SELECT NUM_NIV from NIVEAU where CNE_ETU='$cne_courant');";
 $smt_lastNiv=$bdd->query($req_lastNiv);
 $lastNiv=$smt_lastNiv->fetch(2);
 $dernierNv= $lastNiv['NUM_NIV'];
-
+if($infoEtud['ACTIVE_ETU']==0){
 //desactiver l etudiant
 $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='1'where ETUDIANT.CNE_ETU='$cne_courant'; ";
 $bdd->exec($req_annulerEtud);
-
+}
+else
+{
+    //activer Etudiant
+    $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='0'where ETUDIANT.CNE_ETU='$cne_courant'; ";
+    $bdd->exec($req_annulerEtud); 
+}
 //annuler le stage le stage actuel de l etudiant
-$req_annulerstg_Etud = "UPDATE stage set stage.ACTIVE_STG='1' where  stage.CNE_ETU='$cne_courant' and stage.NUM_OFFR in (SELECT offredestage.NUM_OFFR from offredestage where   offredestage.NUM_NIV='$dernierNv'); ";
-$bdd->exec($req_annulerstg_Etud);
-//supprimer le stage actuel de l etudiant
-// $req_annulerpost_Etud = "DELETE postuler.* from postuler,offredestage where postuler.NUM_OFFR=offredestage.NUM_OFFR and postuler.CNE_ETU='$cne_courant' and offredestage.NUM_NIV='$dernierNv'; ";
-// $bdd->exec($req_annulerpost_Etud);
+// $req_annulerstg_Etud = "UPDATE stage set stage.ACTIVE_STG='1' where  stage.CNE_ETU='$cne_courant' and stage.NUM_OFFR in (SELECT offredestage.NUM_OFFR from offredestage where   offredestage.NUM_NIV='$dernierNv'); ";
+// $bdd->exec($req_annulerstg_Etud);
+
 
 
 
@@ -161,7 +169,7 @@ require_once "./nav-ens.php"
                                 <tbody>
                                 <?php
 
-                                $req = "SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv
+                                $req = "SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.ACTIVE_ETU,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv 
                                             FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV
                                             and  NIVEAU.NUM_FORM='$formation' and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
                                                  where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
@@ -179,6 +187,8 @@ require_once "./nav-ens.php"
                                     $req_nbr = " SELECT COUNT(stage.CNE_ETU) nbr_stg FROM `stage` WHERE stage.CNE_ETU='$cneEtudiant';";
                                     $Smt_nbr = $bdd->query($req_nbr);
                                     $nbr = $Smt_nbr->fetch(PDO::FETCH_ASSOC);
+                                    if($V['ACTIVE_ETU']==0) {$person='bi bi-person-x';$color='red';}
+                                   else {$person='bi bi-person-check';$color='green';}
                                     echo ' <tr>
                                       <td>' . $V['cne'] . '</td>
                                     
@@ -189,7 +199,7 @@ require_once "./nav-ens.php"
                                             <td>' . $nbrpst['nbr_post'] . '</td>
                                             <td>  
                                                             <a class="ms-3" href="../pages/resposable-details-etudiant.php?cne='.$V['cne'].'"><i class=" active  bi bi-pencil-fill"></i></a>
-                                                            <a class="ms-3"   href="../pages/gererEtudiant.php?cnee='.$V['cne'].'"><i class="bi bi-person-x"></i></i></a>
+                                                            <a class="ms-3"  id="btn-tgl" href="../pages/gererEtudiant.php?cnee='.$V['cne'].'"><i class="'.@$person.'" style="color:'.$color.';"></i></i></a>
                                         </td>
                                         
                                     </tr>';
@@ -389,6 +399,10 @@ require_once "./nav-ens.php"
             scrollY: 200,
             scrollX: true,
         });
+
+   
+
+
     });
 </script>
 <script type="text/javascript" src="/js/script.js"></script>
