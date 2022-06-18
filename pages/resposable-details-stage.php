@@ -2,7 +2,7 @@
 require(__DIR__ . '../../phpQueries/uploads.php');
 $stage_num = $_GET['numStage'];
 
-if (isset($_POST['filesUpload'])) {
+if (isset($_POST['filesUpload']) || (isset($_POST['contratUpload']))) {
     $stage_num = $_POST['numStage'];
     print_r($_POST);
 }
@@ -33,6 +33,20 @@ if (!empty($MotClesRAP)) {
     }
 } else $listMotCleRap[] = '-1';
 print_r($MotClesRAP);
+if (isset($_POST['contratUpload'])) {
+    print_r($_POST);
+    $file = $_FILES['fileContrat'];
+    if (!empty($file['name'])) {
+        //importer le fichier au firebase stockage a distance
+        $file = $_POST['contratPath'];
+        if (!empty($file)) {
+            uploadImagesOrCVFirebase($stage_num, $file, $bdd, 6);
+            header('location:resposable-details-stage.php?numStage=' . $stage_num);
+        }
+
+
+    }
+}
 if (isset($_POST['filesUpload'])) {
     echo 'ouui';
     $intit = addslashes($_POST['intituler']);
@@ -69,6 +83,7 @@ if (isset($_POST['filesUpload'])) {
     }
     header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
+
 if (isset($_GET['send'])) {
     switch ($_GET['send']) {
         case 'modifystg1':
@@ -171,6 +186,8 @@ $donnee = array(
     $detaiOff['LIBELLE_ENT'],
     $detaiOff['CONTRAT_STG'],
 );
+$actionCrt = ' ';
+if (empty($donnee[12])) $actionCrt = 'disabled';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -527,6 +544,7 @@ require_once "./nav-ens.php"
 
                         <div class="ms-4 mt-2 row">
                             <a href="<?php echo $Rapport['pthrp'] ?>"
+                               target="_blank"
                                class="ms-4 btn btn-selector d-none <?php echo $action ?>" id="btnDnL" download>Telecharger</a>
                         </div>
 
@@ -585,7 +603,7 @@ require_once "./nav-ens.php"
                                                                    id="rapportPath">
                                                             <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
                                                             <input type="file" class="d-none" name="file" id="rap"
-                                                                   onchange="uploadFileToFirebase('rap','btnSubmit','rapportPath',5,'<?php echo $stage_num; ?>')">
+                                                                   onchange="uploadFileToFirebase('rap','btnSubmit','rapportPath',5,'<?php echo $donnee[2] . $donnee[1].$stage_num; ?>')">
                                                             <label class="mt-3 btn-voir-plus py-2 px-4"
                                                                    style="width: fit-content; font-size: 16px"
                                                                    for="rap">Importer <i
@@ -645,11 +663,10 @@ require_once "./nav-ens.php"
 
                     </div>
                     <div class="row">
-                        <form class=" g-3">
                             <div class="mt-4">
                                 <div class="d-flex align-items-center ">
                                     <img class="me-2" src="./../../assets/icon/step1.svg" alt="">
-                                    <span class="subheadline-form">Action sur Rapport</span>
+                                    <span class="subheadline-form">Action sur Contrat</span>
                                 </div>
 
                                 <div class="row mt-4 ms-5   py-2 border border-1 rounded-3" style="width: 50%;">
@@ -657,15 +674,15 @@ require_once "./nav-ens.php"
                                     <div class="col-10">
                                         <div class="row">
                                             <div class="col-4 col-sm-6">
-                                                <label for="inputRapport" class="col-form-label">Action</label>
+                                                <label for="inputContrat" class="col-form-label">Action</label>
 
                                             </div>
                                             <div class="col-8 col-sm-6">
-                                                <select id="inputRapport" class="form-select"
+                                                <select id="inputContrat" class="form-select"
                                                         aria-label="Default select example">
 
                                                     <option selected value="1">importer</option>
-                                                    <option value="2">generer</option>
+                                                    <option value="2">telecharger</option>
                                                 </select></div>
 
                                         </div>
@@ -676,12 +693,20 @@ require_once "./nav-ens.php"
                             </div>
 
 
-                            <div class="d-flex mt-4 align-items-center ">
+                            <div class="ms-4 mt-2 row">
+                                <a href="<?php echo $donnee[12] ?>"
+                                   target="_blank"
+                                   class="ms-4 btn btn-selector d-none <?php echo $actionCrt ?>" id="btnDnLCrt"
+                                   download>Telecharger</a>
+                            </div>
+                            <div class="d-flex mt-4 align-items-center infocrt">
                                 <img class="me-2" src="./../../assets/icon/step2.svg" alt="">
                                 <span class="subheadline-form">Importer Contrat</span>
                             </div>
-                            <div class="row">
-                                <form action="" method="post">
+                            <div class="row infocrt">
+                                <form  method="POST" enctype="multipart/form-data">
+                                    <input type="text" class="d-none " value="<?php echo $stage_num; ?>"
+                                           name="numStage">
                                     <div class="col-10 ms-5   align-items-start ">
 
                                         <div class="mt-2 p-2 border border-1 rounded-3 ">
@@ -692,6 +717,8 @@ require_once "./nav-ens.php"
 
 
                                                         <div class="row mt-2 d-flex justify-content-around ">
+                                                            <input class="form-control d-none" name="contratPath"
+                                                                   id="contratPath">
                                                             <div style="width: fit-content"
                                                                  class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                                 <img style="margin: auto; max-width: 64px"
@@ -701,9 +728,10 @@ require_once "./nav-ens.php"
                                                                        class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
                                                                     Importer <i class="bi bi-file-arrow-up-fill"></i>
                                                                 </label>
-                                                                <input class="form-control d-none" name="contrat"
-                                                                       onchange="uploadFileToFirebase('fileContrat','btnSubmit','pathStorageFile',2,'<?php echo $_SESSION['auth'] ?>')"
-                                                                       accept="application/pdf" type="file" id="fileContrat">
+                                                                <input class="form-control d-none" name="fileContrat"
+                                                                       onchange="uploadFileToFirebase('fileContrat','btnSubmitCrt','contratPath',6,'<?php echo $donnee[2] . $donnee[1] . $stage_num; ?>')"
+                                                                       accept="application/pdf" type="file"
+                                                                       id="fileContrat">
 
                                                             </div>
 
@@ -725,7 +753,8 @@ require_once "./nav-ens.php"
                                     </div>
                                     <div class="row ms-4">
                                         <div class="col-xl-6  mt-4">
-                                            <button type="submit" class="btn btn-filtre btn-primary w-100 mb-3"> Ajouter
+                                            <button type="submit" name="contratUpload" id="btnSubmitCrt"
+                                                    class="btn btn-filtre btn-primary w-100 mb-3"> Ajouter
                                                 <i class="bi bi-plus-circle-fill"></i></button>
                                         </div>
                                     </div>
@@ -760,6 +789,23 @@ require_once "./nav-ens.php"
             for (let i = 0; i < infoRap.length; i++)
                 infoRap[i].classList.remove('d-none');
             btnDownload.classList.add('d-none');
+        }
+    });
+
+
+    let activitiescrt = document.getElementById("inputContrat");
+    let infoCrt = document.getElementsByClassName('infocrt');
+    let btnDownloadCrt = document.getElementById('btnDnLCrt');
+    activitiescrt.addEventListener("change", function () {
+        if (activitiescrt.value === "2") {
+            for (let i = 0; i < infoCrt.length; i++)
+                infoCrt[i].classList.add('d-none');
+
+            btnDownloadCrt.classList.remove('d-none');
+        } else {
+            for (let i = 0; i < infoCrt.length; i++)
+                infoCrt[i].classList.remove('d-none');
+            btnDownloadCrt.classList.add('d-none');
         }
     });
 

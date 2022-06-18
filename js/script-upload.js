@@ -26,22 +26,24 @@ const getPathToTpload = (file,pathType,id) => {
     switch (pathType)
     {
         case 1://photo etudiant
-            fileDestination=img_upload_path + "EtudiantPhoto/"+id;
+            fileDestination=img_upload_path + "EtudiantPhoto/"+id+"IMG";
+
             break;
         case 2://cv etudiant
-            fileDestination= doc_upload_path+ "EtudiantCv/"+id;
+            fileDestination= doc_upload_path+ "EtudiantCv/"+id+"CV";
             break;
         case 3:///logo ent
-            fileDestination=img_upload_path+ "CompanyPhoto/"+id;
+            fileDestination=img_upload_path+ "CompanyPhoto/"+id+"IMG";
             break;
         case 4:/// photo responsable
-            fileDestination=img_upload_path+ "ResposablesPhoto/"+id;
+            fileDestination=img_upload_path+ "ResposablesPhoto/"+id+"IMG";
         case 5:/// document rapport
-            fileDestination=doc_upload_path+ "RapportStage/"+id;
+            fileDestination=doc_upload_path+ "RapportStage/"+id+"RAP";
             break;
-        case 5:/// document contrat
-            fileDestination=doc_upload_path+ "ContratStage/"+id;
+        case 6:/// document contrat
+            fileDestination=doc_upload_path+ "ContratStage/"+id+"CRT";
             break;
+
     }
 
     fileDestination=fileDestination+'.'+file.name.split('.').pop();
@@ -157,11 +159,7 @@ const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId,pathType,id)=>
     } else {
         alert("File is not selected.");
     }
-    if (parentModel.length>0)
-    {
 
-        $('#myModalParent').modal('hide');
-    }
 }
 
 function getFileUrl(filename,btnSubmit,pathStorageFile) {
