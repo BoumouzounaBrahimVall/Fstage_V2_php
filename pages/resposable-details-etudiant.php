@@ -86,11 +86,11 @@ if(isset($_GET['passOublier'])) {
 
     $pass=generateRandomString();
     echo $pass;
-   // passForgotten("$donnee[2]",$pass,$donnee[0],$donnee[1]);
+    passForgotten("$donnee[2]",$pass,$donnee[0],$donnee[1]);
     $pass=password_hash($pass,PASSWORD_DEFAULT);
     $req = "  UPDATE `ETUDIANT` SET `MOTDEPASSE_ETU` = '$pass' WHERE `ETUDIANT`.`CNE_ETU` = '$cne';";
-    $bdd->exec($req);
-    header("location:resposable-details-etudiant.php?cne=".$cne);
+   // $bdd->exec($req);
+  //  header("location:resposable-details-etudiant.php?cne=".$cne);
 }
 
 ?>
