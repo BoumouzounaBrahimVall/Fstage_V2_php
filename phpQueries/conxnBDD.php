@@ -5,7 +5,7 @@
 try {
 
 
-    $bdd= new PDO("mysql:host=localhost;dbname=fstage","root","root");
+    $bdd= new PDO("mysql:host=localhost;dbname=fstage","root","");
 
    // $bdd = new PDO("mysql:host=localhost;port=3307;dbname=fstage", "root", "");
 
