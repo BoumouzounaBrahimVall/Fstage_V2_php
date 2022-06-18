@@ -91,6 +91,7 @@ require_once "./nav-ens.php"
                                     <th scope="col">Entreprise</th>
                                     <th scope="col">Poste</th>
                                     <th scope="col">Niveau</th>
+                                    <th scope="col">Etat offre</th>
                                     <th scope="col">Effectif</th>
                                     <th scope="col">Nbr candidats</th>
                                     <th scope="col">Action</th>
@@ -114,6 +115,7 @@ require_once "./nav-ens.php"
                             <td>' . $V['LIBELLE_ENT'] . '</td>
                             <td>' . $V['POSTE_OFFR'] . '</td> 
                             <td>' . $V['LIBELLE_NIV'] . '</td> 
+                           <td>' . $V['ETATPUB_OFFR'] . '</td>
                             <td>' . $V['EFFECTIF_OFFRE'] . '</td>
                             <td>' . $nbrCnd['nbrpost'] . '</td>
                             <td>  
