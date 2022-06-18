@@ -8,7 +8,7 @@
       <jdbc-url>jdbc:mysql://us-cdbr-east-05.cleardb.net/heroku_93aab640ed42c57</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="fstage@localhost" uuid="635d0e85-8166-4a16-b26e-2ff9156e7b24">
+    <data-source source="LOCAL" name="fstage@localhost" uuid="31d4e36a-f89a-461a-9789-6b7bf41dbe2d">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

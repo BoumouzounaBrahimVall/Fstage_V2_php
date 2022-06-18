@@ -53,9 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //recuperer les donnees
     $nnn = $_POST['nom'];
     $ppp = $_POST['prenom'];
+    $imgEtu="../ressources/user.png";
+    if(!empty($_POST['IMG_ETU'])){
+        $imgEtu=$_POST['IMG_ETU'];
+    }
     //la requette d'insertion
-    $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU)
-               VALUES ('$donnee[0]','$donnee[1]','$donnee[2]','$donnee[3]','$donnee[4]','$donnee[5]','$donnee[6]','$donnee[7]','$donnee[8]');";
+    $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU,IMG_ETU)
+               VALUES ('$donnee[0]','$donnee[1]','$donnee[2]','$donnee[3]','$donnee[4]','$donnee[5]','$donnee[6]','$donnee[7]','$donnee[8]','$imgEtu');";
     //execution de la requette
     $bdd->exec($req);
     $DT = date("Y-m-d");
@@ -254,7 +258,7 @@ require_once "./nav-ens.php"
 
                     </div>
                     <div class="row">
-                        <form class=" g-3 mt-2" method="post">
+                        <form class=" g-3 mt-2" method="post" enctype="multipart/form-data">
                             <div class="d-flex align-items-center ">
                                 <img class="me-2" src="../assets/icon/step1.svg" alt="">
                                 <span class="subheadline-form">information sur l'etudiant</span>
@@ -267,7 +271,7 @@ require_once "./nav-ens.php"
                                     </label>
                                     <input class="form-control d-none"
                                            onchange="uploadFileToFirebase('files','btnSubmit','pathStorageFile',1,'<?php echo $lastNum; ?>')"
-                                           accept="image/*" type="file" id="files">
+                                           accept="image/*" type="file" id="files" name="IMG_ETU">
 
 
                                     <div>
