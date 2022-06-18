@@ -34,19 +34,23 @@ switch ($selected)
 
     case 2:
 
-        $req1="SELECT COUNT(off.NUM_OFFR) nbr_nv_off FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='nouveau' and niv.NUM_FORM='$formation';";
+        $req1="SELECT COUNT(off.NUM_OFFR) nbr_nv_off FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='NOUVEAU' and niv.NUM_FORM='$formation';";
         $Smt1=$bdd->query($req1);
         $nbr_nv=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
 
-        $req1="SELECT COUNT(off.NUM_OFFR) nbr_off_cmp FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='complete' and niv.NUM_FORM='$formation';";
+        $req1="SELECT COUNT(off.NUM_OFFR) nbr_off_cmp FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='COMPLETER' and niv.NUM_FORM='$formation';";
         $Smt1=$bdd->query($req1);
         $nbr_off=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
 
+        $req1="SELECT COUNT(off.NUM_OFFR) nbr_off_cls FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='CLOSE' and niv.NUM_FORM='$formation';";
+        $Smt1=$bdd->query($req1);
+        $nbr_off_cls=$Smt1->fetch(2);
 
         $data = array();
-        $labels = array('nbr_nv', 'nbr_off');
+        $labels = array('nbr_nv', 'nbr_off','nbr_cls');
         $data[$labels[0]] = $nbr_nv['nbr_nv_off'];
         $data[$labels[1]] = $nbr_off['nbr_off_cmp'];
+        $data[$labels[2]] = $nbr_off_cls['nbr_off_cls'];
         ;break;
         case 3:
 

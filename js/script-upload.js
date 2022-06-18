@@ -50,6 +50,52 @@ const getPathToTpload = (file,pathType,id) => {
 
 const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId,pathType,id)=>
 {
+    document.getElementById("modal-progress-upload").innerHTML='    <div  class="modal fade" id="myModalHandaleUpload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="3"\n' +
+        '              aria-labelledby="exampleModalLabel" aria-hidden="true">\n' +
+        '            <div class="modal-dialog" style="min-width: 365px;max-width: 550px">\n' +
+        '                <div class="modal-content d-flex justify-content-center " style="max-width: 800px;margin:auto;">\n' +
+        '\n' +
+        '                    <div class="modal-body mt-4">\n' +
+        '                        <div class="container-fluid">\n' +
+        '                            <div class="row">\n' +
+        '\n' +
+        '                                <span class="headline-form mx-auto" style="width: fit-content" > En cours d’importation</span>\n' +
+        '\n' +
+        '                            </div>\n' +
+        '                            <div class="row">\n' +
+        '                                <div class="d-flex flex-column justify-content-center p-xl-4 my-4">\n' +
+        '                                    <img style="max-width: 145px;margin: auto " src="./../assets/icon/importImg.png" alt="">\n' +
+        '                                    <div>\n' +
+        '                                        <div id="progress-parent" class="progress mt-2">\n' +
+        '                                            <div class="progress-bar"  id="progress" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"> <span id="progress-value"></span> </div>\n' +
+        '                                        </div>\n' +
+        '                                        <!--                                   -->\n' +
+        '                                        <!--                                   <progress  value="0" max="100" id="progress" class="progressbar"></progress>-->\n' +
+        '                                        <!--                                   <p id="uploading" class="successMsg"></p>-->\n' +
+        '                                    </div>\n' +
+        '                                    <span class="my-3" style="text-align: center;\n' +
+        '\n' +
+        'color: #565656;\n' +
+        '">\n' +
+        '                                    Veuillez patienter jusqu’a l’importation du fichier est terminer\n' +
+        '                                </span>\n' +
+        '\n' +
+        '                                </div>\n' +
+        '\n' +
+        '                            </div>\n' +
+        '\n' +
+        '                        </div>\n' +
+        '\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '\n' +
+        '            </div>\n' +
+        '        </div>\n  '
+    var myModal = new bootstrap.Modal(document.getElementById('myModalHandaleUpload'), {
+        keyboard: false
+    });
+
+    myModal.toggle();
         document.getElementById(btnSubmit).disabled = true;
 
         var files = document.getElementById(inputFile).files;
@@ -72,7 +118,23 @@ const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId,pathType,id)=>
                 function progress(snapshot) {
                     var percentage =
                         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+                    //100 -> p_progress
+                    //%
+                    let progressMain =document.getElementById("progress")
+                    let p_progress =document.getElementById("progress-parent")
+                    let p_width=p_progress.offsetWidth
+                    console.log(document.getElementById("progress-parent").offsetWidth)
+                    progressMain.setAttribute('aria-valuenow',percentage)
+
+                    console.log(p_width )
+                    console.log((percentage)*(p_width)/100);
+                    progressMain.style.backgroundColor="#7b61ff"
+                    progressMain.style.width =(((percentage)*(p_width))/100) +  'px' //toString(parseInt(percentage)) + 'px'
+                    document.getElementById("progress-value").textContent=parseInt(percentage)
+
                     //document.getElementById("progress").value = percentage;
+
                 },
 
                 function error() {
@@ -81,6 +143,7 @@ const uploadFileToFirebase=(inputFile,btnSubmit,pathStorageId,pathType,id)=>
 
                 function complete() {
                     getFileUrl(getPathToTpload(files[i],pathType,id),btnSubmit,pathStorageId);
+                    myModal.toggle();
                 }
             );
         }
@@ -99,6 +162,7 @@ function getFileUrl(filename,btnSubmit,pathStorageFile) {
         .then(function(url) {
            // document.getElementById("pathStorageFile").innerHTML += `${url}`;
             document.getElementById(pathStorageFile).setAttribute("value",url);
+
             document.getElementById(btnSubmit).disabled = false;;
             console.log(url);
         })
