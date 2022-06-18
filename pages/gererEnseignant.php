@@ -1,5 +1,25 @@
 <?php
     require( __DIR__.'/../phpQueries/respoRequiries.php');
+    //modification
+
+if(isset($_GET['modif'])){
+    $donnee=array(
+        $_GET['numens'],
+        $_GET['prenom'],
+        $_GET['nom'],
+        $_GET['datnes'],
+        $_GET['email'],
+        $_GET['tel']
+    );
+
+    $req="update  ENSEIGNANT set PRENOM_ENS='$donnee[1]',NOM_ENS='$donnee[2]',
+                       DATEDENAISSANCE_ENS='$donnee[3]',EMAIL_ENS_ETU='$donnee[4]',
+                       TEL_ENS='$donnee[5]' where NUM_ENS='$donnee[0]';";
+    //execution de la requette
+    $bdd->exec($req);
+    header('location:../pages/gererEnseignant.php');
+
+}
            if($_SERVER['REQUEST_METHOD']=='POST'){
              $donnee=array(
               $_POST['numens'],
@@ -193,25 +213,23 @@
                                      foreach($rows as $V): 
                                     
                                       
-                                      echo' <tr>
-                                      <td >'.$V['NUM_ENS'].'</td>
-                                    
+                                      echo' <tr id="'.$V['NUM_ENS'].'">
+                                      <td>'.$V['NUM_ENS'].'</td>
                                             <td>'.$V['NOM_ENS'].'</td>
                                             <td>'.$V['PRENOM_ENS'].'</td> 
                                             <td>'.$V['DATEDENAISSANCE_ENS'].'</td> 
-                                            
-                                            
                                             <td>'.$V['EMAIL_ENS_ETU'].'</td>
                                             <td>'.$V['TEL_ENS'].'</td>
                                             <td>  
-                                         <a class="ms-3" href="#"><i class=" active  bi bi-pencil-fill"></i></a>
+                                         <button  class="ms-3 btn" onclick="recupEnsData(\''.$V['NUM_ENS'].'\')" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i style="color: #7b61ff" class=" active  bi bi-pencil-fill"></i></button>
                                         </td></tr>
                                         
                                     ';
                                      endforeach;
                                     
                                     ?>
-                
+
+
                                 </tbody>
                                 </table>
                             </div>
@@ -224,8 +242,6 @@
 
 
     <!-- Main Content Area -->
- 
-  <!-- Pills content -->
 
   <!-- Ajouter enseignant-->
   <div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -315,6 +331,109 @@
       </div>
     </div>
   </div>
+
+    <script>
+        const recupEnsData=(idbtn)=>{
+            if(idbtn){
+                let children=document.getElementById(idbtn).children;
+                let inptids=['numEntmodif','Nommodif','Prenommodif','dateNaissmodif','Emailmodif','telmodif'];
+                console.log(children[0].textContent);
+                for(let i=0;i<inptids.length;i++)
+                    document.getElementById(inptids[i]).value=children[i].textContent;
+        }}
+    </script>
+
+
+
+    <!-- Modifier enseignant-->
+    <div  class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="min-width: 370px;max-width: 800px">
+            <div class="modal-content d-flex justify-content-center "style="min-width: 370px;max-width: 800px;margin:auto;">
+                <div class="modal-header border-0">
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <span class="headline-form"> Modifier un Enseignant </span>
+
+                        </div>
+                        <div class="row">
+                            <form class=" g-3 mt-2" method="get">
+                                <div class="d-flex align-items-center ">
+                                    <img class="me-2" src="../assets/icon/step1.svg" alt="">
+                                    <span class="subheadline-form" >information sur l'enseignant</span>
+                                </div>
+
+                                <div >
+                                    <div class="mt-4 p-2 border border-1 rounded-3">
+
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-sm-6">
+                                                    <label for="inputNom2" class="col-form-label" >Nom</label>
+
+                                                    <input class="form-control" type="text" id="Nommodif" name="nom">
+                                                </div>
+                                                <div class="col-xl-6 col-sm-6">
+                                                    <label for="inputPrenom2" class="col-form-label">Prenom</label>
+
+                                                    <input class="form-control" type="text" id="Prenommodif" name="prenom">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class=" col-xl-6 col-sm-6">
+                                                    <label for="inputEmail" class="col-form-label">Email</label>
+
+                                                    <input class="form-control" type="email" name="email" id="Emailmodif">
+                                                </div>
+                                                <div class="col-xl-6 col-sm-6">
+                                                    <label for="inputtel" class="col-form-label">Telephone</label>
+
+                                                    <input class="form-control" type="tel" id="telmodif" name="tel">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row mt-2 ">
+                                                <div class="col-xl-6 col-sm-6">
+                                                    <label for="numEnt" class="col-form-label">Nº enseignant</label>
+
+                                                    <input class="form-control" type="number" disabled id="numEntmodif" name="numens">
+                                                </div>
+                                                <div class="col-xl-6 col-sm-6">
+                                                    <label for="dateNaiss" class="col-form-label" >Date Naissance</label>
+
+                                                    <input class="form-control" type="date" id="dateNaissmodif" name="datnes" >
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+
+                                    <div class="row">
+                                        <div class="col-xl-6 mt-4">
+                                            <button onclick="document.getElementById('numEntmodif').disabled=false;" type="submit" name="modif" class="btn btn-filtre btn-primary w-100 mb-3">    Modifier <i class="bi bi-pencil-fill"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script>
         $(document).ready( function () {
             $('#table_id4').DataTable({
