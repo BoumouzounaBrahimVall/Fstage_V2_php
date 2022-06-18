@@ -100,16 +100,16 @@ require_once "nav-etudiant.php";
                             <div class="col-auto prop-value"><?php echo $stage_actulle['DATEFIN_STG'] ?></div>
 
                         </div>
-
+                        <?php genererContrat($etudiant_cne,$bdd,$etud_niv,$etudiant_info) ;?>
                         <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start align-items-center">
 
                             <div class="col-auto prop-name me-3">Contrat :</div>
                             <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" target="_blank"
-                                                                href='../PDF/contrat.php'>voir plus</a></div>
+                                                                href="<?php echo('../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].''.$etud_niv.''.$info_stg_etu['NUM_STG'].'.pdf'); ?>">voir plus</a></div>
 
 
                             <a name="" id="" class="btn-postuler btn px-xl-4  border border-1 "
-                               href="../PDF/contrat.php" role="button"
+                            href="<?php echo('../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].''.$etud_niv.''.$info_stg_etu['NUM_STG'].'.pdf'); ?>"role="button"
                                download="Article_HTML5_download.pdf">Télechager</a>
 
 

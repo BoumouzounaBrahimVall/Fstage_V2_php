@@ -61,9 +61,6 @@ WHERE postuler.NUM_OFFR IN (
 and postuler.CNE_ETU='$etudiant_cne';";
         $modifier_etat_Offre = $bdd->exec($req_update_offre);
         header('Location:etudiant-mes-offre.php');
-
-        //suprimer la candidature dans laquelle est retenu
-
     }
 
     else

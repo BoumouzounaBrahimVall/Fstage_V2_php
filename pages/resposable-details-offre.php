@@ -44,6 +44,7 @@ if(isset($_GET['modifpost'])){
     header($loca);
 
 }
+
 //print_r($_GET);
 if(isset($_GET['send'])) {
     switch ($_GET['send']) {

@@ -1,6 +1,7 @@
 <?php
 require(__DIR__ . './../phpQueries/etudiant/dash.php');
 require(__DIR__ . './../phpQueries/etudiant/uploadfile.php');
+require(__DIR__ . './../phpQueries/mail.php');
 
 /*
 if(isset($_POST['filesUploaed']))
@@ -26,6 +27,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnOffre'])) {
     $date = date("Y-m-d");
     $query = "INSERT INTO POSTULER (NUM_OFFR,CNE_ETU,DATE_POST,ETATS_POST) VALUES ('$noffr','$cne','$date','POSTULER')";
     $row = $bdd->exec($query);
+    //send mail to ent
+    $query = "select offr.*,etu.*,entreprise.EMAIL_ENT from etudiant etu, offredestage offr,postuler ,entreprise
+                  where entreprise.NUM_ENT=offr.NUM_ENT and etu.CNE_ETU=postuler.CNE_ETU and postuler.NUM_OFFR=offr.NUM_OFFR 
+                    and offr.NUM_OFFR='$noffr' and etu.CNE_ETU='$cne';";
+    $smtEtu= $bdd->query($query);
+    $etuinfos = $smtEtu->fetch(2);
+    $infos=Array(
+        $cne,
+        $etuinfos['NOM_ETU'],
+        $etuinfos['PRENOM_ETU'],
+        $etuinfos['DATENAISS_ETU'],
+        $etuinfos['EMAIL_ENS_ETU'],
+        $etuinfos['TEL_ETU'],
+        $date,
+        $noffr,
+        $etuinfos['POSTE_OFFR'],
+        $etuinfos['SUJET_OFFR'],
+        $etuinfos['DATEDEB_OFFR'],
+        $etuinfos['CV_ETU']
+    );
+    print_r($infos);
+    mail_to_entreprise($etuinfos['EMAIL_ENT'],$infos);
     header('Location:etudiant-dashboard.php');
 
 }
@@ -180,7 +203,7 @@ require_once "nav-etudiant.php";
                     <div class="ms-5">
                       <img class="place-svg" src="./../assets/icon/card/time.svg" alt="">
                       <span class="place-location">
-                        ' . @$offre_stage["DURE_OFFR"] . ' mois
+                        ' . @$offre_stage["DELAI_JOFFR"] . ' jours
                       </span>
                     </div>
                   </div>
