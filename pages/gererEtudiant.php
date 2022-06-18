@@ -144,23 +144,21 @@ require_once "./nav-ens.php"
 
                                 </div>
                                 <!-- Button trigger modal -->
-                                <div class="col-12 p-0 d-flex align-items-center  justify-content-center">
-                                    <div class="row">
-                                        <button type="button" class="btn btn-seconnecter" data-bs-toggle="modal"
+                                <div class="row ">
+                                    <div class="col">
+                                        <button type="button"  style="width: 100%; height: 100%;" class="btn btn-filtre" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal">
-                                            Ajouter Etudiant
+                                            Ajouter
                                         </button>
                                     </div>
-
-                                    <div class="row mt-1">
-                                        <button type="button" class="btn btn-seconnecter" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal">
+                                    <div class="col me-0">
+                                        <button type="button"  style="width: 100%; height: 100%;" class="btn  btn-filtre" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal1">
                                             Ajouter liste
                                         </button>
                                     </div>
-
-
                                 </div>
+
                             </div>
                         </div>
 
@@ -406,9 +404,95 @@ require_once "./nav-ens.php"
         </div>
     </div>
 </div>
-<div id="modal-progress-upload">
+<!-- Modifier enseignant-->
+<div  class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 370px;max-width: 800px">
+        <div class="modal-content d-flex justify-content-center "style="min-width: 370px;max-width: 800px;margin:auto;">
+            <div class="modal-header border-0">
 
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <span class="headline-form"> Modifier un Enseignant </span>
+
+                    </div>
+                    <div class="row">
+                        <form class=" g-3 mt-2" method="get">
+                            <div class="d-flex align-items-center ">
+                                <img class="me-2" src="../assets/icon/step1.svg" alt="">
+                                <span class="subheadline-form" >information sur l'enseignant</span>
+                            </div>
+
+                            <div >
+                                <div class="mt-4 p-2 border border-1 rounded-3">
+
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-xl-6 col-sm-6">
+                                                <label for="inputNom2" class="col-form-label" >Nom</label>
+
+                                                <input class="form-control" type="text" id="Nommodif" name="nom">
+                                            </div>
+                                            <div class="col-xl-6 col-sm-6">
+                                                <label for="inputPrenom2" class="col-form-label">Prenom</label>
+
+                                                <input class="form-control" type="text" id="Prenommodif" name="prenom">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mt-2">
+                                            <div class=" col-xl-6 col-sm-6">
+                                                <label for="inputEmail" class="col-form-label">Email</label>
+
+                                                <input class="form-control" type="email" name="email" id="Emailmodif">
+                                            </div>
+                                            <div class="col-xl-6 col-sm-6">
+                                                <label for="inputtel" class="col-form-label">Telephone</label>
+
+                                                <input class="form-control" type="tel" id="telmodif" name="tel">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mt-2 ">
+                                            <div class="col-xl-6 col-sm-6">
+                                                <label for="numEnt" class="col-form-label">Nº enseignant</label>
+
+                                                <input class="form-control" type="number" disabled id="numEntmodif" name="numens">
+                                            </div>
+                                            <div class="col-xl-6 col-sm-6">
+                                                <label for="dateNaiss" class="col-form-label" >Date Naissance</label>
+
+                                                <input class="form-control" type="date" id="dateNaissmodif" name="datnes" >
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+
+                                <div class="row">
+                                    <div class="col-xl-6 mt-4">
+                                        <button onclick="document.getElementById('numEntmodif').disabled=false;" type="submit" name="modif" class="btn btn-filtre btn-primary w-100 mb-3">    Modifier <i class="bi bi-pencil-fill"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
+
 <script>
     $(document).ready(function () {
         $('#table_id2').DataTable({
