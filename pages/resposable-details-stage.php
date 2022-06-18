@@ -1,5 +1,5 @@
 <?php
-require(__DIR__ . '../../phpQueries/uploads.php');
+require(__DIR__ . './../phpQueries/uploads.php');
 $stage_num = $_GET['numStage'];
 
 if (isset($_POST['filesUpload']) || (isset($_POST['contratUpload']))) {
