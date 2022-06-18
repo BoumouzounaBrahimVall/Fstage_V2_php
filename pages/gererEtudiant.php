@@ -4,76 +4,133 @@ require(__DIR__ . './../phpQueries/etudiant/uploadfile.php');
 
 @$cne_courant= $_GET['cnee'];
 if(!is_null($cne_courant)){
-$req_infoEtud="SELECT * from ETUDIANT where ETUDIANT.CNE_ETU='$cne_courant';";
-$smt_infoEtud=$bdd->query($req_infoEtud);
-$infoEtud=$smt_infoEtud->fetch(2);
-
-    //selectionner dernier niveau
-$req_lastNiv = "SELECT ETUDIER.NUM_NIV from ETUDIER where ETUDIER.CNE_ETU='$cne_courant' and ETUDIER.NUM_NIV>=All(SELECT NUM_NIV from NIVEAU where CNE_ETU='$cne_courant');";
-$smt_lastNiv=$bdd->query($req_lastNiv);
-$lastNiv=$smt_lastNiv->fetch(2);
-$dernierNv= $lastNiv['NUM_NIV'];
-if($infoEtud['ACTIVE_ETU']==0){
-//desactiver l etudiant
-$req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='1'where ETUDIANT.CNE_ETU='$cne_courant'; ";
-$bdd->exec($req_annulerEtud);
-}
-else
-{
-    //activer Etudiant
-    $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='0'where ETUDIANT.CNE_ETU='$cne_courant'; ";
-    $bdd->exec($req_annulerEtud); 
-}
-//annuler le stage le stage actuel de l etudiant
-// $req_annulerstg_Etud = "UPDATE stage set stage.ACTIVE_STG='1' where  stage.CNE_ETU='$cne_courant' and stage.NUM_OFFR in (SELECT offredestage.NUM_OFFR from offredestage where   offredestage.NUM_NIV='$dernierNv'); ";
-// $bdd->exec($req_annulerstg_Etud);
+        $req_infoEtud="SELECT * from ETUDIANT where ETUDIANT.CNE_ETU='$cne_courant';";
+        $smt_infoEtud=$bdd->query($req_infoEtud);
+        $infoEtud=$smt_infoEtud->fetch(2);
 
 
-
-
+            //selectionner dernier niveau
+        $req_lastNiv = "SELECT ETUDIER.NUM_NIV from ETUDIER where ETUDIER.CNE_ETU='$cne_courant' and ETUDIER.NUM_NIV>=All(SELECT NUM_NIV from NIVEAU where CNE_ETU='$cne_courant');";
+        $smt_lastNiv=$bdd->query($req_lastNiv);
+        $lastNiv=$smt_lastNiv->fetch(2);
+        $dernierNv= $lastNiv['NUM_NIV'];
+        if($infoEtud['ACTIVE_ETU']==0){
+        //desactiver l etudiant
+        $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='1'where ETUDIANT.CNE_ETU='$cne_courant'; ";
+        $bdd->exec($req_annulerEtud);
+        }
+        else
+        {
+            //activer Etudiant
+            $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='0'where ETUDIANT.CNE_ETU='$cne_courant'; ";
+            $bdd->exec($req_annulerEtud);
+        }
+        //annuler le stage le stage actuel de l etudiant
+        // $req_annulerstg_Etud = "UPDATE stage set stage.ACTIVE_STG='1' where  stage.CNE_ETU='$cne_courant' and stage.NUM_OFFR in (SELECT offredestage.NUM_OFFR from offredestage where   offredestage.NUM_NIV='$dernierNv'); ";
 
 } 
+//requette de selection des etudiants
 
-
-
+$req = "SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.ACTIVE_ETU,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv 
+                                            FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV
+                                            and  NIVEAU.NUM_FORM='$formation' and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
+                                                 where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
+                                                  (SELECT ET3.CNE_ETU from ETUDIER ET3 GROUP by ET3.CNE_ETU HAVING COUNT(ET3.CNE_ETU)=1)) ;";
+$Smt = $bdd->query($req);
+$rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+$cnes=array();
+foreach ($rows as $row){
+    $cnes[]=strtolower($row['cne']);
+}
+$reqniv="select NUM_NIV,LIBELLE_NIV from niveau where NUM_FORM='$formation'; ";
+$Smtniv = $bdd->query($reqniv);
+$rowniv=$Smtniv->fetchAll(PDO::FETCH_ASSOC);
+$libNiveau=array();
+$idniv=array();
+foreach ($rowniv as $niv){
+    $libNiveau[]= strtolower($niv['LIBELLE_NIV']);
+    $idniv[]= $niv['NUM_NIV'];
+}
+$errors='';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $donnee = array(
-        $_POST['cne'],
-        $_POST['prenom'],
-        $_POST['nom'],
-        $_POST['datnes'],
-        $_POST['email'],
-        $pass,
-        $_POST['tel'],
-        $_POST['ville'],
-        $_POST['pays'],
-        $_POST['niveau']
-    );
-    //recuperer les donnees
-    $nnn = $_POST['nom'];
-    $ppp = $_POST['prenom'];
-    $imgEtu="../ressources/user.png";
-    if(!empty($_POST['IMG_ETU'])){
-        $imgEtu=$_POST['IMG_ETU'];
-    }
-    //la requette d'insertion
-    $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU,IMG_ETU)
+    if(isset($_POST['ajoutList'])){
+        $persons=$_POST["person"];
+      //  print_r($persons);
+
+        foreach ($persons as $persn){
+            $pass = password_hash($persn['pass'], PASSWORD_DEFAULT);
+            $infostu=array(
+                $persn['cne'],
+                $persn['nom'],
+                $persn['prenom'],
+                $persn['email'],
+                $persn['datenais'],
+                $persn['tel'],
+                $persn['pays'],
+                $persn['ville'],
+                $persn['niv']
+            );
+            if(in_array(strtolower($persn['cne']),$cnes)) $errors='l\'etudiant avec le CNE: '.$persn['cne'].' est deja ajouté';
+            else {
+                if(in_array(strtolower($infostu[8]),$libNiveau)){
+                    //la requette d'insertion
+                    $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU,IMG_ETU,ACTIVE_ETU)
+                            VALUES ('$infostu[0]','$infostu[2]','$infostu[1]','$infostu[4]','$infostu[3]','$pass','$infostu[5]','$infostu[7]','$infostu[6]','../ressources/user.png','0');";
+                    //execution de la requette
+                     $bdd->exec($req);
+                    $numNiv=$idniv[array_search($infostu[8], $libNiveau)];
+                    $dateEtude=date('Y-m-d');
+                    $req = "INSERT INTO etudier (CNE_ETU, NUM_NIV, DATE_NIV)
+                            VALUES ('$infostu[0]','$numNiv','$dateEtude');";
+                    //execution de la requette
+                    $bdd->exec($req);
+                    $errors='';
+                }else$errors=$infostu[8].' n\'est pas un niveau!!!!!!';
+
+            }
+
+        }
+    }else{
+
+        $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $donnee = array(
+            $_POST['cne'],
+            $_POST['prenom'],
+            $_POST['nom'],
+            $_POST['datnes'],
+            $_POST['email'],
+            $pass,
+            $_POST['tel'],
+            $_POST['ville'],
+            $_POST['pays'],
+            $_POST['niveau']
+        );
+        //recuperer les donnees
+        $nnn = $_POST['nom'];
+        $ppp = $_POST['prenom'];
+        $imgEtu="../ressources/user.png";
+        if(!empty($_POST['IMG_ETU'])){
+            $imgEtu=$_POST['IMG_ETU'];
+        }
+        //la requette d'insertion
+        $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU,IMG_ETU)
                VALUES ('$donnee[0]','$donnee[1]','$donnee[2]','$donnee[3]','$donnee[4]','$donnee[5]','$donnee[6]','$donnee[7]','$donnee[8]','$imgEtu');";
-    //execution de la requette
-    $bdd->exec($req);
-    $DT = date("Y-m-d");
-    $req = "INSERT INTO ETUDIER (CNE_ETU,NUM_NIV,DATE_NIV)
+        //execution de la requette
+        $bdd->exec($req);
+        $DT = date("Y-m-d");
+        $req = "INSERT INTO ETUDIER (CNE_ETU,NUM_NIV,DATE_NIV)
                VALUES ('$donnee[0]','$donnee[9]','$DT')";
-    //execution de la requette
-    $bdd->exec($req);
-    if (isset($_POST['cvPath'])) {
+        //execution de la requette
+        $bdd->exec($req);
+        if (isset($_POST['cvPath'])) {
 
-        $file = $_POST['cvPath'];
-        uploadImagesOrCVFirebase($donnee[0], $file, $bdd, 1);
+            $file = $_POST['cvPath'];
+            uploadImagesOrCVFirebase($donnee[0], $file, $bdd, 1);
+        }
+
+        header('location:../pages/gererEtudiant.php');
     }
 
-    header('location:../pages/gererEtudiant.php');
 
 }
 ?>
@@ -162,8 +219,17 @@ require_once "./nav-ens.php"
 
                             </div>
                         </div>
-
-
+                        <?php
+                        if(!empty($errors)){
+                        ?>
+                        <div class="alert alert-danger text-center">
+                            <?php
+                            echo $errors;
+                            ?>
+                        </div>
+                            <?php
+                        }
+                        ?>
                         <div class="row  mt-2 border p-3 border-1 rounded  rounded-5  ">
                             <table id="table_id2" style="width:100%" class=" nowrap display"
                             >
@@ -180,14 +246,7 @@ require_once "./nav-ens.php"
                                 </thead>
                                 <tbody>
                                 <?php
-
-                                $req = "SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.ACTIVE_ETU,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv 
-                                            FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV
-                                            and  NIVEAU.NUM_FORM='$formation' and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
-                                                 where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
-                                                  (SELECT ET3.CNE_ETU from ETUDIER ET3 GROUP by ET3.CNE_ETU HAVING COUNT(ET3.CNE_ETU)=1)) ;";
-                                $Smt = $bdd->query($req);
-                                $rows = $Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
+                                 // arg: PDO::FETCH_ASSOC
                                 //afficher le tableau
                                 $lastNum = 0;
                                 foreach ($rows as $V):
@@ -252,17 +311,28 @@ require_once "./nav-ens.php"
                     </div>
                     <div class="row ">
                         <div class="row">
-                            <div class="col-md-3 p-2">
+                            <div class="col-md-4 p-2">
                                 <input class="form-control" type="file" id="inputextract" accept=".xls,.xlsx">
                             </div>
                             <div class="col-md-2 p-2">
                                 <button class="btn btn-filtre" id="buttonextra">Convertir</button>
                             </div>
+                            <div class="col-md-4 p-2 ms-0">
+                                    <a href="../ressources/Fiches_Etudiants.xlsx" target="_blank"
+                                       class="btn btn-filtre" download>Telecharger Ficher exampaire</a>
+                            </div>
                         </div>
-                        <div class="row ms-1" id="myTable">
+                        <form method="post">
+                            <div class="row">
+                                <small class="text-danger"> Veuillez verifier les informations saisies, toute information invalide sera ignoré</small>
+                                <small class="text-danger">Il est recommendé d'utilisé le fichier exemplaire pour le remplissage pour eviter toute erruers lors de l'ajout</small>
+                                <button class="btn btn-filtre d-none" id="sendit" name="ajoutList"> Ajouter liste</button></div>
+                            <div class="row ms-1" id="myTable">
 
 
-                        </div>
+                            </div>
+                        </form>
+
 
                     </div>
                 </div>
