@@ -141,10 +141,19 @@ require_once "./nav-ens.php"
                                 </div>
                                 <!-- Button trigger modal -->
                                 <div class="col-12 p-0 d-flex align-items-center  justify-content-center">
-                                    <button type="button" class="btn btn-seconnecter" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal">
-                                        Ajouter Etudiant
-                                    </button>
+                                    <div class="row">
+                                        <button type="button" class="btn btn-seconnecter" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                            Ajouter Etudiant
+                                        </button>
+                                    </div>
+
+                                    <div class="row mt-1">
+                                        <button type="button" class="btn btn-seconnecter" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                            Ajouter liste
+                                        </button>
+                                    </div>
 
 
                                 </div>
