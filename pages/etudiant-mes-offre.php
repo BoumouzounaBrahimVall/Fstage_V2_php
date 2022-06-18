@@ -65,7 +65,13 @@ and postuler.CNE_ETU='$etudiant_cne';";
         //suprimer la candidature dans laquelle est retenu
 
     }
-    header('Location:etudiant-mes-offre.php');
+
+    else
+    {
+      
+       Synchronisation_offre_attente($bdd); 
+    }
+
 
 
 }
