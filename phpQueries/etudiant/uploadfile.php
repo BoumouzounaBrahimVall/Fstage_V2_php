@@ -1,8 +1,8 @@
 <?php
 
-function uploadImagesOrCVFirebase($id,$fileDestination,$bdd,$typ){
-    if (!empty($fileDestination))
-    {
+function uploadImagesOrCVFirebase($id, $fileDestination, $bdd, $typ)
+{
+    if (!empty($fileDestination)) {
         switch ($typ) {
             case 1://photo etudiant
                 $req = "  UPDATE `ETUDIANT` SET `IMG_ETU` = '$fileDestination' WHERE `ETUDIANT`.`CNE_ETU` = '$id';";
@@ -16,6 +16,14 @@ function uploadImagesOrCVFirebase($id,$fileDestination,$bdd,$typ){
             case 4: // photo responsable
                 $req = "  UPDATE `RESPONSABLE` SET `IMAGE_RESP`= '$fileDestination' WHERE `RESPONSABLE`.`USERNAME_RES` = '$id';";
                 break;
+            case 5:
+                $req = "  UPDATE `rapport` SET `PATH_RAP`= '$fileDestination' WHERE `NUM_STG` = '$id';";
+                break;
+            case 6:
+                $req = "UPDATE `stage` set `CONTRAT_STG`='$fileDestination' WHERE NUM_STG='$id'";
+
+                break;
+
 
         }
 
@@ -24,19 +32,21 @@ function uploadImagesOrCVFirebase($id,$fileDestination,$bdd,$typ){
 
 
 }
-function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
+
+function uploadImagesOrCVEtudiant($id, $file, $bdd, $typ)
+{
     $fileName = $file['name'];
-    $fileTmpName =$file['tmp_name'];
-    $filesize =$file['size'];
-    $fileError=$file['error'];
+    $fileTmpName = $file['tmp_name'];
+    $filesize = $file['size'];
+    $fileError = $file['error'];
     $fileType = $file['type'];
-    $fileExt = explode ('.', $fileName);
+    $fileExt = explode('.', $fileName);
     $fileActualExt = strtolower(end($fileExt));
 
-    $allowed=array('jpg','jpeg','png','pdf');
+    $allowed = array('jpg', 'jpeg', 'png', 'pdf');
     if (in_array($fileActualExt, $allowed)) {
         if ($fileError === 0) {
-            if ($filesize< 20000000){ // max 20mb
+            if ($filesize < 20000000) { // max 20mb
                 switch ($typ) {
                     case 1://photo etudiant
                         $fileNameNew = $id . "profile." . $fileActualExt;
@@ -44,18 +54,18 @@ function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
                         $req = "  UPDATE `ETUDIANT` SET `IMG_ETU` = '$fileDestination' WHERE `ETUDIANT`.`CNE_ETU` = '$id';";
                         break;
                     case 2: //cv etudiant
-                        $fileNameNew=$id."CV.". $fileActualExt;
-                        $fileDestination="../ressources/EtudiantCV/". $fileNameNew;
+                        $fileNameNew = $id . "CV." . $fileActualExt;
+                        $fileDestination = "../ressources/EtudiantCV/" . $fileNameNew;
                         $req = "  UPDATE `ETUDIANT` SET `CV_ETU`= '$fileDestination' WHERE `ETUDIANT`.`CNE_ETU` = '$id';";
                         break;
                     case 3://logo ent
-                        $fileNameNew=$id."entlogo.". $fileActualExt;
-                        $fileDestination="../ressources/company/images/". $fileNameNew;
+                        $fileNameNew = $id . "entlogo." . $fileActualExt;
+                        $fileDestination = "../ressources/company/images/" . $fileNameNew;
                         $req = "  UPDATE `ENTREPRISE` SET `IMAGE_ENT`= '$fileDestination' WHERE `ENTREPRISE`.`NUM_ENT` = '$id';";
                         break;
                     case 4: // photo responsable
-                        $fileNameNew=$id."_Respo.". $fileActualExt;
-                        $fileDestination="../ressources/ResposablesPhoto/". $fileNameNew;
+                        $fileNameNew = $id . "_Respo." . $fileActualExt;
+                        $fileDestination = "../ressources/ResposablesPhoto/" . $fileNameNew;
                         $req = "  UPDATE `RESPONSABLE` SET `IMAGE_RESP`= '$fileDestination' WHERE `RESPONSABLE`.`USERNAME_RES` = '$id';";
                         break;
 
@@ -63,16 +73,17 @@ function uploadImagesOrCVEtudiant($id,$file,$bdd,$typ){
 
                 $bdd->exec($req);
                 move_uploaded_file($fileTmpName, $fileDestination);
-            }else{
+            } else {
                 echo "size error";
             }
 
-        }else {
+        } else {
             echo "there was a prob uploading";
         }
-    }else {
+    } else {
         echo
         "You cannot upload files of this type!";
     }
 }
+
 ?>

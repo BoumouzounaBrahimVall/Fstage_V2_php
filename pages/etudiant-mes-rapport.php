@@ -137,73 +137,78 @@ require_once "nav-etudiant.php";
 
 
             <div class=" list-rapport mt-3">
-                <?php foreach ($fich_rapport
 
-                as $V): ?>
                 <!---- card rapport--->
-                <div class="container-card d-flex flex-column flex-wrap">
-                    <div class="border card-rapport rounded-3  border-link col-xl-12 m-xl-3 p-xl-4 ">
-                        <div class="d-flex flex-row flex-wrap p-2">
-                            <div>
-                                <h4><b><?php echo($V['INTITULE_RAP']); ?></b></h4>
+                <div class="container-card d-flex flex-row flex-wrap">
+                    <?php foreach ($fich_rapport
 
-                                <div class="badges d-flex justify-content-start">
-                                    <?php @$keyword = mot_clets($V['NUM_RAP'], $bdd); ?>
-                                    <?php if(isset($keyword[0])){?>
-                                        <div class="mt-3">
-                                            <span class="badge   p-2 badge-key rounded-pill bg-primary"><?php echo($keyword[0]['LIBELLE_CLE']); ?></span>
+                                   as $V): ?>
+                        <div class=" my-4 border card-rapport rounded-3  border-link col-xl-12 ms-2 ">
+                            <div class="d-flex flex-row flex-wrap p-2">
+                                <div>
+                                    <div class="row overflow-auto">
+                                        <h3 style=" word-break: break-word; min-width: 375px;max-width: 375px;" class="headline-rapport  "><b><?php echo($V['INTITULE_RAP']); ?></b></h3>
+                                    </div>
+
+
+                                    <div class=" badges d-flex justify-content-start">
+                                        <?php @$keyword = mot_clets($V['NUM_RAP'], $bdd); ?>
+                                        <?php if(isset($keyword[0])){?>
+                                            <div class="mt-3">
+                                                <span class="badge   p-2 badge-key rounded-pill bg-primary"><?php echo($keyword[0]['LIBELLE_CLE']); ?></span>
+                                            </div>
+                                        <?php }?>
+                                        <?php if(isset($keyword[1])){?>
+                                            <div class="mt-3">
+                                                <span class="badge  ms-3 p-2 badge-key rounded-pill bg-success"><?php echo($keyword[1]['LIBELLE_CLE']); ?></span>
+                                            </div>
+                                        <?php }?>
+                                        <?php if(isset($keyword[2])){?>
+                                            <div class="mt-3">
+                                                <span class="badge ms-3 p-2 badge-key rounded-pill bg-danger"><?php echo($keyword[2]['LIBELLE_CLE']); ?></span>
+                                            </div>
+                                        <?php }?>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="headline">
+                                            <b>Acions sur rapport</b>
+
                                         </div>
-                                    <?php }?>
-                                    <?php if(isset($keyword[1])){?>
-                                        <div class="mt-3">
-                                            <span class="badge  ms-3 p-2 badge-key rounded-pill bg-success"><?php echo($keyword[1]['LIBELLE_CLE']); ?></span>
+                                        <div class="row   mt-3 justify-content-start align-items-center border-top-0">
+                                            <div class="col-xl-5 col-sm-10 mt-2">
+                                                <a  id="" style="width: 100%"  class="btn-postuler btn px-xl-4  border border-1 "
+                                                    href="<?php echo $V['PATH_RAP']; ?>" role="button"
+                                                    download>Télechager</a>
+
+                                            </div>
+                                            <div class="col-xl-5 col-sm-10 mt-2">
+                                                <a style="width: 100%"  id="" class="btn-voir-plus  btn px-xl-4  ms-xl-3   border border-1"
+                                                   href="<?php echo$V['PATH_RAP']; ?>" role="button" target="_blank">Voir
+                                                    plus</a>
+                                            </div>
+
+                                            <!-- <a href="'.$cvetu.'" style="color:#7B61FF " target="_blank"> visualiser </a> -->
                                         </div>
-                                    <?php }?>
-                                    <?php if(isset($keyword[2])){?>
-                                        <div class="mt-3">
-                                            <span class="badge ms-3 p-2 badge-key rounded-pill bg-danger"><?php echo($keyword[2]['LIBELLE_CLE']); ?></span>
-                                        </div>
-                                    <?php }?>
+
+                                    </div>
                                 </div>
-                                <div class="mt-3">
-                                    <div class="headline">
-                                        <b>Acions sur rapport</b>
-
-                                    </div>
-                                    <div class="row   mt-3 justify-content-start align-items-center border-top-0">
-                                        <div class="col-xl-5 col-sm-10 mt-2">
-                                            <a  id="" style="width: 100%"  class="btn-postuler btn px-xl-4  border border-1 "
-                                                href="<?php echo $V['PATH_RAP']; ?>" role="button"
-                                                download>Télechager</a>
-
-                                        </div>
-                                        <div class="col-xl-5 col-sm-10 mt-2">
-                                            <a style="width: 100%"  id="" class="btn-voir-plus  btn px-xl-4  ms-xl-3   border border-1"
-                                               href="<?php echo$V['PATH_RAP']; ?>" role="button" target="_blank">Voir
-                                                plus</a>
-                                        </div>
-
-                                        <!-- <a href="'.$cvetu.'" style="color:#7B61FF " target="_blank"> visualiser </a> -->
-                                    </div>
+                                <div class="ms-2  mt-2 d-flex flex-xl-column flex-sm-row  justify-content-center flex-wrap align-items-center ">
+                                    <?php
+                                    @$stud = info_etu($V['NUM_RAP'], $bdd);
+                                    ?>
+                                    <img style="width: 55px;height: 55px;" class="mx-auto mb-2 ms-4 rounded-circle border-1 border" src="<?php echo($stud[0]['IMG_ETU']); ?>" alt="">
+                                    <p style="font-size: 12px; margin-top: 10px; text-align: center;"><?php
+                                        echo($stud[0]['NOM_ETU']); ?> <br><?php echo($stud[0]['LIBELLE_NIV']); ?></p>
 
                                 </div>
                             </div>
-                            <div class="ms-xl-5 ms-sm-2 mt-2 d-flex flex-xl-column flex-sm-row  justify-content-center flex-wrap align-items-center ">
-                                <?php
-                                @$stud = info_etu($V['NUM_RAP'], $bdd);
-                                ?>
-                                <img style="width: 75px;height: 75px;" class="mx-auto mb-2 ms-4 rounded-circle border-1 border" src="<?php echo($stud[0]['IMG_ETU']); ?>" alt="">
-                                <p style="font-size: 14px; margin-top: 10px; text-align: center;"><?php
-                                    echo($stud[0]['NOM_ETU']); ?> <br><?php echo($stud[0]['LIBELLE_NIV']); ?></p>
 
-                            </div>
                         </div>
-
-                    </div>
                     <?php endforeach; ?>
-
-
                 </div>
+
+
+
             </div>
         </div>
     </div>

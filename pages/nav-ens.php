@@ -1,5 +1,5 @@
 <!-- Navbar  -->
-<nav class="navbar navbar-expand-lg navbar-light m-0">
+<nav class="navbar navbar-expand-lg px-xl-5 navbar-light m-0">
     <div class="container-fluid px-5">
         <a class="navbar-brand" href="#">
             <img id="logo" src="../assets/icon/logo.png" alt="logo" />
@@ -30,6 +30,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="gererStage.php">Gérer stage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="respo-rapport.php">Consulter Rapport</a>
                 </li>
             </ul>
             <div class="d-flex">

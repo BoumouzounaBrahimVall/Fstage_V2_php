@@ -1,8 +1,8 @@
 <?php
-require(__DIR__ . '../../phpQueries/uploads.php');
+require(__DIR__ . './../phpQueries/uploads.php');
 $stage_num = $_GET['numStage'];
 
-if (isset($_POST['filesUpload'])) {
+if (isset($_POST['filesUpload']) || (isset($_POST['contratUpload']))) {
     $stage_num = $_POST['numStage'];
     print_r($_POST);
 }
@@ -27,12 +27,26 @@ $numRapp = $Rapport['nrp'];
 $reqMotCleRAP = "SELECT NUM_CLE numCle FROM contenirmotrap where NUM_RAP='$numRapp';";
 $SmtmcleRAP = $bdd->query($reqMotCleRAP);
 $MotClesRAP = $SmtmcleRAP->fetchAll(2);
-if(!empty($MotClesRAP)){
-    foreach ($MotClesRAP as $mclRap){
-       $listMotCleRap[]=$mclRap['numCle'];
+if (!empty($MotClesRAP)) {
+    foreach ($MotClesRAP as $mclRap) {
+        $listMotCleRap[] = $mclRap['numCle'];
     }
-}else $listMotCleRap[]='-1';
+} else $listMotCleRap[] = '-1';
 print_r($MotClesRAP);
+if (isset($_POST['contratUpload'])) {
+    print_r($_POST);
+    $file = $_FILES['fileContrat'];
+    if (!empty($file['name'])) {
+        //importer le fichier au firebase stockage a distance
+        $file = $_POST['contratPath'];
+        if (!empty($file)) {
+            uploadImagesOrCVFirebase($stage_num, $file, $bdd, 6);
+            header('location:resposable-details-stage.php?numStage=' . $stage_num);
+        }
+
+
+    }
+}
 if (isset($_POST['filesUpload'])) {
     echo 'ouui';
     $intit = addslashes($_POST['intituler']);
@@ -49,9 +63,16 @@ if (isset($_POST['filesUpload'])) {
         $reqrapadd = "UPDATE `rapport` SET `intitule_rap`= '$intit' WHERE `NUM_STG` = '$stage_num';";
         $bdd->exec($reqrapadd);
     }
-    if (!empty($file['name'])) uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
-    if(isset($_POST["mcl"]))
-    {
+    if (!empty($file['name'])) {
+        //importer le fichier au firebase stockage a distance
+        $file = $_POST['rapportPath'];
+        uploadImagesOrCVFirebase($stage_num, $file, $bdd, 5);
+        //importer local
+        //uploadImagesOrCVEtudiant($stage_num, $file, $bdd, 5);
+    }
+
+
+    if (isset($_POST["mcl"])) {
         $reqmcldel = "DELETE FROM contenirmotrap WHERE NUM_RAP='$numRapp';";
         $bdd->exec($reqmcldel);
         foreach ($_POST["mcl"] as $newMotCle) {
@@ -60,8 +81,9 @@ if (isset($_POST['filesUpload'])) {
         }
 
     }
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
+
 if (isset($_GET['send'])) {
     switch ($_GET['send']) {
         case 'modifystg1':
@@ -70,8 +92,8 @@ if (isset($_GET['send'])) {
             $datDeb = $_GET['dateDeb'];
             $datFin = $_GET['dateFin'];
             $ville = addslashes($_GET['ville']);
-            $pays =addslashes($_GET['pays']);
-            $lieu =addslashes( $_GET['lieu']);
+            $pays = addslashes($_GET['pays']);
+            $lieu = addslashes($_GET['lieu']);
 
             $requpdate = "UPDATE OFFREDESTAGE set VILLE_OFFR='$ville',PAYS_OFFR='$pays',LIEUX_OFFR='$lieu' WHERE NUM_OFFR='$numoff'";
             $bdd->exec($requpdate);
@@ -94,7 +116,7 @@ if (isset($_GET['send'])) {
             break;
     }
 
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 
 }
 //ajouter jurie
@@ -108,7 +130,7 @@ if (isset($_GET['ajouter'])) {
 
     } else$reqajou = "INSERT INTO juger (NUM_STG,NUM_ENS,EST_ENCADRER)VALUES ('$stage_num','$idEnsNew','0');";
     $bdd->exec($reqajou);
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
 //supprimer jurie
 if (isset($_GET['supprimer'])) {
@@ -120,7 +142,7 @@ if (isset($_GET['supprimer'])) {
         //executer la requette de suppression
         $bdd->exec($reqSup);
     }
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
 //modifier jurie et leurs notes
 if (isset($_GET['modif'])) {
@@ -130,7 +152,7 @@ if (isset($_GET['modif'])) {
     echo $jurymodif;
     $requpdate = "UPDATE juger set NOTE='$note' WHERE NUM_STG='$stage_num' and NUM_ENS='$jurymodif'";
     $bdd->exec($requpdate);
-    header('location:resposable-details-stage.php?numStage='.$stage_num);
+    header('location:resposable-details-stage.php?numStage=' . $stage_num);
 }
 //l'affichage
 $req2 = " SELECT ens.NUM_ENS,ens.NOM_ENS,ens.PRENOM_ENS,ju.NOTE,ju.EST_ENCADRER
@@ -164,6 +186,8 @@ $donnee = array(
     $detaiOff['LIBELLE_ENT'],
     $detaiOff['CONTRAT_STG'],
 );
+$actionCrt = ' ';
+if (empty($donnee[12])) $actionCrt = 'disabled';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -190,63 +214,19 @@ $donnee = array(
 
     <link rel="stylesheet" href="../css/style.css"/>
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
+
     <title>Details Stage</title>
 </head>
 
 <body>
 
 <!-- Navbar  -->
-<nav class="navbar navbar-expand-lg navbar-light m-0">
-    <div class="container-fluid px-5">
-        <a class="navbar-brand" href="#">
-            <img id="logo" src="../assets/icon/logo.png" alt="logo"/>
-        </a>
-
-        <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link " aria-current="page" href="homeRespo.php">Acceuil</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="gererOffre.php">Gérer les offres</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/gererEtudiant.php">Gérer les comptes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Gérer stage</a>
-                </li>
-            </ul>
-            <div class="d-flex">
-                <a href="../pages/respoProfil.php">
-                    <img class="profile_icon rounded-circle border" src="<?php echo $respon_img; ?>" alt="">
-                </a>
-                <a
-                        name=""
-                        id="seDeconnecter"
-                        class="btn btn-outline-primary  btn-selector pt-3"
-                        href="login.php"
-                        role="button"
-                >Se deconnecter
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
-
+<?php
+require_once "./nav-ens.php"
+?>
 
 <div class="container ">
     <div class="row">
@@ -342,14 +322,18 @@ $donnee = array(
 
                                     <label class="prop-name mt-2" for="inputVille">Ville </label>
                                     <input id="inputVille" type="text" class="form-control  inputstg1" disabled
-                                           value="<?php echo $donnee[7]; ?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="ville ne contient pas des caractères speciaux" name="ville">
+                                           value="<?php echo $donnee[7]; ?>"
+                                           pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"
+                                           title="ville ne contient pas des caractères speciaux" name="ville">
                                 </div>
                             </div>
                             <div class="row ">
                                 <div class="col-xl-6 col-sm-12  ">
                                     <label class="prop-name mt-2" for="inputPays">Pays </label>
                                     <input id="inputTEL" type="text" class="form-control  inputstg1" disabled
-                                           value="<?php echo $donnee[8]; ?>" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"  title="pays ne contient pas des caractères speciaux" name="pays">
+                                           value="<?php echo $donnee[8]; ?>"
+                                           pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"
+                                           title="pays ne contient pas des caractères speciaux" name="pays">
                                 </div>
                                 <div class="col-1 mt-4 ms-1">
                                     <button type="submit" name="send" class="btn d-none" id="subbtnstg1">
@@ -377,7 +361,8 @@ $donnee = array(
                                 <div class="col-xl-6 col-sm-12">
 
                                     <label class="prop-name mt-2" for="inputdatNotext">Note encadrant externe</label>
-                                    <input id="inputdatNotext" type="number" class="form-control  inputext" disabled pattern="[0-9]+([\.][0-9]+)?" step="0.01"
+                                    <input id="inputdatNotext" type="number" class="form-control  inputext" disabled
+                                           pattern="[0-9]+([\.][0-9]+)?" step="0.01"
                                            title="un reel, ex: 2.3" value="<?php echo $donnee[5]; ?>" name="noteext">
 
                                 </div>
@@ -559,6 +544,7 @@ $donnee = array(
 
                         <div class="ms-4 mt-2 row">
                             <a href="<?php echo $Rapport['pthrp'] ?>"
+                               target="_blank"
                                class="ms-4 btn btn-selector d-none <?php echo $action ?>" id="btnDnL" download>Telecharger</a>
                         </div>
 
@@ -590,16 +576,17 @@ $donnee = array(
                                                     <div class="row mt-2">
                                                         <div class="row ms-1"> Mots clés</div>
                                                         <div class="col">
-                                                            <select class="selectpicker form-control" id="mote" multiple title="max 3 mots"
-                                                                    data-live-search="true" name="mcl[]" data-max-options="3">
+                                                            <select class="selectpicker form-control" id="mote" multiple
+                                                                    title="max 3 mots"
+                                                                    data-live-search="true" name="mcl[]"
+                                                                    data-max-options="3">
                                                                 <?php
                                                                 //numCle libCle $MotCles
 
                                                                 foreach ($MotCles as $mot):
-                                                                    if(in_array($mot["numCle"],$listMotCleRap)){
-                                                                        echo '<option value="'. $mot['numCle'].'" selected>' . $mot['libCle'] . '</option>';
-                                                                    }
-                                                                   else  echo '<option value="' . $mot['numCle'] . '">' . $mot['libCle'] . '</option>';
+                                                                    if (in_array($mot["numCle"], $listMotCleRap)) {
+                                                                        echo '<option value="' . $mot['numCle'] . '" selected>' . $mot['libCle'] . '</option>';
+                                                                    } else  echo '<option value="' . $mot['numCle'] . '">' . $mot['libCle'] . '</option>';
 
                                                                 endforeach;
                                                                 ?>
@@ -611,9 +598,12 @@ $donnee = array(
                                                         <div style="width: fit-content"
                                                              class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                             <img style="margin: auto; max-width: 64px"
-                                                                 src="./../../assets/icon/rapport-icon.svg" alt=""/>
+                                                                 src="./../assets/icon/rapport-icon.svg" alt=""/>
+                                                            <input class="form-control d-none" name="rapportPath"
+                                                                   id="rapportPath">
                                                             <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
-                                                            <input type="file" class="d-none" name="file" id="rap">
+                                                            <input type="file" class="d-none" name="file" id="rap"
+                                                                   onchange="uploadFileToFirebase('rap','btnSubmit','rapportPath',5,'<?php echo $donnee[2] . $donnee[1].$stage_num; ?>')">
                                                             <label class="mt-3 btn-voir-plus py-2 px-4"
                                                                    style="width: fit-content; font-size: 16px"
                                                                    for="rap">Importer <i
@@ -639,7 +629,7 @@ $donnee = array(
                                 </div>
                                 <div class="row ms-4">
                                     <div class="col-xl-6 mt-4">
-                                        <button type="submit" name="filesUpload"
+                                        <button type="submit" name="filesUpload" id="btnSubmit"
                                                 class="btn btn-filtre btn-primary w-100 mb-3"> Ajouter <i
                                                     class="bi bi-plus-circle-fill"></i></button>
                                     </div>
@@ -673,11 +663,10 @@ $donnee = array(
 
                     </div>
                     <div class="row">
-                        <form class=" g-3">
                             <div class="mt-4">
                                 <div class="d-flex align-items-center ">
                                     <img class="me-2" src="./../../assets/icon/step1.svg" alt="">
-                                    <span class="subheadline-form">Action sur Rapport</span>
+                                    <span class="subheadline-form">Action sur Contrat</span>
                                 </div>
 
                                 <div class="row mt-4 ms-5   py-2 border border-1 rounded-3" style="width: 50%;">
@@ -685,15 +674,15 @@ $donnee = array(
                                     <div class="col-10">
                                         <div class="row">
                                             <div class="col-4 col-sm-6">
-                                                <label for="inputRapport" class="col-form-label">Action</label>
+                                                <label for="inputContrat" class="col-form-label">Action</label>
 
                                             </div>
                                             <div class="col-8 col-sm-6">
-                                                <select id="inputRapport" class="form-select"
+                                                <select id="inputContrat" class="form-select"
                                                         aria-label="Default select example">
 
                                                     <option selected value="1">importer</option>
-                                                    <option value="2">generer</option>
+                                                    <option value="2">telecharger</option>
                                                 </select></div>
 
                                         </div>
@@ -704,12 +693,20 @@ $donnee = array(
                             </div>
 
 
-                            <div class="d-flex mt-4 align-items-center ">
+                            <div class="ms-4 mt-2 row">
+                                <a href="<?php echo $donnee[12] ?>"
+                                   target="_blank"
+                                   class="ms-4 btn btn-selector d-none <?php echo $actionCrt ?>" id="btnDnLCrt"
+                                   download>Telecharger</a>
+                            </div>
+                            <div class="d-flex mt-4 align-items-center infocrt">
                                 <img class="me-2" src="./../../assets/icon/step2.svg" alt="">
                                 <span class="subheadline-form">Importer Contrat</span>
                             </div>
-                            <div class="row">
-                                <form action="" method="post">
+                            <div class="row infocrt">
+                                <form  method="POST" enctype="multipart/form-data">
+                                    <input type="text" class="d-none " value="<?php echo $stage_num; ?>"
+                                           name="numStage">
                                     <div class="col-10 ms-5   align-items-start ">
 
                                         <div class="mt-2 p-2 border border-1 rounded-3 ">
@@ -720,14 +717,22 @@ $donnee = array(
 
 
                                                         <div class="row mt-2 d-flex justify-content-around ">
+                                                            <input class="form-control d-none" name="contratPath"
+                                                                   id="contratPath">
                                                             <div style="width: fit-content"
                                                                  class="mt-2 ms-3 col-6 px-5 py-4  d-flex flex-column rounded-4 justify-content-center border border-link">
                                                                 <img style="margin: auto; max-width: 64px"
-                                                                     src="./../../assets/icon/contrat-icon.svg" alt=""/>
-                                                                <a class="mt-3 btn-voir-plus py-2 px-4"
-                                                                   style="width: fit-content; font-size: 16px" href="">Importer
-                                                                    <i class="bi bi-file-arrow-up-fill"></i
-                                                                    ></a>
+                                                                     src="./../assets/icon/contrat-icon.svg" alt=""/>
+
+                                                                <label for="fileContrat"
+                                                                       class="col-form-label mt-2 btn py-2 px-5 mt-3 btn-voir-plus">
+                                                                    Importer <i class="bi bi-file-arrow-up-fill"></i>
+                                                                </label>
+                                                                <input class="form-control d-none" name="fileContrat"
+                                                                       onchange="uploadFileToFirebase('fileContrat','btnSubmitCrt','contratPath',6,'<?php echo $donnee[2] . $donnee[1] . $stage_num; ?>')"
+                                                                       accept="application/pdf" type="file"
+                                                                       id="fileContrat">
+
                                                             </div>
 
 
@@ -748,7 +753,8 @@ $donnee = array(
                                     </div>
                                     <div class="row ms-4">
                                         <div class="col-xl-6  mt-4">
-                                            <button type="submit" class="btn btn-filtre btn-primary w-100 mb-3"> Ajouter
+                                            <button type="submit" name="contratUpload" id="btnSubmitCrt"
+                                                    class="btn btn-filtre btn-primary w-100 mb-3"> Ajouter
                                                 <i class="bi bi-plus-circle-fill"></i></button>
                                         </div>
                                     </div>
@@ -765,6 +771,9 @@ $donnee = array(
 
     </div>
 </div>
+<div id="modal-progress-upload">
+
+</div>
 
 <script>
     let activities = document.getElementById("inputRapport");
@@ -780,6 +789,23 @@ $donnee = array(
             for (let i = 0; i < infoRap.length; i++)
                 infoRap[i].classList.remove('d-none');
             btnDownload.classList.add('d-none');
+        }
+    });
+
+
+    let activitiescrt = document.getElementById("inputContrat");
+    let infoCrt = document.getElementsByClassName('infocrt');
+    let btnDownloadCrt = document.getElementById('btnDnLCrt');
+    activitiescrt.addEventListener("change", function () {
+        if (activitiescrt.value === "2") {
+            for (let i = 0; i < infoCrt.length; i++)
+                infoCrt[i].classList.add('d-none');
+
+            btnDownloadCrt.classList.remove('d-none');
+        } else {
+            for (let i = 0; i < infoCrt.length; i++)
+                infoCrt[i].classList.remove('d-none');
+            btnDownloadCrt.classList.add('d-none');
         }
     });
 
@@ -805,6 +831,8 @@ $ful = 0;
 if (empty($ens4)) $ful = 1;
 
 ?>
+<script src="/js/script2.js"></script>
+<script src="./../js/script-upload.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -816,7 +844,7 @@ if (empty($ens4)) $ful = 1;
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
-<script src="/js/script2.js"></script>
+
 <script>
     const AddJury = (divMere, divAjout) => {
         let num = '<?php echo $stage_num?>';
@@ -830,7 +858,7 @@ if (empty($ens4)) $ful = 1;
                     echo '\'<option  value="' . $en3['NUM_ENS'] . '">' . $en3['NOM_ENS'] . ' ' . $en3['PRENOM_ENS'] . '</option>\'+';
                 endforeach;?>
                 '</select><label for="" class="form-label">Note</label>' +
-                '<input  type="number" pattern="[0-9]+([\.][0-9]+)?" step="0.01"'+
+                '<input  type="number" pattern="[0-9]+([\.][0-9]+)?" step="0.01"' +
                 'title="un reel, ex: 2.3"  class="form-control "  name="NoteAjou" >' +
                 '<button type="submit" name="ajouter" class="btn bt"  id="btnAjouter" >' +
                 ' <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>' +

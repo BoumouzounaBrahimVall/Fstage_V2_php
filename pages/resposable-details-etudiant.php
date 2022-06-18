@@ -36,6 +36,8 @@ if(isset($_POST['filesUploaed'])){
             uploadImagesOrCVFirebase($cne,$file,$bdd,2);
             break;
     }
+    header("location:resposable-details-etudiant.php?cne=".$cne);
+
 }
 
 if (empty($cne)) header('location:gererEtudiant.php');
@@ -432,6 +434,9 @@ if(isset($_GET['passOublier'])) {
                     </table>
                   </div>
              </div>
+            <div id="modal-progress-upload">
+
+            </div>
             
 
       </div>

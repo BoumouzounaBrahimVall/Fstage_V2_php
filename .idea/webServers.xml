@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="883098ca-2fd2-49c4-8d74-e9ed6b0e684a" name="local" url="http://localhost:8080/Fstage_V2_php/">
+        <fileTransfer mountedRoot="C:\Xampp\htdocs" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>

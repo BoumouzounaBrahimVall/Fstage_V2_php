@@ -17,6 +17,13 @@ function uploadImagesOrCVFirebase($id,$fileDestination,$bdd,$typ){
             case 4: // photo responsable
                 $req = "  UPDATE `RESPONSABLE` SET `IMAGE_RESP`= '$fileDestination' WHERE `RESPONSABLE`.`USERNAME_RES` = '$id';";
                 break;
+            case 5: 
+                $req = "  UPDATE `rapport` SET `PATH_RAP`= '$fileDestination' WHERE `NUM_STG` = '$id';";
+                break;
+            case 6:
+                $req = "UPDATE `stage` set `CONTRAT_STG`='$fileDestination' WHERE NUM_STG='$id'";
+
+                break;
 
 
         }
