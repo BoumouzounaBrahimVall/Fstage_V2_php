@@ -7,11 +7,12 @@ $req_niv="SELECT LIBELLE_NIV from NIVEAU where NIVEAU.NUM_NIV='$num_niv_etu';";
 $libelle_niv= $bdd->query($req_niv);
 $libelle_niv_etu=$libelle_niv->fetch();
 /* requette pour les informations du stage concerne par l etudiant */
-$req_stg = "SELECT NUM_STG,DATEDEB_STG,DATEFIN_STG,SUJET_STG from STAGE where CNE_ETU='$etudiant_cne';";
+$req_stg = "SELECT NUM_STG,DATEDEB_STG,DATEFIN_STG,SUJET_STG from STAGE,OFFREDESTAGE where STAGE.NUM_OFFR=OFFREDESTAGE.NUM_OFFR and  CNE_ETU='$etudiant_cne' and OFFREDESTAGE.NUM_NIV='$num_niv_etu' ;";
 $info_stg = $bdd->query($req_stg);
 $info_stg_etu=$info_stg->fetch();
+$last_stg=$info_stg_etu['NUM_STG'];
 /* requete pour les informations d entreprise concerne par le stage  */
-$req_ent = "SELECT ENTREPRISE.NUM_ENT ,ENTREPRISE.IMAGE_ENT,LIBELLE_ENT,ADRESSE_ENT,TEL_ENT,VILLE_ENT,PAYS_ENT from ENTREPRISE,OFFREDESTAGE,STAGE where STAGE.NUM_OFFR=OFFREDESTAGE.NUM_OFFR and OFFREDESTAGE.NUM_ENT=ENTREPRISE.NUM_ENT and STAGE.CNE_ETU='$etudiant_cne';";
+$req_ent = "SELECT ENTREPRISE.NUM_ENT,ENTREPRISE.IMAGE_ENT,LIBELLE_ENT,ADRESSE_ENT,TEL_ENT,VILLE_ENT,PAYS_ENT from ENTREPRISE,OFFREDESTAGE,STAGE where STAGE.NUM_OFFR=OFFREDESTAGE.NUM_OFFR and OFFREDESTAGE.NUM_ENT=ENTREPRISE.NUM_ENT and STAGE.CNE_ETU='$etudiant_cne' and OFFREDESTAGE.NUM_NIV='$num_niv_etu'and stage.NUM_STG='$last_stg';";
 $info_ent = $bdd->query($req_ent);
 $info_ent_etu=$info_ent->fetch();
 

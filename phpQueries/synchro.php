@@ -81,4 +81,49 @@ function Synchronisation_post_expirer($bdd)
 }
 
 
+//liste d attente(apres click button non valider)
+function update_post_attente($bdd,$cne_etu_synch,$numOffre_synch,$etat_offre)
+{
+    
+    if(strcmp($etat_offre,"1")==0)
+    {
+       
+        //etablir un stage
+        $req_stage= "
+                        INSERT INTO STAGE (NUM_OFFR,CNE_ETU,ACTIVE_STG)
+                        VALUES ('$numOffre_synch','$cne_etu_synch' ,'0')
+                ";
+        $stage_response = $bdd->exec($req_stage);
+        $req_update_etat_expire="UPDATE POSTULER set POSTULER.ETATS_POST='RETENU' where CNE_ETU='$cne_etu_synch' and NUM_OFFR='$numOffre_synch';";
+        $bdd->exec($req_update_etat_expire);
+
+    }
+    else if(strcmp($etat_offre,"2")==0){
+        $req_update_etat_expire="UPDATE POSTULER set POSTULER.ETATS_POST='1' where CNE_ETU='$cne_etu_synch' and NUM_OFFR='$numOffre_synch';";
+        $bdd->exec($req_update_etat_expire);
+    }
+    
+    else if(strcmp($etat_offre,"3")==0){
+        $req_update_etat_expire="UPDATE POSTULER set POSTULER.ETATS_POST='2' where CNE_ETU='$cne_etu_synch' and NUM_OFFR='$numOffre_synch';";
+        $bdd->exec($req_update_etat_expire);
+    }
+   
+
+   
+
+}
+//Liste attente
+function Synchronisation_offre_attente($bdd)
+{
+    $req_synchOffre="SELECT * from POSTULER where POSTULER.ETATS_POST not in('ACCEPTER','NO ACCEPTER','RETENU');";
+    $Smt_synchOffre = $bdd->query($req_synchOffre);
+    $fitch_synchro =$Smt_synchOffre->fetchAll(2);
+
+    foreach($fitch_synchro as $V)
+    {
+        update_post_attente($bdd,$V['CNE_ETU'],$V['NUM_OFFR'],$V['ETATS_POST']);
+    }
+}
+
+
 ?>
