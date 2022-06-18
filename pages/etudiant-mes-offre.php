@@ -1,8 +1,8 @@
 <?php
-require( __DIR__.'./../phpQueries/etudiant/dash.php');
+require(__DIR__ . './../phpQueries/etudiant/dash.php');
 
 
-$req_offre_postuler= "
+$req_offre_postuler = "
                         SELECT * FROM POSTULER pos,OFFREDESTAGE offre,ENTREPRISE ent
                         WHERE pos.NUM_OFFR = offre.NUM_OFFR
                         AND offre.NUM_ENT = ent.NUM_ENT 
@@ -16,46 +16,42 @@ $Smt_offre_postuler = $bdd->query($req_offre_postuler);
 $etudiant_offres_pos = $Smt_offre_postuler->fetchAll(PDO::FETCH_ASSOC);
 
 
-if (isset($_POST['btnSelection']))
-{
+if (isset($_POST['btnSelection'])) {
     // get last NUM_STG
 
-    $req_num_stg='SELECT NUM_STG FROM `stage`  ORDER BY NUM_STG DESC';
-    $smt_num_stg=$bdd->query($req_num_stg);
-    $last_num_stg=$smt_num_stg->fetch(2);
-    $last_num=$last_num_stg['NUM_STG'];
+    $req_num_stg = 'SELECT NUM_STG FROM `stage`  ORDER BY NUM_STG DESC';
+    $smt_num_stg = $bdd->query($req_num_stg);
+    $last_num_stg = $smt_num_stg->fetch(2);
+    $last_num = $last_num_stg['NUM_STG'];
     $last_num++;
     echo $last_num;
-    $cne=$_POST['cne'];
-    $noffr=$_POST['noffre'];
-    $date=date("Y-m-d");
-    if ($_POST['responseSelected']=='OUI')
-        $response='ACCEPTER';
+    $cne = $_POST['cne'];
+    $noffr = $_POST['noffre'];
+    $date = date("Y-m-d");
+    if ($_POST['responseSelected'] == 'OUI')
+        $response = 'ACCEPTER';
     else
-        $response='NO ACCEPTER';
+        $response = 'NO ACCEPTER';
 
 
-    $req_offre_response= "
+    $req_offre_response = "
                         UPDATE POSTULER 
                         SET ETATS_POST='$response'
                         WHERE NUM_OFFR = '$noffr' 
                         AND  CNE_ETU='$etudiant_cne' 
                 ";
     $offre_response = $bdd->exec($req_offre_response);
-    if ($response=='ACCEPTER')
-    {
-
-
+    if ($response == 'ACCEPTER') {
 
 
         //etablir un stage
-        $req_stage= "
+        $req_stage = "
                         INSERT INTO STAGE (NUM_STG,NUM_OFFR,CNE_ETU,ACTIVE_STG)
                         VALUES ('$last_num','$noffr','$etudiant_cne' ,'1')
                 ";
         $stage_response = $bdd->exec($req_stage);
 
-        $last_niv=$etudiant_niveau['NUM_NIV'];
+        $last_niv = $etudiant_niveau['NUM_NIV'];
         $req_update_offre = " update postuler 
 set postuler.ETATS_POST='ANNULER' 
 WHERE postuler.NUM_OFFR IN (
@@ -73,10 +69,10 @@ and postuler.CNE_ETU='$etudiant_cne';";
 
 
 }
-if (isset($_GET['noffr'])&&isset($_GET['cne'])){
-    $cne=$_GET['cne'];
-    $noffr=$_GET['noffr'];
-    $req_offre_response= "
+if (isset($_GET['noffr']) && isset($_GET['cne'])) {
+    $cne = $_GET['cne'];
+    $noffr = $_GET['noffr'];
+    $req_offre_response = "
                         UPDATE POSTULER 
                         SET ETATS_POST='ANNULER'
                         WHERE NUM_OFFR = '$noffr'
@@ -114,7 +110,7 @@ require_once "./nav-etudiant.php"
 
 
                 <div class="intro  mt-3">
-                    <h3> <b>Mes Offre postulé</b> </h3>
+                    <h3><b>Mes Offre postulé</b></h3>
 
                 </div>
                 <div class="intro ">
@@ -142,32 +138,28 @@ require_once "./nav-etudiant.php"
                             </thead>
                             <tbody>
                             <?php
-                            foreach ($etudiant_offres_pos as $offre)
-                            {
-                                if ($offre['ETATS_POST']=='POSTULER')
-                                {
+                            foreach ($etudiant_offres_pos as $offre) {
+                                if ($offre['ETATS_POST'] == 'POSTULER') {
                                     echo '
                                 <tr>
-                                        <td >'.$offre['NUM_OFFR'].'</td>
+                                        <td >' . $offre['NUM_OFFR'] . '</td>
 
-                                        <td>'.$offre['LIBELLE_ENT'].'</td>
-                                        <td>'.$offre['POSTE_OFFR'].'</td>
-                                        <td>'.$offre['DATE_POST'].'</td>
-                                        <td>'.$offre['DURE_OFFR'].' mois</td>
+                                        <td>' . $offre['LIBELLE_ENT'] . '</td>
+                                        <td>' . $offre['POSTE_OFFR'] . '</td>
+                                        <td>' . $offre['DATE_POST'] . '</td>
+                                        <td>' . $offre['DURE_OFFR'] . ' mois</td>
                                         <td>
-                                            <a href="etudiant-mes-offre.php?noffr='. $offre["NUM_OFFR"] .'&cne='. $offre["CNE_ETU"] .'" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
-                                            <a target="_blank" href="offre-details.php?noffr='. $offre["NUM_OFFR"] .'&niv='. $offre["NUM_NIV"] .'" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
+                                            <a href="etudiant-mes-offre.php?noffr=' . $offre["NUM_OFFR"] . '&cne=' . $offre["CNE_ETU"] . '" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
+                                            <a target="_blank" href="offre-details.php?noffr=' . $offre["NUM_OFFR"] . '&niv=' . $offre["NUM_NIV"] . '" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
                                         </td>
                                     </tr>
-                                '    ;
+                                ';
                                 }
 
                             }
 
 
                             ?>
-
-
 
 
                             </tbody>
@@ -181,7 +173,7 @@ require_once "./nav-etudiant.php"
 
 
                 <div class="intro  mt-3">
-                    <h3> <b>Mes Offre retenu</b> </h3>
+                    <h3><b>Mes Offre retenu</b></h3>
 
                 </div>
                 <div class="intro ">
@@ -203,30 +195,28 @@ require_once "./nav-etudiant.php"
                                 <th scope="col">Poste</th>
 
                                 <th scope="col">Date Postuler</th>
-                                
+
                                 <th scope="col">Accepter</th>
                             </tr>
                             </thead>
                             <tbody>
 
                             <?php
-                            foreach ($etudiant_offres_pos as $offre)
-                            {
-                                if ($offre['ETATS_POST']=='RETENU')
-                                {
+                            foreach ($etudiant_offres_pos as $offre) {
+                                if ($offre['ETATS_POST'] == 'RETENU') {
                                     echo '
                                 <tr>
-                                        <td >'.$offre['NUM_OFFR'].'</td>
+                                        <td >' . $offre['NUM_OFFR'] . '</td>
 
-                                        <td>'.$offre['LIBELLE_ENT'].'</td>
-                                        <td>'.$offre['POSTE_OFFR'].'</td>
-                                        <td>'.$offre['DATE_POST'].'</td>
+                                        <td>' . $offre['LIBELLE_ENT'] . '</td>
+                                        <td>' . $offre['POSTE_OFFR'] . '</td>
+                                        <td>' . $offre['DATE_POST'] . '</td>
                                         
                                         <td>
                                         <form action="" method="post">
                                                         <div class="col-auto">
-                                                        <input type="text" name="cne" hidden value="'.$offre['CNE_ETU'].'" id="">
-                                                     <input type="text" name="noffre" hidden value="'.$offre['NUM_OFFR'].'" id="">
+                                                        <input type="text" name="cne" hidden value="' . $offre['CNE_ETU'] . '" id="">
+                                                     <input type="text" name="noffre" hidden value="' . $offre['NUM_OFFR'] . '" id="">
                                                      
                                                             <select name="responseSelected" class="form-select  form-select-sm" aria-label=".form-select-sm example">
                                                                 <option value="OUI" selected>Oui</option>
@@ -244,17 +234,13 @@ require_once "./nav-etudiant.php"
                                                     </form>
                                          </td>
                                     </tr>
-                                '    ;
+                                ';
                                 }
 
                             }
 
 
                             ?>
-
-
-
-
 
 
                             </tbody>
@@ -264,17 +250,7 @@ require_once "./nav-etudiant.php"
             </div>
 
 
-
-
-
-
         </div>
-
-
-
-
-
-
 
 
     </div>
