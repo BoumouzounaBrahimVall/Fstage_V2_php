@@ -365,3 +365,16 @@ tr.shown td.details-control {
   color: rgb(249, 218, 160);
   opacity: 10;
 }
+@media only (max-width: 1440px) and (min-width: 750px)
+{
+    .headline-rapport{
+        max-width: 550px;
+        min-width: 550px;
+    }
+}
+
+@media only (max-width: 450px) and (min-width: 300px) {
+    .headline-rapport {
+        max-width:350px;
+    }
+}

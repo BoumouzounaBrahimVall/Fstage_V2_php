@@ -219,18 +219,18 @@ else {// offre publique
       </div>
       </div>
     </div>
-    
-    
+
+
 
     <!-- Main Content Area -->
- 
+
 
 
 
 
 
   <!-- Modal -->
-<div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div  class="modal fade" id="exampleModal" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="min-width: 370px;max-width: 800px">
     <div class="modal-content d-flex justify-content-center "style="max-width: 800px;min-width: 370px;margin:auto;">
       <div class="modal-header border-0">
@@ -563,6 +563,9 @@ else {// offre publique
     </div>
   </div>
 </div>
+    <div id="modal-progress-upload">
+
+    </div>
     <script>
 
 
@@ -604,8 +607,6 @@ else {// offre publique
     </script>
     <script src="./../js/script-upload.js"></script>
     <!-- JavaScript Bundle with Popper-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-
     <!-- Import jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
