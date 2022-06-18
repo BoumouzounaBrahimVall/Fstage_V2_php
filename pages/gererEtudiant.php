@@ -13,7 +13,7 @@ if(!is_null($cne_courant)){
         $req_lastNiv = "SELECT ETUDIER.NUM_NIV from ETUDIER where ETUDIER.CNE_ETU='$cne_courant' and ETUDIER.NUM_NIV>=All(SELECT NUM_NIV from NIVEAU where CNE_ETU='$cne_courant');";
         $smt_lastNiv=$bdd->query($req_lastNiv);
         $lastNiv=$smt_lastNiv->fetch(2);
-        $dernierNv= $lastNiv['NUM_NIV'];
+
         if($infoEtud['ACTIVE_ETU']==0){
         //desactiver l etudiant
         $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='1'where ETUDIANT.CNE_ETU='$cne_courant'; ";
@@ -25,8 +25,6 @@ if(!is_null($cne_courant)){
             $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='0'where ETUDIANT.CNE_ETU='$cne_courant'; ";
             $bdd->exec($req_annulerEtud);
         }
-        //annuler le stage le stage actuel de l etudiant
-        // $req_annulerstg_Etud = "UPDATE stage set stage.ACTIVE_STG='1' where  stage.CNE_ETU='$cne_courant' and stage.NUM_OFFR in (SELECT offredestage.NUM_OFFR from offredestage where   offredestage.NUM_NIV='$dernierNv'); ";
 
 } 
 //requette de selection des etudiants
