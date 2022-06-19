@@ -6,6 +6,11 @@ if (isset($_POST['filesUpload']) || (isset($_POST['contratUpload']))) {
     $stage_num = $_POST['numStage'];
     print_r($_POST);
 }
+//ANNULER STAGE
+if(isset($_GET["annulerStg"])){
+    $requpdate = "UPDATE stage set ACTIVE_STG='1' WHERE NUM_STG='$stage_num'";
+    $bdd->exec($requpdate);
+}
 if (!isset($stage_num)) header('location:gererStage.php');
 
 
@@ -32,9 +37,8 @@ if (!empty($MotClesRAP)) {
         $listMotCleRap[] = $mclRap['numCle'];
     }
 } else $listMotCleRap[] = '-1';
-print_r($MotClesRAP);
 if (isset($_POST['contratUpload'])) {
-    print_r($_POST);
+
     $file = $_FILES['fileContrat'];
     if (!empty($file['name'])) {
         //importer le fichier au firebase stockage a distance
@@ -256,25 +260,30 @@ require_once "./nav-ens.php"
                 </div>
                 <div class="col-xl-9 col-sm-12 me-4">
                     <div class="row mt-2">
-                        <div class="col-xl-4 col-sm-12 m-0 mt-sm-2 d-flex justify-content-start ">
+                        <div class="col-xl-3 col-sm-12 m-0 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3  p-0">Société :</div>
                             <div class="col-auto prop-value"><?php echo $donnee[11]; ?></div>
 
                         </div>
 
-                        <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
+                        <div class="col-xl-3 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto me-3 p-0 prop-name ">N° stage :</div>
                             <div class="col-auto prop-value"><?php echo $donnee[0]; ?></div>
 
 
                         </div>
-                        <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
+                        <div class="col-xl-3 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto m-0 p-0  prop-name me-3">Note Général :</div>
                             <div class="col-auto prop-value">0</div>
 
+
+                        </div>
+                        <div class="col-xl-3 col-sm-12 mt-sm-2 d-flex justify-content-start ">
+
+                            <button class="col-auto m-0 pt-0 pb-0 btn btn-danger  prop-name me-3" data-bs-toggle="modal" data-bs-target="#Annuler">Annuler</button>
 
                         </div>
 
@@ -411,7 +420,7 @@ require_once "./nav-ens.php"
                                 </div>
                                 <div class="col-auto m-0 p-0 prop-value">
                                     <div class="ms-4">
-                                        <a name="" id="" class=" btn px-5 "
+                                        <a  id="" class=" btn px-5 "
                                            style="border: 1px solid #7B61FF;color: #7B61FF;" href="#" role="button"
                                            data-bs-toggle="modal" data-bs-target="#ModalContrat">Editer </a
                                         >
@@ -771,9 +780,39 @@ require_once "./nav-ens.php"
 
     </div>
 </div>
-<div id="modal-progress-upload">
 
+
+<!-- Modal  Annuler Stage-->
+<div class="modal fade" id="Annuler" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 500px;max-width: 800px">
+        <div class="modal-content d-flex justify-content-center " style="max-width: 800px;margin:auto;">
+            <div class="modal-header border-0">
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row" align="center">
+                        <span class="headline-form text-danger">Voulez vous vraiment annuler ce stage !</span>
+                        <i class="bi bi-exclamation-triangle" style="font-size: 50px; color: orangered"></i>
+                    </div>
+                    <div>
+                        <form method="get">
+                            <input type="text" class="d-none " value="<?php echo $stage_num; ?>" name="numStage">
+                            <div class="row">
+                                <button style="width: 100%; height: 30px;" class="col-auto m-0 pt-0 pb-0 btn btn-danger  prop-name me-3" name="annulerStg" type="submit">Annuler</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
+
 
 <script>
     let activities = document.getElementById("inputRapport");

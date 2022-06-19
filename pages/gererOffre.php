@@ -104,7 +104,11 @@ require_once "./nav-ens.php"
                                 $Smt = $bdd->query($req);
                                 $rows = $Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
                                 //afficher le tableau
-                                foreach ($rows as $V):
+                                $classEtat='';
+                                foreach ($rows as $V): //class="text-danger"
+                                    if($V['ETATPUB_OFFR']=='COMPLETER') $classEtat='text-warning';
+                                    else if($V['ETATPUB_OFFR']=='CLOSE') $classEtat='text-danger';
+                                    else   $classEtat='';
                                     $postul = $V['NUM_OFFR'];
                                     $nbr = "SELECT count(POSTULER.CNE_ETU) nbrpost FROM `POSTULER` WHERE POSTULER.NUM_OFFR='$postul';";
                                     $Smt2 = $bdd->query($nbr);
@@ -115,7 +119,7 @@ require_once "./nav-ens.php"
                             <td>' . $V['LIBELLE_ENT'] . '</td>
                             <td>' . $V['POSTE_OFFR'] . '</td> 
                             <td>' . $V['LIBELLE_NIV'] . '</td> 
-                           <td>' . $V['ETATPUB_OFFR'] . '</td>
+                           <td class="'.$classEtat.'">' . $V['ETATPUB_OFFR'] . '</td>
                             <td>' . $V['EFFECTIF_OFFRE'] . '</td>
                             <td>' . $nbrCnd['nbrpost'] . '</td>
                             <td>  

@@ -100,10 +100,9 @@ switch ($selected) {
         $data[$labels[1]] = $nbr_desactiver['nbr_active_ens'];;
         break;
     case 6:
+        $req1="SELECT ent.NUM_ENT,ent.LIBELLE_ENT societe, sum(offr.EFFECTIF_OFFRE) somme FROM offredestage offr ,entreprise ent,NIVEAU niv
+                WHERE ent.NUM_ENT=offr.NUM_ENT  and niv.NUM_NIV=offr.NUM_NIV and niv.NUM_FORM='$formation' GROUP by ent.NUM_ENT,ent.LIBELLE_ENT;";
 
-        $req1 = "       SELECT ent.NUM_ENT,ent.LIBELLE_ENT societe, sum(stg.NUM_STG) somme FROM offredestage offr ,entreprise ent,NIVEAU niv,stage stg
-            WHERE ent.NUM_ENT=offr.NUM_ENT and stg.NUM_OFFR=offr.NUM_OFFR  and niv.NUM_NIV=offr.NUM_NIV and niv.NUM_FORM='$formation' GROUP by ent.NUM_ENT,ent.LIBELLE_ENT;
-            ";
         $Smt1 = $bdd->query($req1);
         $offre_stat = $Smt1->fetchAll(2); // arg: PDO::FETCH_ASSOC
 
@@ -128,11 +127,12 @@ switch ($selected) {
         break;
     case 8:
 
-        $req1 = "select niv.LIBELLE_NIV as societe,count(etu.CNE_ETU) as somme FROM niveau niv,etudier etu
-        WHERE niv.NUM_NIV=etu.NUM_NIV
-    AND niv.NUM_FORM='$formation'
-    AND etu.DATE_NIV BETWEEN CURRENT_DATE-180 AND CURRENT_DATE
- GROUP BY niv.LIBELLE_NIV;";
+        $req1 = "SELECT  NIVEAU.LIBELLE_NIV societe ,COUNT(ETUDIANT.CNE_ETU) somme FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` 
+                 WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV and  NIVEAU.NUM_FORM='$formation'
+                   and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
+                     where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
+                     (SELECT ET3.CNE_ETU from ETUDIER ET3 GROUP by ET3.CNE_ETU HAVING COUNT(ET3.CNE_ETU)=1))
+                 group by societe;";
         $Smt1 = $bdd->query($req1);
         $stage_stat = $Smt1->fetchAll(2); // arg: PDO::FETCH_ASSOC
 

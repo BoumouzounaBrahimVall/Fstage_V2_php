@@ -1,6 +1,6 @@
 
 <?php
-require(__DIR__ . './phpQueries/conxnBDD.php');
+require(__DIR__ . '/phpQueries/conxnBDD.php');
 $req_landingp_offres = "SELECT * from OFFREDESTAGE offre,ENTREPRISE ent
                         WHERE offre.NUM_ENT = ent.NUM_ENT 
                         LIMIT  2
