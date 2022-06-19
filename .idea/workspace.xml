@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fe01a83-979e-446f-bcaf-e95a615548aa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/etudiant-dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/etudiant-dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/etudiant-mes-offre.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/etudiant-mes-offre.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/gererOffre.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/gererOffre.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phpQueries/conxnBDD.php" beforeDir="false" afterPath="$PROJECT_DIR$/phpQueries/conxnBDD.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phpQueries/synchro.php" beforeDir="false" afterPath="$PROJECT_DIR$/phpQueries/synchro.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/publierOffre.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/publierOffre.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +52,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "Errors",
     "vue.rearranger.settings.migration": "true"
   },
@@ -110,7 +106,7 @@
       <workItem from="1655591641660" duration="7191000" />
       <workItem from="1655600744843" duration="1654000" />
       <workItem from="1655635716603" duration="19662000" />
-      <workItem from="1655668681363" duration="2688000" />
+      <workItem from="1655668681363" duration="5267000" />
     </task>
     <servers />
   </component>

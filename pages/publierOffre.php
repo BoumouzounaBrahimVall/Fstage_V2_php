@@ -4,28 +4,28 @@ require( __DIR__.'./../phpQueries/etudiant/uploadfile.php');
  if($_SERVER['REQUEST_METHOD']=='POST'){
 
     $donnee=array(
-      $_POST['inputEntreprise'], //ent existe
-      $_POST['inputIntitule'], // ent intit crée
-      $_POST['inputEmail'], //ent mail crée
-      $_POST['inputAdresse'],//ent adr crée
-      $_POST['inputtel'], //ent tel crée
-      $_POST['inputVille'],//ent ville crée
-      $_POST['inputPays'],//ent pays crée
+      @$_POST['inputEntreprise'], //ent existe
+        @$_POST['inputIntitule'], // ent intit crée
+        @$_POST['inputEmail'], //ent mail crée
+        @$_POST['inputAdresse'],//ent adr crée
+        @$_POST['inputtel'], //ent tel crée
+        @$_POST['inputVille'],//ent ville crée
+        @$_POST['inputPays'],//ent pays crée
 
-      $_POST['inputpost'],//offre post crée
-      $_POST['dateDeb'],//offre  dateDeb
-      $_POST['dateFin'],//offre  datefin
-      $_POST['inputvilleoffre'], //offre  ville
-      $_POST['delai'],          //offre  delai
-      $_POST['inputeffectif'],  //offre  effectif
-      $_POST['inputpaysoffre'], //offre  pays
-      $_POST['inputNiveaux'], //offre  niveau
-      $_POST['detailoffre'],  //offre  detais
+        @$_POST['inputpost'],//offre post crée
+        @$_POST['dateDeb'],//offre  dateDeb
+        @$_POST['dateFin'],//offre  datefin
+        @$_POST['inputvilleoffre'], //offre  ville
+        @$_POST['delai'],          //offre  delai
+        @$_POST['inputeffectif'],  //offre  effectif
+        @$_POST['inputpaysoffre'], //offre  pays
+        @$_POST['inputNiveaux'], //offre  niveau
+        @$_POST['detailoffre'],  //offre  detais
 
-      $_POST['CNE'], //stage CNE 16
-      $_POST['inputSujet'], //stage sujet 17
-      $_POST['dtDebStg'], //stage debut 18
-      $_POST['dtFinStg'], //stage fin 19
+        @$_POST['CNE'], //stage CNE 16
+        @$_POST['inputSujet'], //stage sujet 17
+        @$_POST['dtDebStg'], //stage debut 18
+        @$_POST['dtFinStg'], //stage fin 19
 
      );
   if(!empty($donnee[1]))//entreprise n'existe pas. on l'ajoute
@@ -58,6 +58,7 @@ if(!empty($donnee[17]))//stage ext
     $etudiant_niveau =$etudiant_niveaux[0]['NUM_NIV'];
     $dt=date("Y-m-d");
     //inserer offre
+
     $req2 = "INSERT INTO offredestage (NUM_NIV,NUM_ENT,POSTE_OFFR,EFFECTIF_OFFRE,DETAILS_OFFR,DATEDEB_OFFR,DATEFIN_OFFR,VILLE_OFFR,ETATPUB_OFFR,PAYS_OFFR,TYPE_OFFR)
     VALUES ('$etudiant_niveau','$donnee[0]','$donnee[7]','1','$donnee[15]','$dt','$dt','$donnee[10]','CLOSE','$donnee[13]','2');";
     //execution de la requette
@@ -76,7 +77,7 @@ if(!empty($donnee[17]))//stage ext
     $bdd->exec($req2);
     //inserer le stage
     $req2 = "INSERT INTO stage (NUM_OFFR, CNE_ETU, DATEDEB_STG, DATEFIN_STG, SUJET_STG, ACTIVE_STG)
-    VALUES ('$numOffre','$donnee[16]','$donnee[18]','$donnee[19]','$donnee[17]','1');";
+    VALUES ('$numOffre','$donnee[16]','$donnee[18]','$donnee[19]','$donnee[17]','0');";
     //execution de la requette
     $bdd->exec($req2);
 
