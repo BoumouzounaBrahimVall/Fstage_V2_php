@@ -162,7 +162,7 @@ require_once "./nav-ens.php"
                                             ';
                                             if($V['ACTIVE_STG']=='0')
                                                 echo '  <td>No Annuler</td>';
-                                            else echo '  <td>Annuler</td>';
+                                            else echo '  <td class="text-danger">Annuler</td>';
                                          echo'   <td>  
                                           <a class="ms-3" href="../pages/resposable-details-stage.php?numStage='.$V['NUM_STG'].'"><i class=" active  bi bi-pencil-fill"></i></a>
                                         </td>
