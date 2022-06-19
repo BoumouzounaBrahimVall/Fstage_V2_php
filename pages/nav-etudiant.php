@@ -1,7 +1,7 @@
 
 <!-- Navbar  -->  
-<nav class="navbar px-5  py-3  m-0 navbar-expand-lg navbar-light ">
-      <div class="container-fluid ">
+<nav class="navbar px-xl-5 m-0 navbar-expand-lg navbar-light ">
+      <div class="container-fluid px-5 ">
         <a class="navbar-brand" href="./etudiant-dashboard.php">
           <img id="logo" src="./../assets/icon/logo.png" alt="logo" />
         </a>
