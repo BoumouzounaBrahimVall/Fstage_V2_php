@@ -1,5 +1,57 @@
 <?php
 require( __DIR__.'../../phpQueries/respoRequiries.php');
+
+if (isset($_POST["telecharger"])) {
+    $type=$_POST['type'];
+    $niv=$_POST['niv'];
+    if($niv=='tous') {
+        if($type=='tous'){
+            $req="select etu.CNE_ETU,etu.NOM_ETU,etu.PRENOM_ETU,DATENAISS_ETU,etu.TEL_ETU,etu.EMAIL_ENS_ETU,etu.PAYS_ETU,etu.VILLE_ETU
+                    ,stage.SUJET_STG,stage.DATEDEB_STG,stage.DATEFIN_STG from etudiant etu,etudier,niveau,stage,juger where juger.NUM_STG=stage.NUM_STG
+                    and juger.EST_ENCADRER='1' and stage.CNE_ETU=etu.CNE_ETU and etudier.CNE_ETU=etu.CNE_ETU and niveau.NUM_NIV=etudier.NUM_NIV and
+                    niveau.NUM_FORM='$formation' and etu.ACTIVE_ETU='0' ";
+            $stmReq=$bdd->query($req);
+            $rows= $stmReq->fetchAll(2);
+        }
+
+    }
+
+     // le nom du fichier
+    $filename =  "FSTMStagieres-".date('d-m-Y').".xls";;
+
+//pour informer le navigateur qu'il doit telecharger un fichier de type excel
+    header("Content-Type: application/xls");
+    header("Content-Disposition: attachment; filename=$filename");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+//pour separer les colonnes
+    $separator = "\t";
+
+//If our query returned rows
+    if(!empty($rows)){
+
+        //ecrire les noms des colonnes comme la requette
+        echo implode($separator, array_keys($rows[0])) . "\n";
+
+        foreach($rows as $row){
+
+            //enlever les caracteres specifique pour eviter les onflits
+            foreach($row as $k => $v){
+                $row[$k] = str_replace($separator . "$", "", $row[$k]);
+                $row[$k] = preg_replace("/\r\n|\n\r|\n|\r/", " ", $row[$k]);
+                $row[$k] = trim($row[$k]);
+            }
+
+            //Implode: pour ecrire les colonnes
+            //$separator : lier entre les colonnes
+            echo implode($separator, $row) . "\n";
+        }
+    }
+    exit();// si on sort pas on aura toute la page php dans le fichier excel
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -59,23 +111,17 @@ require_once "./nav-ens.php"
                             </div>
                         </div>
                         <!-- the other one-->
-                        <div class="col-lg-6 col-md-12 p-xl-4 mr-2 my-sm-2">
+                        <div class="col p-4 mr-2 ">
 
-                            <div class="row   pt-3 pb-3  statis-div-3 mt-2">
+                            <div class="row  p-4  addOffre-div">
 
-                                <div class="col-2 col-sm-5  p-4">
-                                    <img  src="../assets/icon/bag_red.png" alt="offres">
+                                <div class="col-12 p-3 d-flex align-items-center  justify-content-center">
+
+                                    <i class="bi bi-download" style="font-size: 50px; color: #7b61ff"></i>
+
                                 </div>
-                                <div class="col p-4">
-                                    <h1 class=" text-center"><?php
-                                        $req1="SELECT COUNT(off.NUM_OFFR) nbr_off_cmp FROM `OFFREDESTAGE` off,NIVEAU niv WHERE niv.NUM_NIV=off.NUM_NIV and off.ETATPUB_OFFR='complete' and niv.NUM_FORM='$formation';";
-                                        $Smt1=$bdd->query($req1);
-                                        $nbr=$Smt1->fetch(2); // arg: PDO::FETCH_ASSOC
-
-                                        echo '<h1 class=" text-center">'.$nbr['nbr_off_cmp'].'</h1>';//<h1 class=" text-center">250</h1>
-                                        ?></h1>
-                                    <p class=" text-center">offres complétés</p>
-
+                                <div class="col-12 p-0 d-flex align-items-center  justify-content-center">
+                                    <button class="btn btn-filtre" data-bs-toggle="modal" data-bs-target="#exampleModal">Telechager liste des  stagieres</button>
                                 </div>
                             </div>
                         </div>
@@ -136,6 +182,79 @@ require_once "./nav-ens.php"
 </div>
 
 
+<!-- Modifier telecharger-->
+<div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 370px;max-width: 800px">
+        <div class="modal-content d-flex justify-content-center "style="min-width: 370px;max-width: 800px;margin:auto;">
+            <div class="modal-header border-0">
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <span class="headline-form"> Telecharger la liste des stagieres</span>
+
+                    </div>
+                    <div class="row">
+                        <form class=" g-3 mt-2" method="post">
+                            <div class="d-flex align-items-center ">
+                                <img class="me-2" src="../assets/icon/step1.svg" alt="">
+                                <span class="subheadline-form" >information sur les stages</span>
+                            </div>
+
+                            <div >
+                                <div class="mt-4 p-2 border border-1 rounded-3">
+
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-xl-6 col-sm-6">
+                                                <label for="inputNom2" class="col-form-label" >Type</label>
+                                                <select class="form-select" name="type">
+                                                    <option value="tous" selected>Tous</option>
+                                                    <option value="1">Annuler</option>
+                                                    <option value="2">Encours</option>
+                                                    <option value="3">Terminer</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-6 col-sm-6">
+                                                <label for="inputPrenom2" class="col-form-label">Niveau</label>
+                                                <select class="form-select"  name="niv">
+                                                    <option value="tous" selected>Tous</option>
+                                                    <?php
+                                                    $reqniv="select NUM_NIV,LIBELLE_NIV from niveau where NUM_FORM='$formation'; ";
+                                                    $Smtniv = $bdd->query($reqniv);
+                                                    $rownivs=$Smtniv->fetchAll(PDO::FETCH_ASSOC);
+                                                    foreach ($rownivs as $rowniv) {
+                                                        echo '<option value="' . $rowniv['NUM_NIV'] . '">' . $rowniv['LIBELLE_NIV'] . '</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+
+                                <div class="row">
+                                    <div class="col-xl-6 mt-4">
+                                        <button type="submit" name="telecharger" class="btn btn-filtre btn-primary w-100 mb-3"> Teleharger <i class="bi bi-download"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 <!-- JavaScript Bundle with Popper-->
@@ -151,6 +270,5 @@ require_once "./nav-ens.php"
         });
     } );
 </script>
-<script type="text/javascript" src="/js/script.js"></script>
 </body>
 </html>
