@@ -224,7 +224,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                                 <label for="fileCv" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
                                     Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                 </label>
-                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmit','pathStorageFile',2,'<?php echo $etudiant_info['CNE_ETU'];?>')" accept="application/pdf" type="file" id="fileCv">
+                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmitFile','pathStorageFile',2,'<?php echo $etudiant_info['CNE_ETU'];?>')" accept="application/pdf" type="file" id="fileCv">
                                <!-- <input class="form-control d-none" name="cv"  accept="application/pdf" type="file" id="files">-->
 
 
@@ -233,7 +233,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                             </div>
                             <div class="row ">
                                 <div class="col-xl-8  mt-5">
-                                    <button type="submit" id="btnSubmit" name="filesUploaed" disabled value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
+                                    <button type="submit" id="btnSubmitFile" name="filesUploaed" disabled value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
                                 </div>
                             </div>
                         </form>
