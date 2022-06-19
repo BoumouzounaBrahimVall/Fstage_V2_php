@@ -128,7 +128,7 @@ require_once "nav-etudiant.php";
 
                 $All_rapport = $bdd->query($req);
                 $fich_rapport = $All_rapport->fetchAll(2);
-               
+
 
 
             }
@@ -184,7 +184,7 @@ require_once "nav-etudiant.php";
                             <label for="inputIntitule" class="col-form-label">Intitule</label>
                         </div>
                         <div class="col-xl-4 col-sm-6">
-                            <input class="form-control" type="text"  id="inputIntitule" name="inputIntitule" placeholder="Type to search...">
+                            <input class="form-control" type="text"  value="<?php echo @$intitule; ?>" id="inputIntitule" name="inputIntitule" placeholder="Type to search...">
                         </div>
                         <div class="col-xl-2 col-sm-6">
                             <label for="inputMotcle" class="col-form-label">Mot cle</label>
