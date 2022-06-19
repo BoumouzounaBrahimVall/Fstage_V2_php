@@ -136,7 +136,7 @@ require_once "./nav-ens.php"
                                     <th scope="col">Niveau</th>
                                     <th scope="col">Date Deb</th>
                                     <th scope="col">Date Fin</th>
-                                    <th scope="col">Etat Stg</th>
+                                    <th scope="col">ANNULER</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
@@ -161,8 +161,8 @@ require_once "./nav-ens.php"
                                             <td>'.$V['DATEFIN_STG'].'</td>
                                             ';
                                             if($V['ACTIVE_STG']=='0')
-                                                echo '  <td>No Annuler</td>';
-                                            else echo '  <td class="text-danger">Annuler</td>';
+                                                echo '  <td>NON</td>';
+                                            else echo '  <td class="text-danger">OUI</td>';
                                          echo'   <td>  
                                           <a class="ms-3" href="../pages/resposable-details-stage.php?numStage='.$V['NUM_STG'].'"><i class=" active  bi bi-pencil-fill"></i></a>
                                         </td>
