@@ -523,7 +523,7 @@ require_once "./nav-ens.php"
 
     });
 </script>
-<script type="text/javascript" src="/js/excel.js"></script>
+<script type="text/javascript" src="./../js/excel.js"></script>
 <script src="./../js/script-upload.js"></script>
 
 

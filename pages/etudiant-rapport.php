@@ -46,16 +46,113 @@ require_once "nav-etudiant.php";
                 return $motcl;
 
             }
+            $niveaux_req="select DISTINCT (LIBELLE_NIV) FROM niveau";
+            $niveaux_stmt=$bdd->query($niveaux_req);
+            $All_niveaux = $niveaux_stmt->fetchAll(2);
+
+            $niveaux=array_column($All_niveaux ,"LIBELLE_NIV");
+
+            $motcl_req="select DISTINCT (LIBELLE_CLE) FROM motcle ";
+            $motcl_stmt=$bdd->query($motcl_req);
+            $All_motcl = $motcl_stmt->fetchAll(2);
+
+            $mocles=array_column($All_motcl ,"LIBELLE_CLE");
+
+            $filtred=false;
+            $seletedCle="";
+            $seletedNiv="";
+            if (isset($_POST['filterClicked']))
+            {
+                $filtred=true;
+                if (empty($_POST['inputMotcle']))
+                {
+                    $req="SELECT rapport.* from rapport ,stage,niveau,offredestage
+                         WHERE stage.NUM_STG = rapport.NUM_STG
+                           AND stage.NUM_OFFR=offredestage.NUM_OFFR
+                           AND offredestage.NUM_NIV=niveau.NUM_NIV
+
+                    ";
+                }else
+                $req="SELECT rapport.* from rapport ,stage,niveau,offredestage,motcle,contenirmotrap
+                         WHERE stage.NUM_STG = rapport.NUM_STG
+                           AND stage.NUM_OFFR=offredestage.NUM_OFFR
+                           AND offredestage.NUM_NIV=niveau.NUM_NIV
+                           AND contenirmotrap.NUM_RAP=rapport.NUM_RAP
+                           AND contenirmotrap.NUM_CLE=motcle.NUM_CLE ";
+
+
+                if (!empty($_POST['inputIntitule']))
+                {
+                    $intitule=$_POST['inputIntitule'];
+                    $req.=" AND rapport.INTITULE_RAP LIKE '%$intitule%' ";
+
+
+                }
+
+                if (!empty($_POST['inputMotcle']))
+                {
+                    $mot=$_POST['inputMotcle'];
+                    $req.=" AND motcle.LIBELLE_CLE LIKE '%$mot%' ";
+                    $index = array_search($mot,$mocles);
+                    if($index !== FALSE){
+                        $seletedCle=$mocles[$index];
+                        unset($mocles[$index]);
+                    }
+
+
+                }
+
+                if (!empty($_POST['inputNiveaux']))
+                {
+                    $niv=$_POST['inputNiveaux'];
+                    $req.=" AND niveau.LIBELLE_NIV LIKE '%$niv%' ";
+
+                    $index = array_search($niv,$niveaux);
+                    if($index !== FALSE){
+                        $seletedNiv=$niveaux[$index];
+                        unset($niveaux[$index]);
+                    }
+
+
+                }
+                if (!empty($_POST['inputTrier']))
+                {
+                    $tri=$_POST['inputTrier'];
+                    if($tri=='ASC')
+                        $req.=" ORDER BY stage.DATEFIN_STG ASC ";
+                    else
+                        $req.=" ORDER BY stage.DATEFIN_STG DESC ";
+
+
+                }
+
+                $All_rapport = $bdd->query($req);
+                $fich_rapport = $All_rapport->fetchAll(2);
+
+
+
+            }
 
             ?>
 
             <?php
 
             //var_dump(info_etu(1,@$etu,$bdd)[0]["NOM_ETU"]);
+            if ( !isset($_POST['filterClicked']))
+            {
+                $req_rapport = "SELECT rap.* from Rapport rap,STAGE stg,NIVEAU niv,OFFREDESTAGE offr
+                                    WHERE stg.NUM_STG = rap.NUM_STG
+                                    AND offr.NUM_OFFR=stg.NUM_OFFR
+                                    AND offr.NUM_NIV=niv.NUM_NIV
+                            ;";
+                $All_rapport = $bdd->query($req_rapport);
+                $fich_rapport = $All_rapport->fetchAll(2);
+            }
 
-            $req_rapport = "SELECT * from Rapport;";
-            $All_rapport = $bdd->query($req_rapport);
-            $fich_rapport = $All_rapport->fetchAll(2);
+
+
+
+
 
 
             ?>
@@ -82,23 +179,26 @@ require_once "nav-etudiant.php";
             <!--------Filter bar ----->
             <div class="  collapse " id="collapseExample" >
                 <div class=" row filtre-bar ps-4  mt-5">
-                    <form class="row g-3">
+                    <form method="post" class="row g-3">
                         <div class="col-xl-2 col-sm-6">
-                            <label for="inputIntitule2" class="col-form-label">Intitule</label>
+                            <label for="inputIntitule" class="col-form-label">Intitule</label>
                         </div>
                         <div class="col-xl-4 col-sm-6">
-                            <input class="form-control" type="text" id="inputIntitule2" placeholder="Type to search...">
+                            <input class="form-control" type="text"  value="<?php echo @$intitule; ?>" id="inputIntitule" name="inputIntitule" placeholder="Type to search...">
                         </div>
                         <div class="col-xl-2 col-sm-6">
                             <label for="inputMotcle" class="col-form-label">Mot cle</label>
                         </div>
                         <div class="col-xl-4 col-sm-6">
-                            <input class="form-control" list="datalistOptions" id="inputMotcle"
+                            <input class="form-control" list="motcle" value="<?php echo @$seletedCle ?>" name="inputMotcle" id="inputMotcle"
                                    placeholder="Type to search...">
-                            <datalist id="datalistOptions">
-                                <option value="Reseau">
-                                <option value="Informatique">
-                                <option value="BDD">
+                            <datalist id="motcle">
+
+                                <?php
+
+                                foreach ($mocles as $mot)
+                                echo '<option value="'.$mot.'">'
+                                ?>
 
                             </datalist>
                         </div>
@@ -107,27 +207,30 @@ require_once "nav-etudiant.php";
                             <label for="inputNiveaux" class="col-form-label">Niveaux</label>
                         </div>
                         <div class="col-xl-4 col-sm-6">
-                            <select id="inputNiveaux" class="form-select" aria-label="Default select example">
-                                <option selected>Trier par</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                            </select>
+                            <input class="form-control" value="<?php echo @$seletedNiv ?>" list="niveaux" name="inputNiveaux" id="inputNiveaux"
+                                   placeholder="Type to search...">
+                            <datalist id="niveaux">
+
+                                <?php
+                                foreach ($niveaux as $niv)
+                                    echo '<option value="'.$niv.'">'
+                                ?>
+
+                            </datalist>
                         </div>
 
                         <div class="col-xl-2 col-sm-6">
                             <label for="inputTrier2" class="col-form-label">Trier</label>
                         </div>
                         <div class="col-xl-4 col-sm-6">
-                            <select id="inputTrier2" class="form-select" aria-label="Default select example">
-                                <option selected>Trier par</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select name="inputTrier"  id="inputTrier"  class="form-select" aria-label="Default select example">
+
+                                <option selected value="1">ASC</option>
+                                <option value="2">DESC</option>
                             </select>
                         </div>
                         <div class="col-xl-6">
-                            <button type="submit" class="btn btn-filtre btn-primary w-100 mb-3"> Chercher <i
+                            <button type="submit" name="filterClicked" class="btn btn-filtre btn-primary w-100 mb-3"> Chercher <i
                                         class="bi bi-search"></i></button>
                         </div>
                     </form>

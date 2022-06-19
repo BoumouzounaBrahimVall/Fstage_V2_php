@@ -102,10 +102,13 @@ require_once "./nav-ens.php"
                                 <option value="4">Enseignant</option>
                             </select>
                             <div class="mt-3" id="chart-container">
-                                <canvas  style="min-width:400px !important;;max-width:400px !important;" id="myChart"></canvas>
+
+                                    <canvas id="myChart"></canvas>
+
+
                             </div>
                         </div>
-                        <div class="col-xl-6 col-sm-12  mt-2  flex-column d-flex justify-content-center">
+                        <div class="col-xl-6 col-sm-12  mt-2  ">
                             <select id="selectedOption2" onchange="showGraphBar()" class="form-select"
                                     aria-label="Default select example">
 
@@ -114,7 +117,7 @@ require_once "./nav-ens.php"
                                 <option value="8">Niveau</option>
                             </select>
                             <div class="mt-3" id="chart-container">
-                                <canvas  style="min-width:400px !important;;max-width:400px !important;" id="myChartBar"></canvas>
+                                <canvas   id="myChartBar"></canvas>
                             </div>
                         </div>
 
@@ -319,6 +322,7 @@ require_once "./nav-ens.php"
                     const data2 = {
                         labels: [...assocArray.map(a=>a.label)],
                         datasets: [{
+
                             label: 'Nombre',
                             data: [...assocArray.map(a=>a.data)],
                             backgroundColor: [
