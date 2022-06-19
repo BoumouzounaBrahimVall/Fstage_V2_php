@@ -4,72 +4,131 @@ require(__DIR__ . './../phpQueries/etudiant/uploadfile.php');
 
 @$cne_courant= $_GET['cnee'];
 if(!is_null($cne_courant)){
-$req_infoEtud="SELECT * from ETUDIANT where ETUDIANT.CNE_ETU='$cne_courant';";
-$smt_infoEtud=$bdd->query($req_infoEtud);
-$infoEtud=$smt_infoEtud->fetch(2);
-
-    //selectionner dernier niveau
-$req_lastNiv = "SELECT ETUDIER.NUM_NIV from ETUDIER where ETUDIER.CNE_ETU='$cne_courant' and ETUDIER.NUM_NIV>=All(SELECT NUM_NIV from NIVEAU where CNE_ETU='$cne_courant');";
-$smt_lastNiv=$bdd->query($req_lastNiv);
-$lastNiv=$smt_lastNiv->fetch(2);
-$dernierNv= $lastNiv['NUM_NIV'];
-if($infoEtud['ACTIVE_ETU']==0){
-//desactiver l etudiant
-$req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='1'where ETUDIANT.CNE_ETU='$cne_courant'; ";
-$bdd->exec($req_annulerEtud);
-}
-else
-{
-    //activer Etudiant
-    $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='0'where ETUDIANT.CNE_ETU='$cne_courant'; ";
-    $bdd->exec($req_annulerEtud); 
-}
-//annuler le stage le stage actuel de l etudiant
-// $req_annulerstg_Etud = "UPDATE stage set stage.ACTIVE_STG='1' where  stage.CNE_ETU='$cne_courant' and stage.NUM_OFFR in (SELECT offredestage.NUM_OFFR from offredestage where   offredestage.NUM_NIV='$dernierNv'); ";
-// $bdd->exec($req_annulerstg_Etud);
+        $req_infoEtud="SELECT * from ETUDIANT where ETUDIANT.CNE_ETU='$cne_courant';";
+        $smt_infoEtud=$bdd->query($req_infoEtud);
+        $infoEtud=$smt_infoEtud->fetch(2);
 
 
+            //selectionner dernier niveau
+        $req_lastNiv = "SELECT ETUDIER.NUM_NIV from ETUDIER where ETUDIER.CNE_ETU='$cne_courant' and ETUDIER.NUM_NIV>=All(SELECT NUM_NIV from NIVEAU where CNE_ETU='$cne_courant');";
+        $smt_lastNiv=$bdd->query($req_lastNiv);
+        $lastNiv=$smt_lastNiv->fetch(2);
 
-
+        if($infoEtud['ACTIVE_ETU']==0){
+        //desactiver l etudiant
+        $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='1'where ETUDIANT.CNE_ETU='$cne_courant'; ";
+        $bdd->exec($req_annulerEtud);
+        }
+        else
+        {
+            //activer Etudiant
+            $req_annulerEtud = "UPDATE ETUDIANT set ETUDIANT.ACTIVE_ETU='0'where ETUDIANT.CNE_ETU='$cne_courant'; ";
+            $bdd->exec($req_annulerEtud);
+        }
 
 } 
+//requette de selection des etudiants
 
-
-
+$req = "SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.ACTIVE_ETU,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv 
+                                            FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV
+                                            and  NIVEAU.NUM_FORM='$formation' and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
+                                                 where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
+                                                  (SELECT ET3.CNE_ETU from ETUDIER ET3 GROUP by ET3.CNE_ETU HAVING COUNT(ET3.CNE_ETU)=1)) ;";
+$Smt = $bdd->query($req);
+$rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+$cnes=array();
+foreach ($rows as $row){
+    $cnes[]=strtolower($row['cne']);
+}
+$reqniv="select NUM_NIV,LIBELLE_NIV from niveau where NUM_FORM='$formation'; ";
+$Smtniv = $bdd->query($reqniv);
+$rowniv=$Smtniv->fetchAll(PDO::FETCH_ASSOC);
+$libNiveau=array();
+$idniv=array();
+foreach ($rowniv as $niv){
+    $libNiveau[]= strtolower($niv['LIBELLE_NIV']);
+    $idniv[]= $niv['NUM_NIV'];
+}
+$errors='';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $donnee = array(
-        $_POST['cne'],
-        $_POST['prenom'],
-        $_POST['nom'],
-        $_POST['datnes'],
-        $_POST['email'],
-        $pass,
-        $_POST['tel'],
-        $_POST['ville'],
-        $_POST['pays'],
-        $_POST['niveau']
-    );
-    //recuperer les donnees
-    $nnn = $_POST['nom'];
-    $ppp = $_POST['prenom'];
-    //la requette d'insertion
-    $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU)
-               VALUES ('$donnee[0]','$donnee[1]','$donnee[2]','$donnee[3]','$donnee[4]','$donnee[5]','$donnee[6]','$donnee[7]','$donnee[8]');";
-    //execution de la requette
-    $bdd->exec($req);
-    $DT = date("Y-m-d");
-    $req = "INSERT INTO ETUDIER (CNE_ETU,NUM_NIV,DATE_NIV)
-               VALUES ('$donnee[0]','$donnee[9]','$DT')";
-    //execution de la requette
-    $bdd->exec($req);
-    if (isset($_POST['cvPath'])) {
+    if(isset($_POST['ajoutList'])){
+        $persons=$_POST["person"];
+      //  print_r($persons);
 
-        $file = $_POST['cvPath'];
-        uploadImagesOrCVFirebase($donnee[0], $file, $bdd, 1);
+        foreach ($persons as $persn){
+            $pass = password_hash($persn['pass'], PASSWORD_DEFAULT);
+            $infostu=array(
+                $persn['cne'],
+                $persn['nom'],
+                $persn['prenom'],
+                $persn['email'],
+                $persn['datenais'],
+                $persn['tel'],
+                $persn['pays'],
+                $persn['ville'],
+                $persn['niv']
+            );
+            if(in_array(strtolower($persn['cne']),$cnes)) $errors='l\'etudiant avec le CNE: '.$persn['cne'].' est deja ajouté';
+            else {
+                if(in_array(strtolower($infostu[8]),$libNiveau)){
+                    //la requette d'insertion
+                    $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU,IMG_ETU,ACTIVE_ETU)
+                            VALUES ('$infostu[0]','$infostu[2]','$infostu[1]','$infostu[4]','$infostu[3]','$pass','$infostu[5]','$infostu[7]','$infostu[6]','../ressources/user.png','0');";
+                    //execution de la requette
+                     $bdd->exec($req);
+                    $numNiv=$idniv[array_search($infostu[8], $libNiveau)];
+                    $dateEtude=date('Y-m-d');
+                    $req = "INSERT INTO etudier (CNE_ETU, NUM_NIV, DATE_NIV)
+                            VALUES ('$infostu[0]','$numNiv','$dateEtude');";
+                    //execution de la requette
+                    $bdd->exec($req);
+                    $errors='';
+                }else$errors=$infostu[8].' n\'est pas un niveau!!!!!!';
+
+            }
+
+        }
+    }else{
+
+        $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $donnee = array(
+            $_POST['cne'],
+            $_POST['prenom'],
+            $_POST['nom'],
+            $_POST['datnes'],
+            $_POST['email'],
+            $pass,
+            $_POST['tel'],
+            $_POST['ville'],
+            $_POST['pays'],
+            $_POST['niveau']
+        );
+        //recuperer les donnees
+        $nnn = $_POST['nom'];
+        $ppp = $_POST['prenom'];
+        $imgEtu="../ressources/user.png";
+        if(!empty($_POST['IMG_ETU'])){
+            $imgEtu=$_POST['IMG_ETU'];
+        }
+        //la requette d'insertion
+        $req = "INSERT INTO Etudiant (CNE_ETU,PRENOM_ETU,NOM_ETU,DATENAISS_ETU,EMAIL_ENS_ETU,MOTDEPASSE_ETU,TEL_ETU,VILLE_ETU,PAYS_ETU,IMG_ETU)
+               VALUES ('$donnee[0]','$donnee[1]','$donnee[2]','$donnee[3]','$donnee[4]','$donnee[5]','$donnee[6]','$donnee[7]','$donnee[8]','$imgEtu');";
+        //execution de la requette
+        $bdd->exec($req);
+        $DT = date("Y-m-d");
+        $req = "INSERT INTO ETUDIER (CNE_ETU,NUM_NIV,DATE_NIV)
+               VALUES ('$donnee[0]','$donnee[9]','$DT')";
+        //execution de la requette
+        $bdd->exec($req);
+        if (isset($_POST['cvPath'])) {
+
+            $file = $_POST['cvPath'];
+            uploadImagesOrCVFirebase($donnee[0], $file, $bdd, 1);
+        }
+
+        header('location:../pages/gererEtudiant.php');
     }
 
-    header('location:../pages/gererEtudiant.php');
 
 }
 ?>
@@ -80,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php
     require_once "./meta-tag.php"
     ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
     <title>Gerer etudiants</title>
 
 
@@ -140,18 +200,34 @@ require_once "./nav-ens.php"
 
                                 </div>
                                 <!-- Button trigger modal -->
-                                <div class="col-12 p-0 d-flex align-items-center  justify-content-center">
-                                    <button type="button" class="btn btn-seconnecter" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal">
-                                        Ajouter Etudiant
-                                    </button>
-
-
+                                <div class="row ">
+                                    <div class="col">
+                                        <button type="button"  style="width: 100%; height: 100%;" class="btn btn-filtre" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                            Ajouter
+                                        </button>
+                                    </div>
+                                    <div class="col me-0">
+                                        <button type="button"  style="width: 100%; height: 100%;" class="btn  btn-filtre" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal1">
+                                            Ajouter liste
+                                        </button>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
-
-
+                        <?php
+                        if(!empty($errors)){
+                        ?>
+                        <div class="alert alert-danger text-center">
+                            <?php
+                            echo $errors;
+                            ?>
+                        </div>
+                            <?php
+                        }
+                        ?>
                         <div class="row  mt-2 border p-3 border-1 rounded  rounded-5  ">
                             <table id="table_id2" style="width:100%" class=" nowrap display"
                             >
@@ -168,14 +244,7 @@ require_once "./nav-ens.php"
                                 </thead>
                                 <tbody>
                                 <?php
-
-                                $req = "SELECT  ETUDIANT.CNE_ETU cne, ETUDIANT.NOM_ETU nom,ETUDIANT.ACTIVE_ETU,ETUDIANT.PRENOM_ETU prenom,NIVEAU.LIBELLE_NIV niv 
-                                            FROM `ETUDIANT`,`NIVEAU`,`ETUDIER` WHERE ETUDIANT.CNE_ETU=ETUDIER.CNE_ETU and NIVEAU.NUM_NIV=ETUDIER.NUM_NIV
-                                            and  NIVEAU.NUM_FORM='$formation' and ((ETUDIER.NUM_NIV in (SELECT ET1.NUM_NIV from ETUDIER ET1,ETUDIER ET2 
-                                                 where ET1.CNE_ETU=ET2.CNE_ETU and ET1.NUM_NIV!=ET2.NUM_NIV  and ET1.DATE_NIV>=ET2.DATE_NIV)) or ETUDIER.CNE_ETU in
-                                                  (SELECT ET3.CNE_ETU from ETUDIER ET3 GROUP by ET3.CNE_ETU HAVING COUNT(ET3.CNE_ETU)=1)) ;";
-                                $Smt = $bdd->query($req);
-                                $rows = $Smt->fetchAll(PDO::FETCH_ASSOC); // arg: PDO::FETCH_ASSOC
+                                 // arg: PDO::FETCH_ASSOC
                                 //afficher le tableau
                                 $lastNum = 0;
                                 foreach ($rows as $V):
@@ -224,12 +293,55 @@ require_once "./nav-ens.php"
 </div>
 
 
-<!-- Main Content Area -->
+<!-- Modifier enseignant-->
+<div  class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 370px;max-width: 1300px">
+        <div class="modal-content d-flex justify-content-center "style="min-width: 370px;max-width: 1300px;margin:auto;">
+            <div class="modal-header border-0">
 
-<!-- Pills content -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <span class="headline-form"> Ajouter liste des etudiants ajouter </span>
+
+                    </div>
+                    <div class="row ">
+                        <div class="row">
+                            <div class="col-md-4 p-2">
+                                <input class="form-control" type="file" id="inputextract" accept=".xls,.xlsx">
+                            </div>
+                            <div class="col-md-2 p-2">
+                                <button class="btn btn-filtre" id="buttonextra">Convertir</button>
+                            </div>
+                            <div class="col-md-4 p-2 ms-0">
+                                    <a href="../ressources/Fiches_Etudiants.xlsx" target="_blank"
+                                       class="btn btn-filtre" download>Telecharger Ficher exampaire</a>
+                            </div>
+                        </div>
+                        <form method="post">
+                            <div class="row">
+                                <small class="text-danger"> Veuillez verifier les informations saisies, toute information invalide sera ignoré</small>
+                                <small class="text-danger">Il est recommendé d'utilisé le fichier exemplaire pour le remplissage pour eviter toute erruers lors de l'ajout</small>
+                                <button class="btn btn-filtre d-none" id="sendit" name="ajoutList"> Ajouter liste</button></div>
+                            <div class="row ms-1" id="myTable">
+
+
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!--MODEL FORM-->
-<!-- Modal -->
+<!-- Modal ajouter etudiant -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="min-width: 370px;;max-width: 800px">
         <div class="modal-content d-flex justify-content-center "
@@ -245,7 +357,7 @@ require_once "./nav-ens.php"
 
                     </div>
                     <div class="row">
-                        <form class=" g-3 mt-2" method="post">
+                        <form class=" g-3 mt-2" method="post" enctype="multipart/form-data">
                             <div class="d-flex align-items-center ">
                                 <img class="me-2" src="../assets/icon/step1.svg" alt="">
                                 <span class="subheadline-form">information sur l'etudiant</span>
@@ -258,7 +370,7 @@ require_once "./nav-ens.php"
                                     </label>
                                     <input class="form-control d-none"
                                            onchange="uploadFileToFirebase('files','btnSubmit','pathStorageFile',1,'<?php echo $lastNum; ?>')"
-                                           accept="image/*" type="file" id="files">
+                                           accept="image/*" type="file" id="files" name="IMG_ETU">
 
 
                                     <div>
@@ -393,9 +505,9 @@ require_once "./nav-ens.php"
         </div>
     </div>
 </div>
-<div id="modal-progress-upload">
 
-</div>
+
+
 <script>
     $(document).ready(function () {
         $('#table_id2').DataTable({
@@ -411,7 +523,7 @@ require_once "./nav-ens.php"
 
     });
 </script>
-<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript" src="/js/excel.js"></script>
 <script src="./../js/script-upload.js"></script>
 
 

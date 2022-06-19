@@ -22,7 +22,7 @@ require_once "nav-ens.php";
         <div class="col-xl-3   col-sm-12">
             <div class="sidebar py-1  mt-4 mx-3">
                 <ul type="none">
-                    <li> <a href="./etudiant-rapport.php"><i class=" active  bi bi-house-fill"></i>Home</a></li>
+                    <li> <a href="./homeRespo.php"><i class=" active  bi bi-house-fill"></i>Home</a></li>
 
 
 

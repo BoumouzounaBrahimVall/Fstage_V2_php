@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="883098ca-2fd2-49c4-8d74-e9ed6b0e684a" name="local" url="http://localhost:8080/Fstage_V2_php/">
-        <fileTransfer mountedRoot="C:\Xampp\htdocs" accessType="MOUNT" port="0" />
+      <webServer id="26c98c82-e96f-48c0-a9a4-ef1a58b36e74" name="local" url="http://localhost">
+        <fileTransfer mountedRoot="$PROJECT_DIR$/.." accessType="MOUNT" port="0" />
       </webServer>
     </option>
   </component>

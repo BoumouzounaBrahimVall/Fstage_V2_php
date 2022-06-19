@@ -5,16 +5,16 @@
 try {
 
 
-    //$bdd= new PDO("mysql:host=localhost;dbname=fstage","root","root");
+    $bdd= new PDO("mysql:host=localhost;dbname=fstage","root","root");
 
    // $bdd = new PDO("mysql:host=localhost;port=3307;dbname=fstage", "root", "");
 
-      $host = 'us-cdbr-east-05.cleardb.net';
+   /*   $host = 'us-cdbr-east-05.cleardb.net';
         $dbname = 'heroku_93aab640ed42c57';
         $username = 'b847878388960a';
         $password = 'cec449ca';
         $bdd = new PDO("mysql:host=" . $host . "; dbname=" . $dbname, $username, $password);
-
+*/
 
 
 
