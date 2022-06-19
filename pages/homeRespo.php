@@ -91,7 +91,7 @@ require_once "./nav-ens.php"
                             </div>
                         </div>
                     </div>
-                    <div class="row  p-4 mt-2">
+                    <div class="row  p-4 mt-2 d-flex align-items-start ">
                         <div class="col-xl-6 col-sm-12 mx-auto">
                             <select id="selectedOption" onchange="showGraph()" class="form-select"
                                     aria-label="Default select example">
@@ -102,7 +102,19 @@ require_once "./nav-ens.php"
                                 <option value="4">Enseignant</option>
                             </select>
                             <div class="mt-3" id="chart-container">
-                                <canvas style="max-width:400px;max-height:400px" id="myChart"></canvas>
+                                <canvas  style="min-width:400px !important;;max-width:400px !important;" id="myChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-sm-12 mx-auto  flex-column d-flex justify-content-center">
+                            <select id="selectedOption2" onchange="showGraphBar()" class="form-select"
+                                    aria-label="Default select example">
+
+                                <option selected value="6">Offres</option>
+                                <option value="7">Stages</option>
+                                <option value="8">Niveau</option>
+                            </select>
+                            <div class="mt-3" id="chart-container">
+                                <canvas  style="min-width:400px !important;;max-width:400px !important;" id="myChartBar"></canvas>
                             </div>
                         </div>
 
@@ -116,9 +128,9 @@ require_once "./nav-ens.php"
 </div>
 <script>
     $(document).ready(function () {
-        showGraph();
+       showGraph();
+        showGraphBar();
     });
-
     function showGraph() {
 
 
@@ -260,6 +272,92 @@ require_once "./nav-ens.php"
                 }, "json");
 
         }
+    }
+    function showGraphBar() {
+
+
+
+            let selected = document.getElementById('selectedOption2').value;
+            console.log(selected);
+
+            let num = document.getElementById('formationId').value;
+            var dataX = {
+                formation: num,
+                option: selected
+            };
+
+            //let formation=document.getElementById('formationId').value;
+            console.log(dataX);
+            $.post("./statiqueRespo.php",
+                dataX,
+                function (datav) {
+                    console.log(datav);
+
+
+                    //get the doughnut chart canvas
+                    var ctx1 = $("#myChartBar");
+                    console.log(dataX)
+
+
+
+                    var assocArray=[];
+                    for (const key in datav) {
+                        let obj=new Object();
+                        obj.label=key;
+                        obj.data=datav[key].somme;
+                        obj.backgroundColor="#E7E2FF";
+                        obj.borderColor="#7B61FF";
+                        assocArray.push(obj);
+
+
+                    }
+                    console.log(assocArray);
+
+                    //doughnut chart data
+
+
+                    const data2 = {
+                        labels: [...assocArray.map(a=>a.label)],
+                        datasets: [{
+                            label: 'Nombre',
+                            data: [...assocArray.map(a=>a.data)],
+                            backgroundColor: [
+                                ...assocArray.map(a=>a.backgroundColor)
+                            ],
+                            borderColor: [
+                                ...assocArray.map(a=>a.borderColor)
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+                    console.log(data2)
+
+                    //options
+                    var options2= {
+
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        ,
+                        responsive: true
+
+
+                    }
+                    let chartStatus2 = Chart.getChart("myChartBar"); // <canvas> id
+                    if (chartStatus2 != undefined) {
+                        chartStatus2.destroy();
+                    }
+                    //create Chart class object
+                    var chart1 = new Chart(ctx1, {
+                        type: "bar",
+                        data: data2,
+                        options: options2
+                    });
+                }, "json");
+
+
     }
 
 
