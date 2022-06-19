@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9fe01a83-979e-446f-bcaf-e95a615548aa" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="DONT_SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpServers">
+    <servers>
+      <server id="1269626c-7ec9-4389-bd77-cc2ee800d0cf" name="Unnamed" />
+    </servers>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/../../php" />
+    </include_path>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2ACyQgU82ZSy3tQ1qcVttHTeOLr" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../php" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Xampp\htdocs\Fstage_V2_php\pages" />
+      <recent name="C:\Xampp\htdocs\Fstage_V2_php\assets\icon" />
+      <recent name="C:\Xampp\htdocs\Fstage_V2_php\js" />
+      <recent name="C:\Xampp\htdocs\Fstage_V2_php" />
+      <recent name="C:\Xampp\htdocs\Fstage_V2_php\ressources\company\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Xampp\htdocs\Fstage_V2_php\pages" />
+      <recent name="C:\Xampp\htdocs\Fstage_V2_php" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="fileCrt" />
+    </option>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9fe01a83-979e-446f-bcaf-e95a615548aa" name="Changes" comment="" />
+      <created>1654527857857</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654527857857</updated>
+      <workItem from="1654527859294" duration="19055000" />
+      <workItem from="1654643157815" duration="5138000" />
+      <workItem from="1654694676192" duration="9593000" />
+      <workItem from="1654777950099" duration="9344000" />
+      <workItem from="1654876019886" duration="10419000" />
+      <workItem from="1654944052005" duration="26705000" />
+      <workItem from="1655050332296" duration="5515000" />
+      <workItem from="1655056935804" duration="1119000" />
+      <workItem from="1655058203513" duration="22373000" />
+      <workItem from="1655125064211" duration="15446000" />
+      <workItem from="1655165874619" duration="27383000" />
+      <workItem from="1655303281305" duration="15440000" />
+      <workItem from="1655332447289" duration="2541000" />
+      <workItem from="1655366963201" duration="26202000" />
+      <workItem from="1655554758516" duration="17813000" />
+      <workItem from="1655591641660" duration="7191000" />
+      <workItem from="1655600744843" duration="1654000" />
+      <workItem from="1655635716603" duration="19662000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/phpQueries/etudiant/detailoffr.php</url>
+          <line>9</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/pages/gererOffre.php</url>
+          <line>14</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
