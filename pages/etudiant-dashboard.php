@@ -167,7 +167,7 @@ require_once "nav-etudiant.php";
 
                         if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
                          if(strcmp($offre_stage['ETATPUB_OFFR'],"CLOSE")==0) {$visiblePostuler2="disabled";$close='close';}
-                         else{ $visiblePostuler2=" ";$close=" ";};
+                         else{ $visiblePostuler2=" ";$close=" badge-status ";};
 
                         echo '
                   <div class="m-xl-3 ">
@@ -175,7 +175,7 @@ require_once "nav-etudiant.php";
                 <div class="row">
                   <div class="col">
 
-                    <span class="  m-3 badge-status  w-25  p-2 '.$close.' "> '.$offre_stage["ETATPUB_OFFR"] .'</span>
+                    <span class="  m-3 w-25  p-2 '.$close.' "> '.$offre_stage["ETATPUB_OFFR"] .'</span>
 
                   </div>
                 </div>

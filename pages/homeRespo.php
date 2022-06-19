@@ -92,7 +92,7 @@ require_once "./nav-ens.php"
                         </div>
                     </div>
                     <div class="row  p-4 mt-2 d-flex align-items-start ">
-                        <div class="col-xl-6 col-sm-12 mx-auto">
+                        <div class="col-xl-6 col-sm-12 mt-2">
                             <select id="selectedOption" onchange="showGraph()" class="form-select"
                                     aria-label="Default select example">
 
@@ -105,7 +105,7 @@ require_once "./nav-ens.php"
                                 <canvas  style="min-width:400px !important;;max-width:400px !important;" id="myChart"></canvas>
                             </div>
                         </div>
-                        <div class="col-xl-6 col-sm-12 mx-auto  flex-column d-flex justify-content-center">
+                        <div class="col-xl-6 col-sm-12  mt-2  flex-column d-flex justify-content-center">
                             <select id="selectedOption2" onchange="showGraphBar()" class="form-select"
                                     aria-label="Default select example">
 

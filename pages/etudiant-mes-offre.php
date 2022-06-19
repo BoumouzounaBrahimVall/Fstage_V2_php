@@ -53,22 +53,18 @@ if (isset($_POST['btnSelection'])) {
 
         $last_niv = $etudiant_niveau['NUM_NIV'];
         $req_update_offre = " update postuler 
-set postuler.ETATS_POST='ANNULER' 
-WHERE postuler.NUM_OFFR IN (
-    							SELECT NUM_OFFR FROM offredestage WHERE NUM_NIV='$last_niv'
-                               and offredestage.NUM_OFFR!='$noffr' and postuler.CNE_ETU='$etudiant_cne'
-    )
-and postuler.CNE_ETU='$etudiant_cne';";
+            set postuler.ETATS_POST='ANNULER' 
+            WHERE postuler.NUM_OFFR IN (
+                                            SELECT NUM_OFFR FROM offredestage WHERE NUM_NIV='$last_niv'
+                                           and offredestage.NUM_OFFR!='$noffr' and postuler.CNE_ETU='$etudiant_cne'
+                )
+            and postuler.CNE_ETU='$etudiant_cne';";
         $modifier_etat_Offre = $bdd->exec($req_update_offre);
         header('Location:etudiant-mes-offre.php');
-    }
+    } else {
 
-    else
-    {
-      
-       Synchronisation_offre_attente($bdd); 
+        Synchronisation_offre_attente($bdd);
     }
-
 
 
 }

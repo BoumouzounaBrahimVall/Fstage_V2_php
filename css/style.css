@@ -362,19 +362,11 @@ tr.shown td.details-control {
 }
 
 .close{
-  color: rgb(249, 218, 160);
-  opacity: 10;
-}
-@media only (max-width: 1440px) and (min-width: 750px)
-{
-    .headline-rapport{
-        max-width: 550px;
-        min-width: 550px;
-    }
-}
-
-@media only (max-width: 450px) and (min-width: 300px) {
-    .headline-rapport {
-        max-width:350px;
-    }
+    color: #d02828;
+    border: 2px solid #b7091d;
+    border-radius: 50px;
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    text-align: center;
 }
