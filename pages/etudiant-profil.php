@@ -23,6 +23,15 @@ if($_SERVER['REQUEST_METHOD']=='POST')
         uploadImagesOrCVFirebase($etudiant_cne,$file,$bdd,2);
         header('Location:etudiant-profil.php');
     }
+    if(isset($_POST['imgUploaed']))
+    {
+
+        $file = $_POST['imgPath'];
+        uploadImagesOrCVFirebase($etudiant_cne,$file,$bdd,1);
+        header('Location:etudiant-profil.php');
+    }
+
+
 
 }
 //traitement du deuxieme formulaire
@@ -98,7 +107,25 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
 
           <div class="mt-4 p-5 border border-1 rounded-3">
               <img style="width: 96px;height: 96px;" class="mx-auto mb-2 ms-4 rounded-circle" src="<?php echo $etudiant_info['IMG_ETU'];?>" alt="">
-              <a class="mt-2 ms-2 btn btn-import-img" href="">Importer image <i class="bi bi-image-fill"></i></a>
+
+              <div>
+                  <form action="" class="m-0 pe-0" method="POST" enctype="multipart/form-data">
+                      <input type="text" class="d-none " value="<?php echo $etudiant_info['CNE_ETU'];?>" name="cne">
+                      <input class="form-control d-none" name="imgPath" id="pathStorageImg">
+                      <label for="files" class="p-1 btn-import-img"><i class="bi bi-image-fill"></i>
+                          import</label>
+                      <input type="file" disabled class="d-none inputImg"
+                             onchange="uploadFileToFirebase('files','modifyphoto','pathStorageImg',1,'<?php echo $etudiant_info['CNE_ETU'];?>')"
+                             name="file" id="files">
+                      <button type="submit" name="imgUploaed" class="btn d-none" id="subbtnimg">
+                          <i style="font-size: 20px;color: #7B61FF;cursor: pointer;"
+                             class="m-0 p-0 bi bi-check-square"></i></button>
+                      <a onclick="modifySubmitdate('inputImg','modifyphoto','subbtnimg')" id="modifyphoto"
+                         type="btn"><i id="btnSubmit" style="font-size: 20px;color: #7B61FF;cursor: pointer;"
+                                       class="bi bi-pencil-square"></i></a>
+
+                  </form>
+              </div>
 
 
             <div>
@@ -197,7 +224,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                                 <label for="fileCv" class="col-form-label mt-2 btn py-2 px-4 mt-3 btn-voir-plus">
                                     Importer  <i class="bi bi-file-arrow-up-fill"></i>
                                 </label>
-                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmit','pathStorageFile',2,'<?php echo $etudiant_info['CNE_ETU'];?>')" accept="application/pdf" type="file" id="fileCv">
+                                <input class="form-control d-none" name="cv" onchange="uploadFileToFirebase('fileCv','btnSubmitFile','pathStorageFile',2,'<?php echo $etudiant_info['CNE_ETU'];?>')" accept="application/pdf" type="file" id="fileCv">
                                <!-- <input class="form-control d-none" name="cv"  accept="application/pdf" type="file" id="files">-->
 
 
@@ -206,7 +233,7 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
                             </div>
                             <div class="row ">
                                 <div class="col-xl-8  mt-5">
-                                    <button type="submit" id="btnSubmit" name="filesUploaed" disabled value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
+                                    <button type="submit" id="btnSubmitFile" name="filesUploaed" disabled value="uploadCvPostuler" class="btn btn-filtre btn-primary w-100 mb-3">    Enregistrer <i class="bi bi-plus-circle-fill"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -218,7 +245,6 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
 
                         if (!empty($etudiant_info['CV_ETU'])){
                             $cvetu=$etudiant_info['CV_ETU'];
-                           // <object data="data:application/pdf;base64,'. base64_encode($cvetu).'" type="application/pdf" style="width:100%"></object>
 
                             echo '
                
@@ -292,15 +318,15 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
 
       </div>
     </div>
-      <div id="modal-progress-upload">
 
-      </div>
     <div class="container offre-section-user">
       <div class="row">
 
       </div>
     </div>
+      <div id="modal-progress-upload">
 
+      </div>
       <?php
       //si le mot de passe est incorrecte
       if($verification==0)
@@ -327,7 +353,24 @@ if(isset($_POST['btn-modifier_mdp_responv'])){
       }
       ?>
       <script src="./../js/script-upload.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+      <script>
+          const modifySubmitdate = (inputId, btnId, subbtn) => {
+              console.log('pass');
+              let subBtn = document.getElementById(subbtn);
+              let input = document.getElementsByClassName(inputId);
+              let i;
+              let btn = document.getElementById(btnId);
+              subBtn.setAttribute("class", "btn bt");
+              btn.setAttribute("class", "d-none");
+              for (i = 0; i < input.length; i++) {
+                  input[i].disabled = false;
+              }
+              subBtn.setAttribute('value', btnId);
+              subBtn.setAttribute('type', 'submit');
+          }
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>
