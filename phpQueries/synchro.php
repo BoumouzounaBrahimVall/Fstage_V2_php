@@ -31,7 +31,7 @@ function offre_terminer($numOffre,$bdd)
 }
 function update_offre_complete($numOffre,$bdd)
 {
-    $req_update_etat_offre_pr="UPDATE OFFREDESTAGE set OFFREDESTAGE.ETATPUB_OFFR='COMPLETER' where NUM_OFFR='$numOffre' ;";
+    $req_update_etat_offre_pr="UPDATE OFFREDESTAGE set OFFREDESTAGE.ETATPUB_OFFR='COMPLETÉ' where NUM_OFFR='$numOffre' ;";
     $bdd->exec($req_update_etat_offre_pr);
 }
 

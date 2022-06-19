@@ -131,7 +131,7 @@ require_once "./nav-etudiant.php"
                                 <th scope="col">Poste</th>
 
                                 <th scope="col">Date Postuler</th>
-                                <th scope="col">Duree</th>
+                                <th scope="col">Delai</th>
                                 <th scope="col">Action</th>
                             </tr>
                             </thead>
@@ -146,7 +146,7 @@ require_once "./nav-etudiant.php"
                                         <td>' . $offre['LIBELLE_ENT'] . '</td>
                                         <td>' . $offre['POSTE_OFFR'] . '</td>
                                         <td>' . $offre['DATE_POST'] . '</td>
-                                        <td>' . $offre['DURE_OFFR'] . ' mois</td>
+                                        <td>' . $offre['DELAI_JOFFR'] . ' jours</td>
                                         <td>
                                             <a href="etudiant-mes-offre.php?noffr=' . $offre["NUM_OFFR"] . '&cne=' . $offre["CNE_ETU"] . '" class="me-3"><i class=" active  bi bi-trash-fill"></i></a>
                                             <a target="_blank" href="offre-details.php?noffr=' . $offre["NUM_OFFR"] . '&niv=' . $offre["NUM_NIV"] . '" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>

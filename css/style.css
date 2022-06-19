@@ -370,6 +370,16 @@ tr.shown td.details-control {
     font-size: 12px;
     text-align: center;
 }
+
+.complete{
+    color: #e19c50;
+    border: 2px solid rgba(210, 109, 35, 0.63);
+    border-radius: 50px;
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    text-align: center;
+}
 .chart-container {
     position: relative;
     margin: auto;

@@ -32,7 +32,7 @@ require_once "./nav-ens.php"
                         </ul>
                     </div>
                 </div>
-                <div class=" col p-4  mt-0">
+                <div class=" col-xl-9 p-4  mt-0">
                     <div class="row px-xl-4  ">
                         <h4>Mettre à jour listes des offres</h4>
                     </div>
@@ -93,7 +93,7 @@ require_once "./nav-ens.php"
                                     <th scope="col">Niveau</th>
                                     <th scope="col">Etat offre</th>
                                     <th scope="col">Effectif</th>
-                                    <th scope="col">Nbr candidats</th>
+                                    <th scope="col">Candidats</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>

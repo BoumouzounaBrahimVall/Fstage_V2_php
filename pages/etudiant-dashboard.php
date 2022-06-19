@@ -167,7 +167,10 @@ require_once "nav-etudiant.php";
 
                         if(empty($offre_stage["IMAGE_ENT"] )) $offre_stage["IMAGE_ENT"]= "./../ressources/company/images/atos.png";
                          if(strcmp($offre_stage['ETATPUB_OFFR'],"CLOSE")==0) {$visiblePostuler2="disabled";$close='close';}
+                         else if(strcmp($offre_stage['ETATPUB_OFFR'],"COMPLETÉ")==0) {$visiblePostuler2="disabled";$close='complete';}
                          else{ $visiblePostuler2=" ";$close=" badge-status ";};
+
+
 
                         echo '
                   <div class="m-xl-3 ">
