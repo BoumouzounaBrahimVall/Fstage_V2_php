@@ -3,8 +3,8 @@
 require(__DIR__ . './../../phpQueries/etudiant/dash.php');
 
 $date=date("Y-m-d");
-$req_stage_actulle= "SELECT * from STAGE st,OFFREDESTAGE offre,ENTREPRISE ent 
-                        WHERE   offre.NUM_OFFR=st.NUM_OFFR
+$req_stage_actulle= "SELECT * from STAGE st,OFFREDESTAGE offre,ENTREPRISE ent ,rapport rap
+                        WHERE   offre.NUM_OFFR=st.NUM_OFFR and rap.NUM_STG=st.NUM_STG
                         and offre.NUM_ENT = ent.NUM_ENT 
                         and st.CNE_ETU='$etudiant_cne'
                         ORDER BY st.NUM_STG DESC

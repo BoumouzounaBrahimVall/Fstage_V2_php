@@ -109,7 +109,7 @@ require_once "nav-etudiant.php";
 
 
                             <a name="" id="" class="btn-postuler btn px-xl-4  border border-1 "
-                            href="<?php echo('../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].''.$etud_niv.''.$info_stg_etu['NUM_STG'].'.pdf'); ?>"role="button"
+                            href="<?php echo('../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].''.$etud_niv.''.$info_stg_etu['NUM_STG'].'.pdf'); ?>" role="button"
                                download="Article_HTML5_download.pdf">Télechager</a>
 
 
@@ -123,7 +123,7 @@ require_once "nav-etudiant.php";
                         <div class="col-xl-6 col-sm-12 mt-sm-2 d-flex justify-content-start align-items-center">
 
                             <div class="col-auto prop-name  me-3">Rapport :</div>
-                            <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" href="">voir
+                            <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" target="_blank" href="<?php echo$stage_actulle['PATH_RAP']?>">voir
                                     plus </a></div>
 
 
