@@ -298,14 +298,14 @@ require_once "./nav-ens.php"
                                 <div class="col-xl-6 col-sm-12 ">
 
                                     <label class="prop-name mt-2" for="inputdatDeb">Date Debut </label>
-                                    <input id="inputdatDeb" type="date" class="form-control  inputstg1" disabled
+                                    <input id="inputdatDeb" type="date" class="form-control  inputstg1" required disabled
                                            value="<?php echo $donnee[3]; ?>" name="dateDeb">
 
                                 </div>
                                 <div class="col-xl-6 col-sm-12">
 
                                     <label class="prop-name mt-2" for="inputdatFin">Date Fin </label>
-                                    <input id="inputdatFin" type="date" class="form-control  inputstg1" disabled
+                                    <input id="inputdatFin" type="date" class="form-control  inputstg1" required disabled
                                            value="<?php echo $donnee[4]; ?>" name="dateFin">
 
                                 </div>

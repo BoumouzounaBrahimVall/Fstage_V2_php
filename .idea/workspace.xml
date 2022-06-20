@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9fe01a83-979e-446f-bcaf-e95a615548aa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/etudiant-dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/etudiant-dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/etudiant-mes-offre.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/etudiant-mes-offre.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/etudiant-mes-stage.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/etudiant-mes-stage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/resposable-details-offre.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/resposable-details-offre.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/resposable-details-stage.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/resposable-details-stage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phpQueries/etudiant/dash.php" beforeDir="false" afterPath="$PROJECT_DIR$/phpQueries/etudiant/dash.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/phpQueries/etudiant/stage.php" beforeDir="false" afterPath="$PROJECT_DIR$/phpQueries/etudiant/stage.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ressources/EtudiantCONTRAT/201900000415.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/EtudiantCONTRAT/201900000415.pdf" afterDir="false" />
     </list>
@@ -108,7 +115,7 @@
       <workItem from="1655600744843" duration="1654000" />
       <workItem from="1655635716603" duration="19662000" />
       <workItem from="1655668681363" duration="9237000" />
-      <workItem from="1655710661490" duration="3770000" />
+      <workItem from="1655710661490" duration="8103000" />
     </task>
     <servers />
   </component>
@@ -139,6 +146,11 @@
           <url>file://$PROJECT_DIR$/phpQueries/etudiant/detailoffr.php</url>
           <line>9</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/pages/etudiant-dashboard.php</url>
+          <line>51</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

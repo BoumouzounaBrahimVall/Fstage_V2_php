@@ -47,7 +47,7 @@ require_once "nav-etudiant.php";
             <div style="" class="row  border border-link rounded-3 p-4" id="div_stgg">
 
                 <div class="col-xl-2 col-sm-12 me-4 ">
-                    <img class="mx-auto mb-2" style="max-width: 150px;" src="<?php echo $stage_actulle['IMAGE_ENT'] ?>"
+                    <img class="mx-auto mb-2" style="max-width: 150px;" src="<?php echo @$stage_actulle['IMAGE_ENT'] ?>"
                          alt="">
                 </div>
                 <div class="col-xl-9 col-sm-12 me-4">
@@ -55,21 +55,21 @@ require_once "nav-etudiant.php";
                         <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3">Société :</div>
-                            <div class="col-auto prop-value"><?php echo $stage_actulle['LIBELLE_ENT'] ?> </div>
+                            <div class="col-auto prop-value"><?php echo @$stage_actulle['LIBELLE_ENT'] ?> </div>
 
                         </div>
 
                         <div class="col-xl-3 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3">N° Stage :</div>
-                            <div class="col-auto prop-value"><?php echo $stage_actulle['NUM_STG'] ?></div>
+                            <div class="col-auto prop-value"><?php echo @$stage_actulle['NUM_STG'] ?></div>
 
 
                         </div>
                         <div class="col-xl-5 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3">Encadrant :</div>
-                            <div class="col-auto prop-value"><?php echo getJuryName($stage_jury) ?></div>
+                            <div class="col-auto prop-value"><?php echo getJuryName(@$stage_jury) ?></div>
 
 
                         </div>
@@ -79,14 +79,14 @@ require_once "nav-etudiant.php";
                         <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3">Date debut :</div>
-                            <div class="col-auto prop-value"><?php echo $stage_actulle['DATEDEB_STG'] ?></div>
+                            <div class="col-auto prop-value"><?php echo @$stage_actulle['DATEDEB_STG'] ?></div>
 
                         </div>
 
                         <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name  me-3">Lieux :</div>
-                            <div class="col-auto prop-value"><?php echo $stage_actulle['LIEUX_OFFR'] ?></div>
+                            <div class="col-auto prop-value"><?php echo @$stage_actulle['LIEUX_OFFR'] ?></div>
 
 
                         </div>
@@ -97,7 +97,7 @@ require_once "nav-etudiant.php";
                         <div class="col-xl-4 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto prop-name me-3">Date fin :</div>
-                            <div class="col-auto prop-value"><?php echo $stage_actulle['DATEFIN_STG'] ?></div>
+                            <div class="col-auto prop-value"><?php echo @$stage_actulle['DATEFIN_STG'] ?></div>
 
                         </div>
                         <?php genererContrat($etudiant_cne,$bdd,$etud_niv,$etudiant_info) ;?>
@@ -105,11 +105,11 @@ require_once "nav-etudiant.php";
 
                             <div class="col-auto prop-name me-3">Contrat :</div>
                             <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" target="_blank"
-                                                                href="<?php echo('../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].''.$etud_niv.''.$info_stg_etu['NUM_STG'].'.pdf'); ?>">voir plus</a></div>
+                                                                href="<?php echo('../ressources/EtudiantCONTRAT/'.@$etudiant_info['CNE_ETU'].''.@$etud_niv.''.@$info_stg_etu['NUM_STG'].'.pdf'); ?>">voir plus</a></div>
 
 
                             <a name="" id="" class="btn-postuler btn px-xl-4  border border-1 "
-                            href="<?php echo('../ressources/EtudiantCONTRAT/'.$etudiant_info['CNE_ETU'].''.$etud_niv.''.$info_stg_etu['NUM_STG'].'.pdf'); ?>" role="button"
+                            href="<?php echo('../ressources/EtudiantCONTRAT/'.@$etudiant_info['CNE_ETU'].''.@$etud_niv.''.@$info_stg_etu['NUM_STG'].'.pdf'); ?>" role="button"
                                download="Article_HTML5_download.pdf">Télechager</a>
 
 
@@ -123,7 +123,7 @@ require_once "nav-etudiant.php";
                         <div class="col-xl-6 col-sm-12 mt-sm-2 d-flex justify-content-start align-items-center">
 
                             <div class="col-auto prop-name  me-3">Rapport :</div>
-                            <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" target="_blank" href="<?php echo$stage_actulle['PATH_RAP']?>">voir
+                            <div class="col-auto prop-value"><a class="btn" style="color:#7B61FF ;" target="_blank" href="<?php echo@$rapportStageActuel?>">voir
                                     plus </a></div>
 
 
@@ -138,9 +138,9 @@ require_once "nav-etudiant.php";
                             <div class="col-auto prop-name  me-3">Liste Jury :</div>
                             <div class="col-auto prop-value">
                                 <?php
-                                foreach ($stage_jury as $jury) {
+                                foreach (@$stage_jury as $jury) {
                                     echo '
-                                      <span class="me-2"> ' . $jury['PRENOM_ENS'] . ' ' . $jury['NOM_ENS'] . '</span>
+                                      <span class="me-2"> ' . @$jury['PRENOM_ENS'] . ' ' . @$jury['NOM_ENS'] . '</span>
                                       
                                       ';
                                 }

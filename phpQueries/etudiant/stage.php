@@ -3,8 +3,8 @@
 require(__DIR__ . './../../phpQueries/etudiant/dash.php');
 
 $date=date("Y-m-d");
-$req_stage_actulle= "SELECT * from STAGE st,OFFREDESTAGE offre,ENTREPRISE ent ,rapport rap
-                        WHERE   offre.NUM_OFFR=st.NUM_OFFR and rap.NUM_STG=st.NUM_STG
+$req_stage_actulle= "SELECT * from STAGE st,OFFREDESTAGE offre,ENTREPRISE ent 
+                        WHERE   offre.NUM_OFFR=st.NUM_OFFR 
                         and offre.NUM_ENT = ent.NUM_ENT 
                         and st.CNE_ETU='$etudiant_cne'
                         ORDER BY st.NUM_STG DESC
@@ -14,8 +14,19 @@ $req_stage_actulle= "SELECT * from STAGE st,OFFREDESTAGE offre,ENTREPRISE ent ,r
 $Smt_stage_info = $bdd->query($req_stage_actulle);
 $stage_actulle = $Smt_stage_info->fetch(PDO::FETCH_ASSOC);
 
-//liste de jury du stage
+
+
+
 $num_stage=@$stage_actulle['NUM_STG'];
+
+//Rappot de stage
+$req_Rap_Actuel= "SELECT * from  rapport rap WHERE   rap.NUM_STG='$num_stage';";
+// and st.DATEFIN_STG >='$date'
+$Smt_Rap_Actuel= $bdd->query($req_Rap_Actuel);
+$Rap_Actuel = $Smt_Rap_Actuel->fetch(PDO::FETCH_ASSOC);
+$rapportStageActuel=@$Rap_Actuel['PATH_RAP'];
+if(empty($rapportStageActuel)) $rapportStageActuel='#';
+//liste de jury du stage
 $req_jury= "SELECT * from STAGE st,JUGER jr,ENSEIGNANT ens
                         WHERE   st.NUM_STG=jr.NUM_STG
                         and ens.NUM_ENS = jr.NUM_ENS 

@@ -127,8 +127,8 @@ if (isset($_GET['logout'])) {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link " aria-current="page" href="#"
-                    >Offre de stage</a
+                    <a class="nav-link " aria-current="page" href="../index.php"
+                    >Acceuil</a
                     >
                 </li>
                 <li class="nav-item">

@@ -47,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnOffre'])) {
         $etuinfos['DATEDEB_OFFR'],
         $etuinfos['CV_ETU']
     );
-    print_r($infos);
-    mail_to_entreprise($etuinfos['EMAIL_ENT'],$infos);
+   // print_r($infos);
+   // mail_to_entreprise($etuinfos['EMAIL_ENT'],$infos);
     header('Location:etudiant-dashboard.php');
 
 }

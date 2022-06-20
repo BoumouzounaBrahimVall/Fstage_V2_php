@@ -53,7 +53,7 @@ require_once "./pages/nav-acceuil.php"
                     connectez vous pour explorer les offres de stages publié sur la
                     plateforme.
                 </p>
-                <a  id="btn-seconnecter-body" class="btn btn-primary mt-3" href="#" role="button">Se Connecter</a>
+                <a  id="btn-seconnecter-body" class="btn btn-primary mt-3" href="./pages/login.php" role="button">Se Connecter</a>
             </div>
         </div>
         <div class="col-lg-6 col-sm-12 d-xl-block d-sm-none ">

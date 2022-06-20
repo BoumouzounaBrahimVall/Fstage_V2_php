@@ -142,7 +142,7 @@ $pdf->SetY(140);
 $pdf->Cell(10);
 $pdf->Cell(45,10,"Nom de l'etudiant :");
 $pdf->SetFont("Courier");
-$pdf->Cell(45,10,$etudiant_info['NOM_ETU']);
+$pdf->Cell(45,10,$etudiant_info['NOM_ETU'].' '.$etudiant_info['PRENOM_ETU']);
 
 // Niveau de l'etudiant
 $pdf->SetFont('Times','',12);

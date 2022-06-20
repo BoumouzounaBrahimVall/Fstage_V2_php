@@ -240,7 +240,7 @@ $donnee=array(
 
                                 <form   action="" method="get" class="col border rounded p-1">
                                     <label for="inputEtat">Etat</label>
-                                    <input id="inputEtat" type="text" pattern="(NOUVEAU|CLOSE|COMPLETER)"  title="L'etat soit :NOUVEAU,CLOSE ou COMPLETER" class="form-control inputEtat" disabled value="<?php echo $donnee[1];?>" name="inputEtat">
+                                    <input id="inputEtat" type="text" pattern="(NOUVEAU|CLOSE|COMPLETÉ)"  title="L'etat soit :NOUVEAU,CLOSE ou COMPLETÉ" class="form-control inputEtat" disabled value="<?php echo $donnee[1];?>" name="inputEtat">
                                     <input type="text" class="d-none"  value="<?php echo $offre_num;?>" name="numOffre" >
                                     <button type="submit" name="send" class="btn d-none"  id="subbtnEtat" >
                                         <i  style="font-size: 20px;color: #7B61FF;cursor: pointer;" class="m-0 p-0 bi bi-check-square"></i></button>
