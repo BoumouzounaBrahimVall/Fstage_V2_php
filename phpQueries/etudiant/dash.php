@@ -94,7 +94,7 @@ $pdf->Cell(10);
 $pdf->Cell(45,10,"Nom de l'entreprise :");
 $pdf->SetFont("Courier");
 $pdf->Cell(45,10,$info_ent_etu['LIBELLE_ENT']);
-$pdf->Image($info_ent_etu['IMAGE_ENT'],160,8,33);
+//$pdf->Image($info_ent_etu['IMAGE_ENT'],160,8,33);
 //$pdf->Image('logo.png',160,8,33);
 // Adresse de l'entreprise
 $pdf->SetFont('Times','',12);

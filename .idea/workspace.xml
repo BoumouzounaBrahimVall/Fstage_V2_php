@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fe01a83-979e-446f-bcaf-e95a615548aa" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f14a8009-9123-4eb5-82f9-7a3d126d4e54.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f14a8009-9123-4eb5-82f9-7a3d126d4e54.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/gererStage.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/gererStage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/resposable-details-etudiant.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/resposable-details-etudiant.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/resposable-details-stage.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/resposable-details-stage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phpQueries/etudiant/dash.php" beforeDir="false" afterPath="$PROJECT_DIR$/phpQueries/etudiant/dash.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,21 +48,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Errors",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Xampp\htdocs\Fstage_V2_php\pages" />
@@ -106,7 +107,8 @@
       <workItem from="1655591641660" duration="7191000" />
       <workItem from="1655600744843" duration="1654000" />
       <workItem from="1655635716603" duration="19662000" />
-      <workItem from="1655668681363" duration="8541000" />
+      <workItem from="1655668681363" duration="9237000" />
+      <workItem from="1655710661490" duration="1020000" />
     </task>
     <servers />
   </component>

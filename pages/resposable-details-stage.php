@@ -812,7 +812,9 @@ require_once "./nav-ens.php"
 
     </div>
 </div>
+<div id="modal-progress-upload">
 
+</div>
 
 <script>
     let activities = document.getElementById("inputRapport");
