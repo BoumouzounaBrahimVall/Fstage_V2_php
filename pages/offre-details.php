@@ -58,7 +58,7 @@ require_once(__DIR__.'./../phpQueries/etudiant/detailoffr.php');
                 </div>
                 <div class="durre mt-3">
                   <span class="title-specification">Durré : </span>
-                  <span class="detail-specification">'.$offre_stage["DURE_OFFR"] .' mois</span>
+                  <span class="detail-specification">'.$offre_stage["DELAI_JOFFR"] .' jours</span>
                 </div>
                 <div class="lieux mt-3">
                   <span class="title-specification">Lieux : </span>

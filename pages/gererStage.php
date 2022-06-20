@@ -89,7 +89,7 @@ require_once "./nav-ens.php"
                         </ul>
                     </div>
                 </div>
-                <div class=" col p-4  mt-0">
+                <div class=" col-9 p-4  mt-0">
                     <div class="row">
                         <h4>Mettre à jour listes des stages</h4>
                     </div>
