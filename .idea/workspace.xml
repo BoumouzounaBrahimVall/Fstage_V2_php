@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9fe01a83-979e-446f-bcaf-e95a615548aa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/gererOffre.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/gererOffre.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/publierOffre.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/publierOffre.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/gererStage.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/gererStage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/resposable-details-etudiant.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/resposable-details-etudiant.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +106,7 @@
       <workItem from="1655591641660" duration="7191000" />
       <workItem from="1655600744843" duration="1654000" />
       <workItem from="1655635716603" duration="19662000" />
-      <workItem from="1655668681363" duration="5267000" />
+      <workItem from="1655668681363" duration="8541000" />
     </task>
     <servers />
   </component>

@@ -4,17 +4,24 @@ require( __DIR__.'../../phpQueries/respoRequiries.php');
 if (isset($_POST["telecharger"])) {
     $type=$_POST['type'];
     $niv=$_POST['niv'];
-    if($niv=='tous') {
-        if($type=='tous'){
-            $req="select etu.CNE_ETU,etu.NOM_ETU,etu.PRENOM_ETU,DATENAISS_ETU,etu.TEL_ETU,etu.EMAIL_ENS_ETU,etu.PAYS_ETU,etu.VILLE_ETU
-                    ,stage.SUJET_STG,stage.DATEDEB_STG,stage.DATEFIN_STG from etudiant etu,etudier,niveau,stage,juger where juger.NUM_STG=stage.NUM_STG
-                    and juger.EST_ENCADRER='1' and stage.CNE_ETU=etu.CNE_ETU and etudier.CNE_ETU=etu.CNE_ETU and niveau.NUM_NIV=etudier.NUM_NIV and
-                    niveau.NUM_FORM='$formation' and etu.ACTIVE_ETU='0' ";
-            $stmReq=$bdd->query($req);
-            $rows= $stmReq->fetchAll(2);
-        }
 
-    }
+    if($type=='tous') $test='';
+    else if($type=='1') $test='and  stage.ACTIVE_STG!=0';
+    else if($type=='2') $test=' and stage.DATEFIN_STG>CURRENT_DATE';
+    else $test=' and stage.DATEFIN_STG<CURRENT_DATE';
+
+    if($niv=='tous') $testNiv='';
+    else $testNiv='and  niveau.NUM_NIV='.$niv;
+
+    $req="select etu.CNE_ETU CNE,etu.NOM_ETU Nom,etu.PRENOM_ETU Prenom,etu.DATENAISS_ETU Date_naissance,etu.TEL_ETU Tel, 
+                    etu.EMAIL_ENS_ETU email,etu.PAYS_ETU Pays,enseignant.NOM_ENS encadrant, entreprise.LIBELLE_ENT as Entreprise, juger.NOTE Note_encadrant
+                ,stage.NOTE_ENEX Note_encadrant_externe,stage.SUJET_STG,stage.DATEDEB_STG,stage.DATEFIN_STG
+                from etudiant etu, offredestage,etudier,niveau,stage,juger, enseignant,entreprise 
+                where entreprise.NUM_ENT=offredestage.NUM_ENT and offredestage.NUM_OFFR=stage.NUM_OFFR and juger.NUM_ENS=enseignant.NUM_ENS
+                  and juger.NUM_STG=stage.NUM_STG and juger.EST_ENCADRER='1' and stage.CNE_ETU=etu.CNE_ETU and etudier.CNE_ETU=etu.CNE_ETU and 
+                      niveau.NUM_NIV=etudier.NUM_NIV $testNiv and niveau.NUM_FORM='$formation' $test;";
+    $stmReq=$bdd->query($req);
+    $rows= $stmReq->fetchAll(2);
 
      // le nom du fichier
     $filename =  "FSTMStagieres-".date('d-m-Y').".xls";;

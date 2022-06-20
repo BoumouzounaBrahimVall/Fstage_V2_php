@@ -395,7 +395,7 @@ if (isset($_GET['passOublier'])) {
 
 
             <div class="intro  mt-5">
-                <h3><b>Détails offres postulé</b></h3>
+                <h3><b>Détails offres postulées</b></h3>
 
             </div>
             <div class="mt-4">
@@ -412,7 +412,7 @@ if (isset($_GET['passOublier'])) {
                             <th scope="col">Retenu</th>
                             <th scope="col">Accepter</th>
                             <th scope="col">Annuler</th>
-                            <th scope="col">Action</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -447,10 +447,7 @@ if (isset($_GET['passOublier'])) {
                                 <td>' . $retenu . '</td>
                                 <td>' . $accpt . '</td>
                                  <td>' . $anul . '</td>
-                              <td>  
-                                <a href="#" class="me-3"><i class=" active  bi bi-info-circle-fill"></i></a>
-                                <a href="#"><i class=" active  bi bi-pencil-fill"></i></a>
-                               </td>
+                              
                         </tr>';
                             endforeach;
                         }
