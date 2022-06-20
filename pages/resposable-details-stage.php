@@ -13,7 +13,12 @@ if(isset($_GET["annulerStg"])){
 }
 if (!isset($stage_num)) header('location:gererStage.php');
 
-
+//jury note
+$reqNot = "SELECT NUM_STG, sum(juger.NOTE) somme,COUNT(juger.NUM_ENS) effe FROM juger  WHERE NUM_STG='$stage_num' GROUP by NUM_STG;";
+$SmtNot = $bdd->query($reqNot);
+$Note = $SmtNot->fetch(2);
+if(!empty($Note)) $notGenerale=((float)($Note['somme']/$Note['effe']));
+else $notGenerale=0;
 //RAPPORT STAGE REQUETTE
 $reqRap = "SELECT NUM_RAP nrp, INTITULE_RAP intirp, PATH_RAP pthrp FROM rapport rap WHERE rap.NUM_STG='$stage_num';";
 $Smtrap = $bdd->query($reqRap);
@@ -277,7 +282,7 @@ require_once "./nav-ens.php"
                         <div class="col-xl-3 col-sm-12 mt-sm-2 d-flex justify-content-start ">
 
                             <div class="col-auto m-0 p-0  prop-name me-3">Note Général :</div>
-                            <div class="col-auto prop-value">0</div>
+                            <div class="col-auto prop-value"><?php echo number_format($notGenerale,2); ?></div>
 
 
                         </div>
